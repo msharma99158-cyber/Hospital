@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card p-4 shadow">
+
+        <h3 class="text-center bed-heading mb-4">🛏 Bed Booking Form</h3>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Patient Name</label>
+                <input type="text" name="patient_name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="text" name="contact" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Select Bed Type</label>
+                <select name="bed_type" class="form-control" required>
+                    <option value="">-- Select Bed Type --</option>
+                    <option value="General">General Ward - ₹1000/day</option>
+                    <option value="Semi-Private">Semi-Private - ₹2000/day</option>
+                    <option value="Private">Private Room - ₹3500/day</option>
+                    <option value="ICU">ICU - ₹5000/day</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Admission Date</label>
+                <input type="date" name="admission_date" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Number of Days</label>
+                <input type="number" name="days" class="form-control" required>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="bed-btn">
+                    Book Bed
+                </button>
+            </div>
+
+        </form>
+
+        <hr>
+
+        <h5 class="bed-charges mt-3">💰 Bed Charges:</h5>
+        <ul>
+            <li>General Ward – ₹1000 per day</li>
+            <li>Semi-Private – ₹2000 per day</li>
+            <li>Private Room – ₹3500 per day</li>
+            <li>ICU – ₹5000 per day</li>
+        </ul>
+
+    </div>
+</div>
+
+{% endblock %}

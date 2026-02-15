@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - City Care Hospital{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- Page Heading -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Contact City Care Hospital</h2>
+        <p class="text-muted">We are available 24×7 to help you</p>
+    </div>
+
+    <div class="row">
+
+        <!-- Left Side - Contact Info -->
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-sm p-4">
+                <h4 class="mb-3">Hospital Information</h4>
+
+                <p><strong>📍 Address:</strong><br>
+                Model Town, Amritsar, Punjab</p>
+
+                <p><strong>📞 Phone:</strong><br>
+                +91 9876543210</p>
+
+                <p><strong>📧 Email:</strong><br>
+                citycare@gmail.com</p>
+
+                <p><strong>🚑 Emergency:</strong><br>
+                108 / 112 (Available 24×7)</p>
+            </div>
+        </div>
+
+        <!-- Right Side - Contact Form -->
+        <div class="col-md-7">
+            <div class="card shadow-sm p-4">
+                <h4 class="mb-3">Send Us a Message</h4>
+
+                <form method="POST">
+
+                    <div class="mb-3">
+                        <input type="text" name="name"
+                               class="form-control"
+                               placeholder="Full Name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="email" name="email"
+                               class="form-control"
+                               placeholder="Email Address" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" name="phone"
+                               class="form-control"
+                               placeholder="Phone Number" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" name="subject"
+                               class="form-control"
+                               placeholder="Subject" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea name="message"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Your Message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Send Message
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Google Map -->
+    <div class="mt-5">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18..."
+            width="100%" 
+            height="300" 
+            style="border:0;" 
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+
+    <!-- Emergency Alert -->
+    <div class="alert alert-danger text-center mt-4">
+        <h5 class="mb-1">🚨 Emergency? Call 108 Immediately</h5>
+        <p class="mb-0">Open 24 Hours</p>
+        <p class="mb-2"> <button class="btn btn-danger">Call Now</button></p>
+    </div>
+
+</div>
+
+{% endblock %}
