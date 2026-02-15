@@ -1,0 +1,395 @@
+/* =====================
+   RESET & BASE
+   ===================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* =====================
+   NAVBAR – SINGLE LINE
+   ===================== */
+
+.navbar {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    padding: 10px 20px;
+    border: none;
+    box-shadow: none;
+}
+
+/* Brand text */
+.navbar-brand {
+    font-size: 22px;
+    font-weight: bold;
+    color: #7CFFB2 ;
+}
+
+/* Nav links */
+.nav-link {
+    color: #7CFFB2;
+    margin-left: 15px;
+    font-size: 15px;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+/* =====================
+   HOME BACKGROUND
+   ===================== */
+
+.home-bg {
+    background-image: url("../images/OIP.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Overlay */
+.home-bg::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+        rgba(0, 60, 120, 0.7),
+        rgba(0, 0, 0, 0.6)
+    );
+    z-index: -1;
+}
+
+/* =====================
+   HERO SECTION
+   ===================== */
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    min-height: 75vh;
+    color: #ffffff;
+}
+
+.hero-text {
+    max-width: 650px;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.hero-text h1 span {
+    color: #7CFFB2;
+}
+
+.tagline {
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+/* =====================
+   HERO BUTTONS
+   ===================== */
+
+.hero-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* =====================
+   FOOTER – COMPACT
+   ===================== */
+
+.footer {
+    background-color: #0b1c2d;
+    color: #ffffff;
+    padding: 18px 0 10px;
+}
+
+.footer h5 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.footer p {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.footer-line {
+    margin: 8px 0;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+
+@media (max-width: 768px) {
+    .hero-text h1 {
+        font-size: 34px;
+    }
+
+    .navbar-brand {
+        font-size: 18px;
+    }
+} 
+.about-container .hospital-name {
+    color:green;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.about-header {
+
+    background-image:url("../images/35.webp");
+    background-size:cover ;
+    background-position: center ;
+    color:white;
+    text-align: center;
+    padding: 70px 20px;
+    
+}
+
+.about-header h1 {
+    font-size: 36px;
+    color: green;
+}
+
+.about-header p {
+    font-size: 16px;
+    color:green;
+}
+
+.about-section {
+    margin-bottom: 35px;
+}
+
+.about-section h2 {
+    font-size: 24px;
+    color:green;
+    margin-bottom: 10px;
+}
+
+.about-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color:black;
+}
+
+.about-section ul {
+    padding-left: 20px;
+}
+
+.about-section ul li {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.about-page .developer{
+    background-color: #ffffff;
+    padding: 25px 30px;
+    margin-bottom:25px ;
+    border-radius: 10px;
+    box-shadow:0 4px 10px rgba(0, 0, 0, 0.8) ;
+}
+.about-flex {
+    display: flex;
+    gap:70px;
+    flex-wrap: wrap;
+}
+.about-flex > div{
+    flex:1;
+    min-width: 280px;
+}
+body{
+    background-color:#a0f0f0d3 ;
+}
+.about-page .about-image{
+    margin-right: 40px;
+}
+.about-image{
+    width: 200px;
+    height:auto;
+    border-radius: 10px;
+}
+/* ===============================
+   Contact Page Styling
+================================= */
+
+/* Page Heading */
+.contact-title {
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+/* Contact Cards */
+.contact-card {
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Form Styling */
+.contact-form input,
+.contact-form textarea {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: green;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+}
+
+/* Submit Button */
+.contact-btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.contact-btn:hover {
+    transform: scale(1.02);
+}
+
+/* Emergency Box */
+.emergency-box {
+    border-radius: 12px;
+    font-weight: 600;
+}
+.emergency-section {
+    background-color: #0d1b2a;   /* Dark sidebar color */
+    border-radius: 8px;
+}
+
+.emergency-section .btn {
+    border-radius: 6px;
+    transition: 0.3s ease;
+}
+
+.emergency-section .btn:hover {
+    background-color: #ff4d4d;
+    transform: scale(1.05);
+}
+.neumo-section {
+    min-height: 60vh;
+}
+
+.neumo-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 22px;
+    color: #555;
+    height: 150px;
+    border-radius: 20px;
+    background: #e0e5ec;
+    box-shadow: 8px 8px 15px #a3b1c6,
+                -8px -8px 15px #ffffff;
+    transition: all 0.3s ease;
+}
+
+.neumo-btn span {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.neumo-btn:hover {
+    box-shadow: inset 8px 8px 15px #a3b1c6,
+                inset -8px -8px 15px #ffffff;
+}
+.service-heading{
+    color:green;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.service-heading {
+    color:green;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.ambulance-include-heading {
+    color: green;
+    font-weight: bold;
+}
+.ambulance-charges-heading {
+    color: green;
+    font-weight: bold;
+}
+.request-btn {
+    background-color: #198754;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.request-btn:hover {
+    background-color: #146c43;
+}
+
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 6px rgba(25, 135, 116, 0.3);
+    font-weight: bold;
+}
+.bed-heading {
+    color: green;
+    font-weight: 700;
+}
+
+.bed-btn {
+    background-color: #198754;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.bed-btn:hover {
+    background-color: #146c43;
+    transform: scale(1.05);
+}
+
+.bed-charges {
+    color: green;
+    font-weight: 700;
+}
+
+
