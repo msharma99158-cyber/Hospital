@@ -22,14 +22,14 @@ def contact():
         message=request.form['message']
         print(name,email,phone,subject,message)
         flash("your message has been sent successfully")
-        return redirect('/contact')
+        return redirect(url_for('contact'))
     return render_template('contact.html')
 
 @app.route('/services')
 def services():
     return render_template('services.html')
 
-@app.route('/bed_booking', methods=['GET', 'POST'])
+@app.route('/bedbooking', methods=['GET', 'POST'])
 def bedbooking():
     if request.method == 'POST':
         patient_name = request.form['patient_name']
@@ -37,7 +37,9 @@ def bedbooking():
         bed_type = request.form['bed_type']
         admission_date = request.form['admission_date']
         days = request.form['days']
-        return redirect(url_for('services'))
+        print (patient_name, contact, bed_type, admission_date, days)
+        flash("Your form has been sent successfully")
+        return redirect(url_for('bedbooking'))
     return render_template('bedbooking.html')
 
 @app.route("/appointment")
@@ -49,7 +51,7 @@ def emergency():
     return render_template("emergency.html")
 
 @app.route("/ambulance")
-def ambulance():
+def ambulance():      
     return render_template("ambulance.html")
 
 if __name__ == '__main__':
