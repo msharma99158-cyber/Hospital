@@ -18,7 +18,7 @@ body {
    ===================== */
 
 .navbar {
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0,0,0,0.65);
     backdrop-filter: blur(8px);
     padding: 10px 20px;
     border: none;
@@ -29,20 +29,26 @@ body {
 .navbar-brand {
     font-size: 22px;
     font-weight: bold;
-    color: #7CFFB2 ;
+    color: white ;
 }
 
 /* Nav links */
 .nav-link {
-    color: #7CFFB2;
+    color: white;
     margin-left: 15px;
     font-size: 15px;
 }
 
 .nav-link:hover {
-    text-decoration: underline;
+    color:#007bff;
 }
 
+.nav-link.active{
+    background-color:#4da6ff ;
+    color:white;
+    border-radius:5px;
+    padding:6px 12px;
+}
 /* =====================
    HOME BACKGROUND
    ===================== */
@@ -90,7 +96,7 @@ body {
 }
 
 .hero-text h1 span {
-    color: #7CFFB2;
+    color: rgb(51, 174, 222);
 }
 
 .tagline {
@@ -159,7 +165,7 @@ body {
     }
 } 
 .about-container .hospital-name {
-    color:green;
+    color:white;
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
@@ -179,12 +185,12 @@ body {
 
 .about-header h1 {
     font-size: 36px;
-    color: green;
+    color: #03305f;
 }
 
 .about-header p {
     font-size: 16px;
-    color:green;
+    color:#063465;
 }
 
 .about-section {
@@ -192,8 +198,8 @@ body {
 }
 
 .about-section h2 {
-    font-size: 24px;
-    color:green;
+    font-weight:30px;
+    color:#1367ab;
     margin-bottom: 10px;
 }
 
@@ -391,5 +397,60 @@ body{
     color: green;
     font-weight: 700;
 }
+/* ===== GENERAL ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to right,#9dc8f7);
+}
 
+/* ===== LOGIN CONTAINER ===== */
+.login-container {
+    width: 350px;
+    background: white;
+    padding: 30px;
+    margin: 100px auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
 
+/* ===== LOGIN TITLE ===== */
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+/* ===== INPUT FIELDS ===== */
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* ===== BUTTON ===== */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color:rgb(58,189,240);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-container button:hover {
+    background-color: rgb(58, 189, 240);
+}
+
+/* ===== OPTIONAL SMALL TEXT ===== */
+.login-container p {
+    font-size: 14px;
+    margin-top: 15px;
+}
