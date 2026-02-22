@@ -2,15 +2,13 @@
 
 {% block title %}Home | City Care Hospital{% endblock %}
 
-{% block body_class %}home-bg{% endblock %}
-
 {% block content %}
-<header class="text-center mt-3">
-    <h1 style="color:#7CFFB2;">City Care Hospital</h1>
-</header>
+
 <div class="hero-section">
 
+    <!-- LEFT SIDE CONTENT -->
     <div class="hero-text">
+
         <h5 class="tagline">
             Healthcare Clinics & Partnership Organizations
         </h5>
@@ -21,17 +19,22 @@
         </h1>
 
         <div class="hero-buttons">
-            
-
             <a href="#" class="btn btn-light">
                 Book an Appointment
             </a>
 
-            <a href="#" class="btn btn-success">
+            <a href="#" class="btn btn-success" style="color: azure;">
                 Have an Emergency?
             </a>
         </div>
+
+    </div>
+
+    <!-- RIGHT SIDE IMAGE -->
+    <div class="hero-img">
+        <img src="{{ url_for('static', filename='images/ms.jpg') }}" alt="Hospital Image">
     </div>
 
 </div>
+
 {% endblock %}
