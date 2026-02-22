@@ -1,24 +1,88 @@
+
+.hero-section{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 0;
+    margin-top: 10px;
+    min-height: 40px;
+}
+
+.hero-text{
+    width: 50%;
+    color: white;
+}
+
+.hero-text h1{
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height:1.2;
+}
+.hero-text h2{
+    font-size: 24px;
+    font-weight: 400;
+    color:#333;
+    margin-bottom: 30px;
+}
+.hero-text span {
+    color: #003366;
+}
+
+.hero-img{
+    width: 600px;
+    height: auto;
+    text-align: right;
+}
+
+.hero-img img{
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 9%;
+    border:6px solid white;
+    object-fit: cover;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
 /* =====================
-   RESET & BASE
-   ===================== */
+   MOBILE RESPONSIVE
+===================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text,
+    .hero-img {
+        width: 100%;
+    }
+
+    .hero-img {
+        margin-top: 30px;
+        text-align: center;
+    }
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f8f9fa;
-}
+/*.home-bg
+{
+    background-image: url("../images/OIP.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}*/
+
+
 
 /* =====================
    NAVBAR – SINGLE LINE
    ===================== */
 
 .navbar {
-    background: rgba(0,0,0,0.65);
+    background:#003366;
     backdrop-filter: blur(8px);
     padding: 10px 20px;
     border: none;
@@ -44,7 +108,7 @@ body {
 }
 
 .nav-link.active{
-    background-color:#4da6ff ;
+    background-color:#09233e ;
     color:white;
     border-radius:5px;
     padding:6px 12px;
@@ -52,35 +116,28 @@ body {
 /* =====================
    HOME BACKGROUND
    ===================== */
-
+/* 
 .home-bg {
-    background-image: url("../images/OIP.webp");
+    background-image: url("{{ url_for('static', filename='images/OIP.webp') }}");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100vh;
     position: relative;
-}
+} */
 
-/* Overlay */
-.home-bg::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(
-        rgba(0, 60, 120, 0.7),
-        rgba(0, 0, 0, 0.6)
-    );
-    z-index: -1;
-}
+
 
 /* =====================
    HERO SECTION
    ===================== */
 
-.hero-section {
+/*.hero-section {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 60px 80px;
+    background:none;
     min-height: 75vh;
     color: #ffffff;
 }
@@ -105,12 +162,21 @@ body {
     text-transform: uppercase;
     margin-bottom: 12px;
     opacity: 0.9;
-}
+}*/
 
 /* =====================
    HERO BUTTONS
    ===================== */
-
+.btn-success {
+    background-color: #03305f;
+    color: white;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
 .hero-buttons {
     margin-top: 25px;
     display: flex;
@@ -124,7 +190,12 @@ body {
     font-size: 15px;
     font-weight: 500;
 }
-
+.hero-text button{
+    background-color: #03305f;
+    color: white;
+    border: none;
+    transition: 0.3s ease;
+}
 /* =====================
    FOOTER – COMPACT
    ===================== */
@@ -194,7 +265,7 @@ body {
 }
 
 .about-section {
-    margin-bottom: 35px;
+    margin-bottom:35px;
 }
 
 .about-section h2 {
@@ -241,9 +312,12 @@ body{
     margin-right: 40px;
 }
 .about-image{
-    width: 200px;
-    height:auto;
-    border-radius: 10px;
+    width: 350px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    position: relative;
 }
 /* ===============================
    Contact Page Styling
@@ -402,7 +476,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(to right,#9dc8f7);
+    background: linear-gradient(to right, #8cc1f5, #ffffff);
 }
 
 /* ===== LOGIN CONTAINER ===== */
@@ -419,7 +493,7 @@ body {
 /* ===== LOGIN TITLE ===== */
 .login-container h2 {
     margin-bottom: 20px;
-    color: #007bff;
+    color: #3c8de3;
 }
 
 /* ===== INPUT FIELDS ===== */
@@ -453,4 +527,4 @@ body {
 .login-container p {
     font-size: 14px;
     margin-top: 15px;
-}
+} 

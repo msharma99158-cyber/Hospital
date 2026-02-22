@@ -135,6 +135,8 @@ def login():
         password = request.form['password']
 
         user = User.query.filter_by(username=username, password=password).first()
+        db.session.add(user)
+        db.session.commit()
 
         if user:
             session['user_id'] = user.id
