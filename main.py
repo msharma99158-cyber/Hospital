@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "hospital_secret_key"
@@ -24,8 +25,9 @@ class Patient(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(200), nullable=False)
+    role=db.Column(db.String(20), default="user")  # Default role is user
 
 # ---------------- CREATE TABLES + DEFAULT ADMIN ----------------
 
@@ -34,7 +36,7 @@ with app.app_context():
 
     # Create default admin if not exists
     if not User.query.filter_by(username="admin").first():
-        admin = User(username="admin", password="1234")
+        admin = User(username="admin", password=generate_password_hash("123"), role="ADMIN")
         db.session.add(admin)
         db.session.commit()
 
@@ -125,6 +127,29 @@ def emergency():
 def ambulance():
     return render_template("ambulance.html")
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Check if user already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            flash("Username already exists!")
+            return redirect(url_for('register'))
+        hashed_password = generate_password_hash(password)
+        
+        # Create new user
+        new_user = User(username=username, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash("Registration successful!")
+        return redirect(url_for('login'))
+
+    return render_template("register.html")
+
 
 # ---------------- LOGIN ----------------
 
@@ -134,19 +159,32 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        user = User.query.filter_by(username=username, password=password).first()
-        db.session.add(user)
-        db.session.commit()
+        user = User.query.filter_by(username=username).first()
+       # db.session.add(user)
+       # db.session.commit()
 
-        if user:
+        if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
             session['username'] = user.username
-            return redirect(url_for('home'))
+            session['role'] = user.role
+            if user.role=="admin":
+                return redirect(url_for('admin_dashboard'))
+            flash("Logged in successfully!")
+            return redirect(url_for('services'))
         else:
             flash("Invalid Username or Password")
             return redirect(url_for('login'))
 
     return render_template("login.html")
+
+@app.route('/admin')
+def admin_dashboard():
+    if "role" not in session or session["role"] != "admin":
+        user =user.query.all()
+        return render_template("admin_dashboard.html", user=user)
+    else:
+        flash("Access denied! Admins only.")
+        return redirect(url_for('login'))
 
 
 # ---------------- LOGOUT ----------------
@@ -156,6 +194,11 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
+@app.route('/users')
+def users():
+    all_users = User.query.all()
+    return str(all_users)
+   
 
 # ---------------- RUN APP ----------------
 

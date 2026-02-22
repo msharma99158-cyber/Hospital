@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - City Care Hospital</title>
+
+    <!-- Link Your Main CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="register-container">
+
+    <h2>City Care Hospital</h2>
+    <h3 style="text-align:center; margin-bottom:20px;">Create Account</h3>
+
+    <!-- Flash Message -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div style="color:red; text-align:center; margin-bottom:15px;">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <label>Username</label>
+        <input type="text" name="username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+
+</div>
+
+</body>
+</html>
+{% endblock %}

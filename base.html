@@ -26,7 +26,21 @@
         <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
             City Care
         </a>
-
+        {%if session.get('role')=='admin' %}
+         <a class="nav-link text-warning"
+         href="{{ url_for('admin_dashboard') }}">
+            Admin Panel
+            </a>
+            {% endif %}
+            {% if session.get('user_id') %}
+            <a class="nav-link text-white"
+            href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a class="nav-link text-white login-btn"
+            href="{{ url_for('login')}}">Login</a>
+            <a class="nav-link text-white Register-btn"
+            href="{{ url_for('register')}}">Register</a>
+            {% endif %}
         <!-- Mobile Toggle -->
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
@@ -38,28 +52,29 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
 
-                <li class="nav-item">
+                <li class="nav-item text-white home-btn">
                     <a class="nav-link {% if request.path == '/' %}active{% endif %}"
                        href="{{ url_for('home') }}">
                        Home
                     </a>
                 </li>
+                
 
-                <li class="nav-item">
+                <li class="nav-item text-white about-btn">
                     <a class="nav-link {% if request.path == '/about' %}active{% endif %}"
                        href="{{ url_for('about') }}">
                        About
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item text-white services-btn">
                     <a class="nav-link {% if request.path == '/services' %}active{% endif %}"
                        href="{{ url_for('services') }}">
                        Services
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item text-white contact-btn">
                     <a class="nav-link {% if request.path == '/contact' %}active{% endif %}"
                        href="{{ url_for('contact') }}">
                        Contact
@@ -74,7 +89,7 @@
                 </li>
 
                 <!-- Login / Logout -->
-                <li class="nav-item ms-3">
+               <!--<li class="nav-item ms-3">
                     {% if session.get('user_id') %}
                         <span class="text-white me-2">
                             Welcome {{ session.get('username') }}
@@ -87,7 +102,8 @@
                             Login
                         </a>
                     {% endif %}
-                </li>
+                </li>-->
+
 
             </ul>
         </div>
@@ -104,7 +120,7 @@
 </main>
 
 <!-- ================= FOOTER ================= -->
-<footer class="footer mt-5">
+<footer class="footer custom-footer mt-5">
     <div class="container">
         <div class="row text-center text-md-start">
 

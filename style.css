@@ -84,8 +84,10 @@
 .navbar {
     background:#003366;
     backdrop-filter: blur(8px);
-    padding: 10px 20px;
-    border: none;
+    padding: 6px 15px;
+    border:none;
+    font-weight: 500;
+    
     box-shadow: none;
 }
 
@@ -200,22 +202,38 @@
    FOOTER – COMPACT
    ===================== */
 
-.footer {
+.custom-footer {
     background-color: #0b1c2d;
-    color: #ffffff;
+    color: #f1f1f1;
     padding: 18px 0 10px;
 }
 
-.footer h5 {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 6px;
+.custom-footer h5 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color:#ffffff;
 }
 
-.footer p {
-    font-size: 13px;
-    margin-bottom: 4px;
+.custom-footer p {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color:#cce6ff;
 }
+.custom-footer hr{
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.custom-footer .text-center{
+    color: #99ccff;
+    font-size: 13px;
+}
+/*.footer-bottom{
+    text-align: center;
+    padding-top: 10px;
+    font-size: 14px;
+    color:#cce6ff;
+    letter-spacing:0.5px;
+}*/
 
 .footer-line {
     margin: 8px 0;
@@ -253,15 +271,20 @@
     padding: 70px 20px;
     
 }
+.about-text h2{
+    color:#003366;
+    font-weight: 540;
+}
 
 .about-header h1 {
+    font-weight: 580;
     font-size: 36px;
-    color: #03305f;
+    color: #003366;
 }
 
 .about-header p {
     font-size: 16px;
-    color:#063465;
+    color:#003366;
 }
 
 .about-section {
@@ -269,15 +292,15 @@
 }
 
 .about-section h2 {
-    font-weight:30px;
-    color:#1367ab;
+    font-weight:540;
+    color:#003366;
     margin-bottom: 10px;
 }
 
 .about-section p {
     font-size: 16px;
     line-height: 1.6;
-    color:black;
+    color:#003366;
 }
 
 .about-section ul {
@@ -298,26 +321,28 @@
 }
 .about-flex {
     display: flex;
-    gap:70px;
+    gap:100px;
     flex-wrap: wrap;
+    align-items: center;
 }
 .about-flex > div{
     flex:1;
     min-width: 280px;
+    padding-left: 30px;
 }
 body{
     background-color:#a0f0f0d3 ;
 }
 .about-page .about-image{
-    margin-right: 40px;
+    margin-right: 60px;
 }
 .about-image{
-    width: 350px;
-    height: auto;
+    width:100%;
+    height:300px;
     object-fit: cover;
     border-radius: 25px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    position: relative;
+    border:5px solid white;
 }
 /* ===============================
    Contact Page Styling
@@ -326,14 +351,29 @@ body{
 /* Page Heading */
 .contact-title {
     font-weight: 700;
-    color: #0d6efd;
+    color: #003366;
+}
+.container h2{
+    color:#03305f;
+}
+.container .text-center p{
+    color:#003366;
+    font-weight: 200;
 }
 
 /* Contact Cards */
+.card p strong{
+    color:#03305f;
+}
+.card h4{
+    color:#1367ab;
+    font-weight: 600;
+}
 .contact-card {
     border-radius: 12px;
     transition: 0.3s ease;
 }
+
 
 .contact-card:hover {
     transform: translateY(-5px);
@@ -345,23 +385,31 @@ body{
     border-radius: 8px;
     padding: 10px;
 }
+.form-control:focus{
+    border-color: #0d6efd !important;
+    box-shadow: none;
+}
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-    border-color: green;
+    border-color:#003366;
     box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
 }
 
 /* Submit Button */
-.contact-btn {
+.send-btn{
+    background-color: #1367ab;
+    color: white;
+    padding:10px 20px;
+    border:none;
     border-radius: 8px;
-    font-weight: 500;
-    transition: 0.3s ease;
+    font-weight: 550;
+    cursor:pointer;
+}
+.send-btn:hover{
+    background-color:#0d4f8b ;
 }
 
-.contact-btn:hover {
-    transform: scale(1.02);
-}
 
 /* Emergency Box */
 .emergency-box {
@@ -493,7 +541,7 @@ body {
 /* ===== LOGIN TITLE ===== */
 .login-container h2 {
     margin-bottom: 20px;
-    color: #3c8de3;
+    color: #003366;
 }
 
 /* ===== INPUT FIELDS ===== */
@@ -510,7 +558,7 @@ body {
 .login-container button {
     width: 100%;
     padding: 10px;
-    background-color:rgb(58,189,240);
+    background-color:#003366;
     color: white;
     border: none;
     border-radius: 6px;
@@ -520,7 +568,7 @@ body {
 }
 
 .login-container button:hover {
-    background-color: rgb(58, 189, 240);
+    background-color: rgb(12, 102, 138);
 }
 
 /* ===== OPTIONAL SMALL TEXT ===== */
@@ -528,3 +576,84 @@ body {
     font-size: 14px;
     margin-top: 15px;
 } 
+/* ================= REGISTER PAGE ================= */
+
+.register-container {
+    width: 350px;
+    height: 450px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin: 100px auto;
+}
+
+.register-container h2 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+}
+
+.register-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.register-container input:focus {
+    border-color:#003366;
+    outline: none;
+    box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+}
+
+.register-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #003366;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-container button:hover {
+    background-color:#003366;
+}
+
+.register-container p {
+    text-align: center;
+    margin-top: 15px;
+}
+.register-container {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.login-btn {
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 6px 14px;
+}
+
+.login-btn:hover {
+    background-color: white;
+    color: #003366 !important;
+}
+
+.register-btn {
+    background-color: #007bff;
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: white !important;
+}
+
+.register-btn:hover {
+    background-color: #0056b3;
+}
