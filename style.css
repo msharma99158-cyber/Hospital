@@ -80,6 +80,31 @@
 /* =====================
    NAVBAR – SINGLE LINE
    ===================== */
+/* Navbar Buttons Rounded Style */
+.navbar-nav .nav-link {
+    padding: 10px 25px;
+    border-radius: 25px;   /* Makes them pill/circle shape */
+    margin: 0 5px;
+    color: white !important;
+    background:#003366;  /* Blue default */
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1),-2px -2px 5px rgba(255,255,255,0.6);
+    border:2px solid white;
+}
+
+/* Hover Effect */
+.navbar-nav .nav-link:hover {
+    background: #003366;
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.2),-6px -6px 12px rgba(255,255,255,0.8);
+}
+
+/* Active Page Button */
+.navbar-nav .nav-link.active {
+    background: white !important;  /* White when active */
+    color: #003366 !important;     /* Text blue */
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.1);
+}
 
 .navbar {
     background:#003366;
@@ -97,8 +122,31 @@
     font-weight: bold;
     color: white ;
 }
+/* Emergency Button – Slightly Rounded + Soft Shadow + White Outline */
+.btn-danger {
+    border-radius: 12px;                        /* Slightly rounded corners */
+    padding: 10px 25px;
+    font-weight: 600;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1),    /* soft shadow */
+                -2px -2px 5px rgba(255,255,255,0.6);
+    border: 2px solid white;                    /* white outline for style consistency */
+    transition: all 0.3s ease;
+}
 
-/* Nav links */
+/* Hover Effect */
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.12),
+                -3px -3px 6px rgba(255,255,255,0.7);
+}
+
+/* Click / Active Effect */
+.btn-danger:active {
+    transform: translateY(1px);
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.08); /* pressed look */
+}
+
+/* Nav links 
 .nav-link {
     color: white;
     margin-left: 15px;
@@ -114,7 +162,7 @@
     color:white;
     border-radius:5px;
     padding:6px 12px;
-}
+}*/
 /* =====================
    HOME BACKGROUND
    ===================== */
@@ -526,7 +574,37 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(to right, #8cc1f5, #ffffff);
 }
+.navbar-nav .nav-link,
+.login-btn,
+.Register-btn {
+    padding: 10px 25px;
+    border-radius: 20px;
+    margin:0 5px;
+    background: #003366;
+    color: white!important;
+    border: 2px solid white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1),
+                -2px -2px 5px rgba(255,255,255,0.6);
+    transition: all 0.3s ease;
+}
 
+.navbar-nav .nav-link:hover,
+.login-btn:hover,
+.Register-btn:hover {
+    background:#003366;
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.2),
+                -6px -6px 12px rgba(255,255,255,0.8);
+}
+
+.navbar-nav .nav-link.active,
+.login-btn.active,
+.Register-btn.active {
+    background: white;
+    color: #003366!important;
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.2);
+    border: 2px solid white;
+}
 /* ===== LOGIN CONTAINER ===== */
 .login-container {
     width: 350px;
@@ -635,7 +713,7 @@ body {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.login-btn {
+/*.login-btn {
     background-color: transparent;
     border: 1px solid white;
     border-radius: 20px;

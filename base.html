@@ -33,12 +33,12 @@
             </a>
             {% endif %}
             {% if session.get('user_id') %}
-            <a class="nav-link text-white"
+            <a class="nav-link text-white "
             href="{{ url_for('logout') }}">Logout</a>
             {% else %}
-            <a class="nav-link text-white login-btn"
+            <a class="nav-link text-white login-btn {% if request.path == '/login' %}active{% endif %}"
             href="{{ url_for('login')}}">Login</a>
-            <a class="nav-link text-white Register-btn"
+            <a class="nav-link text-white Register-btn {% if request.path == '/register' %}active{% endif %}"
             href="{{ url_for('register')}}">Register</a>
             {% endif %}
         <!-- Mobile Toggle -->
@@ -87,6 +87,8 @@
                         Emergency
                     </a>
                 </li>
+                
+         
 
                 <!-- Login / Logout -->
                <!--<li class="nav-item ms-3">
