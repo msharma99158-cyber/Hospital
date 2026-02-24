@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emergency Patient Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/emergency.css') }}">
+</head>
+<body>
+
+<!-- 🚨 ALERT BANNER -->
+<div class="alert-banner">
+    🚨 If this is a life-threatening emergency, call 108 immediately!
+</div>
+<div class="emergency-call-section">
+    <a href="tel:108" class="call-btn">
+        📞 Call Emergency 108
+    </a>
+</div>
+
+<div class="main-container">
+
+    <!-- 🏥 PAGE TITLE -->
+    <h1>🚑 City Care Hospital - Emergency Services</h1>
+
+    <!-- 📌 INSTRUCTIONS SECTION -->
+    <div class="instructions">
+        <h3>Emergency Instructions</h3>
+        <ul>
+            <li>Stay calm and provide accurate information.</li>
+            <li>Do not move the injured person unnecessarily.</li>
+            <li>Keep your phone reachable for confirmation call.</li>
+            <li>Provide exact address/location for ambulance.</li>
+        </ul>
+    </div>
+
+    <!-- 📝 EMERGENCY FORM -->
+    <div class="form-container">
+        <h2>Emergency Patient Form</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="success-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+
+            <input type="text" name="patient_name" placeholder="Patient Name" required>
+            <input type="number" name="age" placeholder="Age" required>
+
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+
+            <input type="text" name="contact_number" placeholder="Contact Number" required>
+            <input type="text" name="emergency_type" placeholder="Type of Emergency" required>
+            <textarea name="address" placeholder="Address" required></textarea>
+
+            <select name="emergency_level" required>
+                <option value="">Select Emergency Level</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <select name="ambulance_required" required>
+                <option value="">Ambulance Required?</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <button type="submit" class="submit-btn">Submit Emergency</button>
+        </form>
+    </div>
+
+    <!-- 🩺 SERVICES SECTION -->
+    <div class="services">
+        <h2>Our Emergency Services</h2>
+        <div class="service-cards">
+            <div class="card">
+                🚑<h4>24/7 Ambulance</h4>
+                <p>Fast response ambulance service available anytime.</p>
+            </div>
+
+            <div class="card">
+                🏥<h4>ICU Support</h4>
+                <p>Fully equipped ICU for critical patients.</p>
+            </div>
+
+            <div class="card">
+                🩸<h4>Blood Bank</h4>
+                <p>All major blood groups available.</p>
+            </div>
+
+            <div class="card">
+                👨‍⚕<h4>Expert Doctors</h4>
+                <p>Experienced emergency medical team.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>
+{% endblock %}

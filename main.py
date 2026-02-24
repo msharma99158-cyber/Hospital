@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "hospital_secret_key"
 
@@ -22,12 +22,45 @@ class Patient(db.Model):
     admission_date = db.Column(db.Date, nullable=False)
     days = db.Column(db.Integer, nullable=False)
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
-    role=db.Column(db.String(20), default="user")  # Default role is user
+    role = db.Column(db.String(20), default="user")  # Default role is user
+
+class ContactMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20))
+    subject = db.Column(db.String(200))
+    message = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+class AmbulanceRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_name = db.Column(db.String(100), nullable=False)
+    contact = db.Column(db.String(20), nullable=False)
+    location = db.Column(db.String(200), nullable=False)
+    emergency_type = db.Column(db.String(100), nullable=False)
+    request_time = db.Column(db.DateTime, default=db.func.current_timestamp())
+    status = db.Column(db.String(50), default="Pending")
+
+
+class EmergencyRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_name = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    contact_number = db.Column(db.String(15), nullable=False)
+    emergency_type = db.Column(db.String(200), nullable=False)
+    address = db.Column(db.Text, nullable=False)
+
+    emergency_level = db.Column(db.String(20), nullable=False)
+    ambulance_required = db.Column(db.String(10), nullable=False)
+
+    status = db.Column(db.String(20), default="Pending")
+    request_time = db.Column(db.DateTime, default=datetime.utcnow)
 
 # ---------------- CREATE TABLES + DEFAULT ADMIN ----------------
 
@@ -36,7 +69,7 @@ with app.app_context():
 
     # Create default admin if not exists
     if not User.query.filter_by(username="admin").first():
-        admin = User(username="admin", password=generate_password_hash("123"), role="ADMIN")
+        admin = User(username="admin", password=generate_password_hash("123"), role="admin")
         db.session.add(admin)
         db.session.commit()
 
@@ -46,6 +79,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
+            flash("Please log in first!")
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -56,11 +90,9 @@ def login_required(f):
 def home():
     return render_template('home.html')
 
-
 @app.route('/about')
 def about():
     return render_template('about.html')
-
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -70,16 +102,26 @@ def contact():
         phone = request.form['phone']
         subject = request.form['subject']
         message = request.form['message']
-        print(name, email, phone, subject, message)
-        flash("Your message has been sent successfully")
-        return redirect(url_for('contact'))
-    return render_template('contact.html')
 
+        # Save contact message to database
+        new_message = ContactMessage(
+            name=name,
+            email=email,
+            phone=phone,
+            subject=subject,
+            message=message
+        )
+        db.session.add(new_message)
+        db.session.commit()
+
+        flash("Your message has been sent successfully!")
+        return redirect(url_for('contact'))
+
+    return render_template('contact.html')
 
 @app.route('/services')
 def services():
     return render_template('services.html')
-
 
 # ---------------- BED BOOKING (LOGIN REQUIRED) ----------------
 
@@ -90,8 +132,10 @@ def bedbooking():
         patient_name = request.form['patient_name']
         contact = request.form['contact']
         bed_type = request.form['bed_type']
-        admission_date = request.form['admission_date']
-        days = request.form['days']
+        admission_date_str= request.form['admission_date']
+        admission_date = datetime.strptime(admission_date_str, '%Y-%m-%d').date()
+
+        days = int(request.form['days'])
 
         new_patient = Patient(
             name=patient_name,
@@ -109,23 +153,59 @@ def bedbooking():
 
     return render_template('bedbooking.html')
 
-
 @app.route("/appointment")
 @login_required
 def appointment():
     return render_template("appointment.html")
 
-
-@app.route("/emergency")
+@app.route('/emergency', methods=['GET', 'POST'])
 def emergency():
-    return render_template("emergency.html")
+    if request.method == 'POST':
+        new_request = EmergencyRequest(
+            patient_name=request.form['patient_name'],
+            age=request.form['age'],
+            gender=request.form['gender'],
+            contact_number=request.form['contact_number'],
+            emergency_type=request.form['emergency_type'],
+            address=request.form['address'],
+            emergency_level=request.form['emergency_level'],
+            ambulance_required=request.form['ambulance_required']
+        )
 
+        db.session.add(new_request)
+        db.session.commit()
 
-# ---------------- AMBULANCE ( No LOGIN REQUIRED) ----------------
+        flash("Emergency request submitted successfully!")
+        return redirect(url_for('emergency'))
+
+    return render_template('emergency.html')
+
+# ---------------- AMBULANCE ----------------
 
 @app.route("/ambulance", methods=['GET', 'POST'])
 def ambulance():
+    if request.method == 'POST':
+        patient_name = request.form['patient_name']
+        contact = request.form['contact']
+        location = request.form['location']
+        emergency_type = request.form['emergency_type']
+
+        new_request = AmbulanceRequest(
+            patient_name=patient_name,
+            contact=contact,
+            location=location,
+            emergency_type=emergency_type
+        )
+
+        db.session.add(new_request)
+        db.session.commit()
+
+        flash("Ambulance requested successfully!")
+        return redirect(url_for('ambulance'))
+
     return render_template("ambulance.html")
+
+# ---------------- REGISTER ----------------
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -133,23 +213,20 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        # Check if user already exists
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             flash("Username already exists!")
             return redirect(url_for('register'))
+
         hashed_password = generate_password_hash(password)
-        
-        # Create new user
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Registration successful!")
+        flash("Registration successful! Please log in.","register_success")
         return redirect(url_for('login'))
 
     return render_template("register.html")
-
 
 # ---------------- LOGIN ----------------
 
@@ -160,16 +237,17 @@ def login():
         password = request.form['password']
 
         user = User.query.filter_by(username=username).first()
-       # db.session.add(user)
-       # db.session.commit()
+        if not user:
+            flash("user not found! Please register first.")
+            return redirect(url_for('register'))
 
         if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
             session['username'] = user.username
             session['role'] = user.role
-            if user.role=="admin":
-                return redirect(url_for('admin_dashboard'))
             flash("Logged in successfully!")
+            if user.role == "admin":
+                return redirect(url_for('admin_dashboard'))
             return redirect(url_for('services'))
         else:
             flash("Invalid Username or Password")
@@ -177,28 +255,40 @@ def login():
 
     return render_template("login.html")
 
-@app.route('/admin')
-def admin_dashboard():
-    if "role" not in session or session["role"] != "admin":
-        user =user.query.all()
-        return render_template("admin_dashboard.html", user=user)
-    else:
-        flash("Access denied! Admins only.")
-        return redirect(url_for('login'))
+# ---------------- ADMIN DASHBOARD ----------------
 
+@app.route('/admin')
+@login_required
+def admin_dashboard():
+    if session.get("role") != "admin":
+        flash("Access denied! Admins only.")
+        return redirect(url_for('home'))
+
+    users = User.query.all()
+    return render_template("admin_dashboard.html", users=users)
+
+# ---------------- VIEW CONTACT MESSAGES ----------------
+
+@app.route('/admin/messages')
+@login_required
+def view_messages():
+    if session.get("role") != "admin":
+        flash("Access denied! Admins only.")
+        return redirect(url_for('home'))
+
+    messages = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
+    return render_template("admin_messages.html", messages=messages)
 
 # ---------------- LOGOUT ----------------
 
 @app.route('/logout')
 def logout():
     session.clear()
+    flash("Logged out successfully!")
     return redirect(url_for('home'))
 
-@app.route('/users')
-def users():
-    all_users = User.query.all()
-    return str(all_users)
-   
+
+
 
 # ---------------- RUN APP ----------------
 

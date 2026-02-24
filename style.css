@@ -10,7 +10,7 @@
 
 .hero-text{
     width: 50%;
-    color: white;
+    color: white !important;
 }
 
 .hero-text h1{
@@ -275,13 +275,13 @@
     color: #99ccff;
     font-size: 13px;
 }
-/*.footer-bottom{
+.footer-bottom{
     text-align: center;
     padding-top: 10px;
     font-size: 14px;
     color:#cce6ff;
     letter-spacing:0.5px;
-}*/
+}
 
 .footer-line {
     margin: 8px 0;
@@ -431,7 +431,7 @@ body{
 .contact-form input,
 .contact-form textarea {
     border-radius: 8px;
-    padding: 10px;
+    padding: 40px;
 }
 .form-control:focus{
     border-color: #0d6efd !important;
@@ -508,25 +508,25 @@ body{
                 inset -8px -8px 15px #ffffff;
 }
 .service-heading{
-    color:green;
+    color:#003366;
     font-weight: 700;
     letter-spacing: 1px;
 }
 .service-heading {
-    color:green;
+    color:#003366;
     font-weight: bold;
     letter-spacing: 1px;
 }
 .ambulance-include-heading {
-    color: green;
+    color: #003366;
     font-weight: bold;
 }
 .ambulance-charges-heading {
-    color: green;
+    color: #003366;
     font-weight: bold;
 }
 .request-btn {
-    background-color: #198754;
+    background-color:#003366;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -535,21 +535,21 @@ body{
 }
 
 .request-btn:hover {
-    background-color: #146c43;
+    background-color: #1367ab;
 }
 
 .form-control:focus {
-    border-color: #198754;
+    border-color: #003366;
     box-shadow: 0 0 6px rgba(25, 135, 116, 0.3);
     font-weight: bold;
 }
 .bed-heading {
-    color: green;
+    color: #003366;
     font-weight: 700;
 }
 
 .bed-btn {
-    background-color: #198754;
+    background-color: #0d4f8b;
     color: white;
     padding: 10px 25px;
     border: none;
@@ -559,12 +559,12 @@ body{
 }
 
 .bed-btn:hover {
-    background-color: #146c43;
+    background-color:#0d4f8b;
     transform: scale(1.05);
 }
 
 .bed-charges {
-    color: green;
+    color: #003366;
     font-weight: 700;
 }
 /* ===== GENERAL ===== */
@@ -734,4 +734,145 @@ body {
 
 .register-btn:hover {
     background-color: #0056b3;
+}
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f8fb;
+}
+
+/* 🚨 Alert Banner */
+.alert-banner {
+    background: #d32f2f;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-weight: bold;
+}
+
+/* Main Container */
+.main-container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #1565c0;
+}
+
+/* Instructions */
+.instructions {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.instructions ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* Form Card */
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+    border-color: #1565c0;
+    outline: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    background: #1565c0;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #0d47a1;
+}
+
+/* Success Message */
+.success-message {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Services Section */
+.services {
+    text-align: center;
+}
+
+.service-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.card {
+    background: white;
+    width: 200px;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h4 {
+    margin: 10px 0 5px 0;
+    color: #1565c0;
+}
+
+/* Emergency Call Section */
+.emergency-call-section {
+    text-align: center;
+    margin: 15px 0;
+}
+
+/* Call Button */
+.call-btn {
+    background: #c62828;
+    color: white;
+    padding: 9px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s ease;
+}
+
+/* Hover Effect */
+.call-btn:hover {
+    background: #b71c1c;
+    transform: scale(1.05);
 }
