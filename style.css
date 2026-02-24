@@ -1,4 +1,3 @@
-
 .hero-section{
     display: flex;
     align-items: center;
@@ -65,16 +64,6 @@
         text-align: center;
     }
 }
-
-/*.home-bg
-{
-    background-image: url("../images/OIP.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-}*/
-
 
 
 /* =====================
@@ -392,61 +381,15 @@ body{
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     border:5px solid white;
 }
-/* ===============================
+/*=============================
    Contact Page Styling
 ================================= */
 
-/* Page Heading */
-.contact-title {
-    font-weight: 700;
-    color: #003366;
-}
-.container h2{
-    color:#03305f;
-}
-.container .text-center p{
-    color:#003366;
-    font-weight: 200;
-}
+    
 
-/* Contact Cards */
-.card p strong{
-    color:#03305f;
-}
-.card h4{
-    color:#1367ab;
-    font-weight: 600;
-}
-.contact-card {
-    border-radius: 12px;
-    transition: 0.3s ease;
-}
-
-
-.contact-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Form Styling */
-.contact-form input,
-.contact-form textarea {
-    border-radius: 8px;
-    padding: 40px;
-}
-.form-control:focus{
-    border-color: #0d6efd !important;
-    box-shadow: none;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    border-color:#003366;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
-}
-
-/* Submit Button */
+/* Submit Button 
 .send-btn{
-    background-color: #1367ab;
+    background-color: #003366;
     color: white;
     padding:10px 20px;
     border:none;
@@ -455,7 +398,118 @@ body{
     cursor:pointer;
 }
 .send-btn:hover{
-    background-color:#0d4f8b ;
+    background-color:#003366; 
+}*/
+/* ===== BODY ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #dbeafe, #f0f7ff);
+}
+
+/* ===== HEADER ===== */
+.contact-header {
+    text-align: center;
+    padding: 40px 20px 10px;
+}
+
+.contact-header h1 {
+    font-size: 36px;
+    color: #1f3c88;
+    margin-bottom: 10px;
+}
+
+.contact-header p {
+    color:#003366;
+    font-size: 16px;
+}
+
+/* ===== WRAPPER ===== */
+.contact-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+/* ===== LEFT CARD ===== */
+.info-card {
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.info-card h2 {
+    color: #1f3c88;
+    margin-bottom: 20px;
+}
+
+.info-card p {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ===== RIGHT CARD ===== */
+.form-card {
+    background: white;
+    padding: 30px;
+    width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.form-card h2 {
+    color: #1f3c88;
+    margin-bottom: 20px;
+}
+
+/* ===== FORM INPUTS ===== */
+.form-card input,
+.form-card textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.form-card textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* ===== BUTTON ===== */
+.form-card button {
+    width: 100%;
+    padding: 12px;
+    background-color:#003366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-card button:hover {
+    background-color:#003366;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .contact-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-card {
+        width: 350px;
+    }
 }
 
 
