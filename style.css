@@ -308,6 +308,10 @@
     padding: 70px 20px;
     
 }
+.about-text 
+{
+    margin:20px;
+}
 .about-text h2{
     color:#003366;
     font-weight: 540;
@@ -767,33 +771,6 @@ body {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
-/*.login-btn {
-    background-color: transparent;
-    border: 1px solid white;
-    border-radius: 20px;
-    padding: 6px 14px;
-}
-
-.login-btn:hover {
-    background-color: white;
-    color: #003366 !important;
-}
-
-.register-btn {
-    background-color: #007bff;
-    border-radius: 20px;
-    padding: 6px 14px;
-    color: white !important;
-}
-
-.register-btn:hover {
-    background-color: #0056b3;
-}
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f8fb;
-}
 
 /* 🚨 Alert Banner */
 .alert-banner {
@@ -892,7 +869,7 @@ h1 {
     margin-top: 20px;
 }
 
-.card {
+.service-cards .card {
     background: white;
     width: 200px;
     padding: 15px;
@@ -901,10 +878,52 @@ h1 {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.card h4 {
+.service-card h4 {
     margin: 10px 0 5px 0;
     color: #1565c0;
 }
+/* ============================= */
+/* Ambulance Service Cards Only */
+/* ============================= */
+
+/* ============================= */
+/* Ambulance Service Cards Style */
+/* ============================= */
+
+/* Simple Clean Ambulance Cards */
+.cards-section{
+    margin-bottom: 60px
+}
+
+.ambulance-card {
+    background: #f6f8fb;          /* very soft background */
+    border-radius: 18px;          /* smooth rounded corners */
+    padding: 40px 25px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+    border: none;
+}
+
+.ambulance-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Title */
+.ambulance-card h5 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Description */
+.ambulance-card p {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+}
+
 
 /* Emergency Call Section */
 .emergency-call-section {
@@ -929,4 +948,234 @@ h1 {
 .call-btn:hover {
     background: #b71c1c;
     transform: scale(1.05);
+}
+/* ===============================
+   Appointment Page Custom Styling
+================================ */
+
+/* =========================================
+   City Care Hospital - Appointment Page
+========================================= */
+
+/* Page Spacing */
+.appointment-page {
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+/* =========================================
+   Heading Section
+========================================= */
+
+.appointment-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.appointment-title {
+    font-size: 34px;
+    color: #003366;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   Instruction Box
+========================================= */
+
+.appointment-instruction-box {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.appointment-instruction-box h4 {
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.appointment-instruction-box ul {
+    padding-left: 20px;
+}
+
+.appointment-instruction-box li {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #555;
+}
+
+/* =========================================
+   Form Container
+========================================= */
+
+.appointment-form-container {
+    width: 80%;
+    margin: 40px auto;
+}
+
+/* Card Styling */
+.appointment-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* Section Headings */
+.appointment-section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #003366;
+    border-left: 4px solid #003366;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   Form Fields
+========================================= */
+
+.appointment-label {
+    font-weight: 500;
+    color: #333;
+}
+
+.appointment-input,
+.appointment-select,
+.appointment-textarea {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.appointment-input:focus,
+.appointment-select:focus,
+.appointment-textarea:focus {
+    border-color: #003366;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.2);
+    outline: none;
+}
+
+/* =========================================
+   Doctor Selection
+========================================= */
+
+.doctor-selection-box {
+    background-color: #f1f7ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   Submit Button
+========================================= */
+
+.appointment-btn {
+    background-color:#003366;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.appointment-btn:hover {
+    background-color:#003366;
+    transform: scale(1.05);
+}
+
+/* =========================================
+   Alert Messages
+========================================= */
+
+.appointment-alert {
+    border-radius: 10px;
+    padding: 12px;
+}
+/* =========================================
+   Doctor Cards Section
+========================================= */
+
+.doctor-cards-container {
+    width: 85%;
+    margin: 40px auto;
+}
+
+.doctor-card-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.doctor-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    width: 30%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: 0.3s;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+}
+
+.doctor-card h5 {
+    font-weight: 600;
+    color:#003366;
+    margin-bottom: 10px;
+}
+
+.doctor-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Select Button */
+.doctor-select-btn {
+    margin-top: 10px;
+    background-color:#003366;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.doctor-select-btn:hover {
+    background-color:#003366;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .doctor-card {
+        width: 100%;
+    }
+}
+/* =========================================
+   Responsive Design
+========================================= */
+
+@media (max-width: 768px) {
+    .appointment-instruction-box,
+    .appointment-form-container {
+        width: 95%;
+    }
+
+    .appointment-title {
+        font-size: 26px;
+    }
 }

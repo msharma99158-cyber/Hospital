@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}Appointment Service{% endblock %}
+
+{% block content %}
+
+<!-- ================= PAGE HEADING ================= -->
+<div class="text-center mb-4">
+    <h1 class="appointment-main-title">
+        City Care Hospital-Appointment Service
+    </h1>
+    
+</div>
+
+<!-- ================= INSTRUCTIONS SECTION ================= -->
+<div class="appointment-instruction-box mb-4">
+    <h5 class="appointment-section-title">Instructions</h5>
+    <ul class="appointment-instructions">
+        <li>Please fill all required fields carefully.</li>
+        <li>Select department first to view available doctors.</li>
+        <li>Choose your preferred date and time slot.</li>
+        <li>Carry valid ID proof during hospital visit.</li>
+        <li>For emergency cases, use the Emergency section.</li>
+    </ul>
+</div>
+
+<!-- ================= APPOINTMENT FORM ================= -->
+<div class="appointment-card shadow-lg">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success appointment-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <!-- ===== Patient Details ===== -->
+        <h5 class="appointment-section-title mb-3">Patient Details</h5>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="appointment-label">Full Name</label>
+                <input type="text" name="patient_name"
+                       class="form-control appointment-input" required>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label class="appointment-label">Age</label>
+                <input type="number" name="age"
+                       class="form-control appointment-input" required>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label class="appointment-label">Gender</label>
+                <select name="gender"
+                        class="form-select appointment-select" required>
+                    <option value="">Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </div>
+        </div>
+ 
+        <div class="mb-3">
+            <label class="appointment-label">Contact Number</label>
+            <input type="text" name="contact"
+                   class="form-control appointment-input" required>
+        </div>
+
+        <!-- ===== Doctor Selection ===== -->
+        <h5 class="appointment-section-title mt-4 mb-3">Doctor Selection</h5>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="appointment-label">Department</label>
+                <select name="department"
+                        class="form-select appointment-select"
+                        onchange="this.form.submit()" required>
+
+                    <option value="">Select Department</option>
+
+                    <option value="Cardiology"
+                        {% if selected_department == "Cardiology" %}selected{% endif %}>
+                        Cardiology
+                    </option>
+
+                    <option value="Neurology"
+                        {% if selected_department == "Neurology" %}selected{% endif %}>
+                        Neurology
+                    </option>
+
+                    <option value="Orthopedics"
+                        {% if selected_department == "Orthopedics" %}selected{% endif %}>
+                        Orthopedics
+                    </option>
+
+                    <option value="General Medicine"
+                        {% if selected_department == "General Medicine" %}selected{% endif %}>
+                        General Medicine
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="appointment-label">Doctor</label>
+                <select name="doctor"
+                        class="form-select appointment-select" required>
+                    <option value="">Select Doctor</option>
+                    {% for doc in doctors %}
+                        <option value="{{ doc }}">{{ doc }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- ===== Appointment Details ===== -->
+        <h5 class="appointment-section-title mt-4 mb-3">Appointment Details</h5>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="appointment-label">Appointment Date</label>
+                <input type="date" name="appointment_date"
+                       class="form-control appointment-input" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="appointment-label">Time Slot</label>
+                <select name="time_slot"
+                        class="form-select appointment-select" required>
+                    <option value="">Select Time</option>
+                    <option>9:00 AM</option>
+                    <option>10:00 AM</option>
+                    <option>11:00 AM</option>
+                    <option>12:00 PM</option>
+                    <option>2:00 PM</option>
+                    <option>3:00 PM</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ===== Reason ===== -->
+        <div class="mb-3">
+            <label class="appointment-label">Reason for Visit</label>
+            <textarea name="reason"
+                      class="form-control appointment-input"
+                      rows="3"></textarea>
+        </div>
+
+        <!-- ===== Submit Button ===== -->
+        <div class="text-center mt-4">
+            <button type="submit"
+                    name="book"
+                    value="yes"
+                    class="appointment-btn">
+                Book Appointment
+            </button>
+        </div>
+
+    </form>
+</div>
+<div class="doctor-cards-container">
+
+    <h3 class="appointment-section-title text-center mb-4">
+        Choose Your Doctor
+    </h3>
+
+    <div class="doctor-card-row">
+
+        <!-- Doctor 1 -->
+        <div class="doctor-card">
+            <h5>Dr. Amit Sharma</h5>
+            <p>Cardiologist</p>
+            <p>Time: 10 AM - 2 PM</p>
+            <form method="post">
+                <button type="submit" name="selected_doctor" value="Dr. Amit Sharma" 
+                        class="doctor-select-btn">
+                    Select Doctor
+                </button>
+            </form>
+        </div>
+
+        <!-- Doctor 2 -->
+        <div class="doctor-card">
+            <h5>Dr. Neha Verma</h5>
+            <p>Neurologist</p>
+            <p>Time: 12 PM - 4 PM</p>
+            <form method="post">
+                <button type="submit" name="selected_doctor" value="Dr. Neha Verma" 
+                        class="doctor-select-btn">
+                    Select Doctor
+                </button>
+            </form>
+        </div>
+
+        <!-- Doctor 3 -->
+        <div class="doctor-card">
+            <h5>Dr. Raj Mehta</h5>
+            <p>Orthopedic</p>
+            <p>Time: 9 AM - 1 PM</p>
+            <form method="post">
+                <button type="submit" name="selected_doctor" value="Dr. Raj Mehta" 
+                        class="doctor-select-btn">
+                    Select Doctor
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

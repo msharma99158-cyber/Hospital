@@ -62,6 +62,23 @@ class EmergencyRequest(db.Model):
     status = db.Column(db.String(20), default="Pending")
     request_time = db.Column(db.DateTime, default=datetime.utcnow)
 
+class Appointment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    patient_name = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    contact = db.Column(db.String(20), nullable=False)
+
+    department = db.Column(db.String(100), nullable=False)
+    doctor = db.Column(db.String(100), nullable=False)
+
+    appointment_date = db.Column(db.Date, nullable=False)
+    time_slot = db.Column(db.String(20), nullable=False)
+
+    status = db.Column(db.String(20), default="Pending")
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 # ---------------- CREATE TABLES + DEFAULT ADMIN ----------------
 
 with app.app_context():
@@ -153,10 +170,64 @@ def bedbooking():
 
     return render_template('bedbooking.html')
 
-@app.route("/appointment")
+@app.route("/appointment", methods=["GET", "POST"])
 @login_required
 def appointment():
-    return render_template("appointment.html")
+
+    doctors_data = {
+        "Cardiology": ["Dr. Aman Sharma", "Dr. Neha Kapoor"],
+        "Neurology": ["Dr. Raj Mehta"],
+        "Orthopedics": ["Dr. Simran Gill"],
+        "General Medicine": ["Dr. Arjun Verma"]
+    }
+
+    selected_department = None
+    doctors = []
+
+    if request.method == "POST":
+
+        # If only department selected
+        selected_department = request.form.get("department")
+
+        if selected_department in doctors_data:
+            doctors = doctors_data[selected_department]
+
+        # If final booking submitted
+        if request.form.get("book") == "yes":
+
+            patient_name = request.form["patient_name"]
+            age = request.form["age"]
+            gender = request.form["gender"]
+            contact = request.form["contact"]
+            department = request.form["department"]
+            doctor = request.form["doctor"]
+            date_str = request.form["appointment_date"]
+            time_slot = request.form["time_slot"]
+
+            appointment_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+            new_appointment = Appointment(
+                patient_name=patient_name,
+                age=age,
+                gender=gender,
+                contact=contact,
+                department=department,
+                doctor=doctor,
+                appointment_date=appointment_date,
+                time_slot=time_slot
+            )
+
+            db.session.add(new_appointment)
+            db.session.commit()
+
+            flash("Appointment booked successfully!")
+            return redirect(url_for("appointment"))
+
+    return render_template(
+        "appointment.html",
+        doctors=doctors,
+        selected_department=selected_department
+    )
 
 @app.route('/emergency', methods=['GET', 'POST'])
 def emergency():
