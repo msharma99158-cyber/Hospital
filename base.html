@@ -83,29 +83,12 @@
 
                 <!-- Emergency Button -->
                 <li class="nav-item ms-3">
-                    <a class="btn btn-danger btn-sm" href="#">
+                    <a class="btn btn-danger btn-sm" href="{{ url_for('emergency') }}">
                         Emergency
                     </a>
                 </li>
+
                 
-         
-
-                <!-- Login / Logout -->
-               <!--<li class="nav-item ms-3">
-                    {% if session.get('user_id') %}
-                        <span class="text-white me-2">
-                            Welcome {{ session.get('username') }}
-                        </span>
-                        <a class="btn btn-light btn-sm" href="{{ url_for('logout') }}">
-                            Logout
-                        </a>
-                    {% else %}
-                        <a class="btn btn-light btn-sm" href="{{ url_for('login') }}">
-                            Login
-                        </a>
-                    {% endif %}
-                </li>-->
-
 
             </ul>
         </div>

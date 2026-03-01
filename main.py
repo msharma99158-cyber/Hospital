@@ -49,18 +49,32 @@ class AmbulanceRequest(db.Model):
 
 class EmergencyRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+
+    # Patient Verification
+    patient_id = db.Column(db.String(50), nullable=False)
+
+    # Patient Information
     patient_name = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
+    dob = db.Column(db.Date, nullable=False)
+    blood_group = db.Column(db.String(10), nullable=True)
+    medical_history = db.Column(db.Text, nullable=False)
+
+    # Guardian Information
+    guardian_name = db.Column(db.String(100), nullable=False)
+    relation = db.Column(db.String(50), nullable=False)
     contact_number = db.Column(db.String(15), nullable=False)
-    emergency_type = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     address = db.Column(db.Text, nullable=False)
 
-    emergency_level = db.Column(db.String(20), nullable=False)
-    ambulance_required = db.Column(db.String(10), nullable=False)
+    # Insurance
+    insurance_provider = db.Column(db.String(100), nullable=True)
+    policy_number = db.Column(db.String(100), nullable=True)
+
+    # Reason
+    reason = db.Column(db.String(100), nullable=False)
 
     status = db.Column(db.String(20), default="Pending")
-    request_time = db.Column(db.DateTime, default=datetime.utcnow)
+    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -199,8 +213,8 @@ def appointment():
             age = request.form["age"]
             gender = request.form["gender"]
             contact = request.form["contact"]
-            department = request.form["department"]
-            doctor = request.form["doctor"]
+           # department = request.form["department"]
+           # doctor = request.form["doctor"]
             date_str = request.form["appointment_date"]
             time_slot = request.form["time_slot"]
 
@@ -211,8 +225,8 @@ def appointment():
                 age=age,
                 gender=gender,
                 contact=contact,
-                department=department,
-                doctor=doctor,
+               # department=department,
+               # doctor=doctor,
                 appointment_date=appointment_date,
                 time_slot=time_slot
             )
@@ -228,29 +242,41 @@ def appointment():
         doctors=doctors,
         selected_department=selected_department
     )
+# ---------------- EMERGENCY REQUEST ----------------
 
 @app.route('/emergency', methods=['GET', 'POST'])
 def emergency():
     if request.method == 'POST':
+
+        dob_str = request.form['dob']
+        dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+
         new_request = EmergencyRequest(
+            patient_id=request.form['patient_id'],
             patient_name=request.form['patient_name'],
-            age=request.form['age'],
-            gender=request.form['gender'],
+            dob=dob,
+            blood_group=request.form['blood_group'],
+            medical_history=request.form['medical_history'],
+
+            guardian_name=request.form['guardian_name'],
+            relation=request.form['relation'],
             contact_number=request.form['contact_number'],
-            emergency_type=request.form['emergency_type'],
+            email=request.form['email'],
             address=request.form['address'],
-            emergency_level=request.form['emergency_level'],
-            ambulance_required=request.form['ambulance_required']
+
+            insurance_provider=request.form.get('insurance_provider'),
+            policy_number=request.form.get('policy_number'),
+
+            reason=request.form['reason']
         )
 
         db.session.add(new_request)
         db.session.commit()
 
-        flash("Emergency request submitted successfully!")
+        flash("Patient details submitted successfully!")
         return redirect(url_for('emergency'))
 
     return render_template('emergency.html')
-
 # ---------------- AMBULANCE ----------------
 
 @app.route("/ambulance", methods=['GET', 'POST'])

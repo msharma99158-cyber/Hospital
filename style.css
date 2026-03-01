@@ -73,6 +73,8 @@
 .navbar-nav .nav-link {
     padding: 10px 25px;
     border-radius: 25px;   /* Makes them pill/circle shape */
+    min-width: 100px;
+    text-align: center;
     margin: 0 5px;
     color: white !important;
     background:#003366;  /* Blue default */
@@ -135,73 +137,6 @@
     box-shadow: inset 2px 2px 6px rgba(0,0,0,0.08); /* pressed look */
 }
 
-/* Nav links 
-.nav-link {
-    color: white;
-    margin-left: 15px;
-    font-size: 15px;
-}
-
-.nav-link:hover {
-    color:#007bff;
-}
-
-.nav-link.active{
-    background-color:#09233e ;
-    color:white;
-    border-radius:5px;
-    padding:6px 12px;
-}*/
-/* =====================
-   HOME BACKGROUND
-   ===================== */
-/* 
-.home-bg {
-    background-image: url("{{ url_for('static', filename='images/OIP.webp') }}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    position: relative;
-} */
-
-
-
-/* =====================
-   HERO SECTION
-   ===================== */
-
-/*.hero-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 60px 80px;
-    background:none;
-    min-height: 75vh;
-    color: #ffffff;
-}
-
-.hero-text {
-    max-width: 650px;
-}
-
-.hero-text h1 {
-    font-size: 48px;
-    font-weight: bold;
-    line-height: 1.2;
-}
-
-.hero-text h1 span {
-    color: rgb(51, 174, 222);
-}
-
-.tagline {
-    font-size: 14px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    opacity: 0.9;
-}*/
 
 /* =====================
    HERO BUTTONS
