@@ -23,6 +23,7 @@
         <h3>Instructions for Family Members</h3>
         <ul>
             <li>Use the Patient ID provided by hospital staff.</li>
+            <li>If patient name is unknown, leave it blank.</li>
             <li>Provide accurate medical information.</li>
             <li>All details will be verified before approval.</li>
             <li>Your information is secure and confidential.</li>
@@ -43,13 +44,18 @@
 
         <form method="POST" enctype="multipart/form-data">
 
-            <!-- Patient Verification -->
-            <input type="text" name="patient_id" placeholder="Patient ID" required>
+            <!-- 🔐 Patient Verification -->
+            <h3>Patient Verification</h3>
+            <input type="text" name="patient_id" placeholder="Enter Patient ID Provided by Hospital" required>
 
-            <!-- Patient Information -->
-            <input type="text" name="patient_name" placeholder="Patient Full Name" required>
+            <!-- 👤 Patient Information -->
+            <h3>Patient Information</h3>
 
-             <select name="blood_group" required>
+            <!-- Optional Name -->
+            <input type="text" name="patient_name" placeholder="Patient Full Name (If Known)">
+            <input type="date" name="dob" required>
+
+            <select name="blood_group" required>
                 <option value="">Blood Group</option>
                 <option>A+</option>
                 <option>A-</option>
@@ -62,11 +68,11 @@
                 <option>Other</option>
             </select>
 
-           
-
             <textarea name="medical_history" placeholder="Medical History / Allergies" required></textarea>
 
-            <!-- Guardian Information -->
+            <!-- 👨‍👩‍👧 Guardian Information -->
+            <h3>Guardian Information</h3>
+
             <div class="two-fields">
                 <input type="text" name="guardian_name" placeholder="Guardian Name" required>
                 <input type="text" name="relation" placeholder="Relation with Patient" required>
@@ -79,7 +85,9 @@
 
             <textarea name="address" placeholder="Permanent Address" required></textarea>
 
-            <!-- Insurance -->
+            <!-- 🏥 Insurance Details -->
+            <h3>Insurance Details (Optional)</h3>
+
             <div class="two-fields">
                 <input type="text" name="insurance_provider" placeholder="Insurance Provider">
                 <input type="text" name="policy_number" placeholder="Policy Number">
@@ -87,7 +95,7 @@
 
             <input type="file" name="insurance_file">
 
-            <!-- Reason -->
+            <!-- 📍 Reason -->
             <select name="reason" required>
                 <option value="">Reason for Remote Submission</option>
                 <option>Out of City</option>
@@ -96,6 +104,12 @@
                 <option>Work Commitment</option>
                 <option>Other</option>
             </select>
+
+            <!-- ✅ Declaration -->
+            <div class="declaration">
+                <input type="checkbox" name="declaration" required>
+                I confirm that I am a family member or authorized person and the above information is true.
+            </div>
 
             <button type="submit" class="submit-btn">
                 Submit Patient Details

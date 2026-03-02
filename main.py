@@ -282,15 +282,16 @@ def emergency():
 @app.route("/ambulance", methods=['GET', 'POST'])
 def ambulance():
     if request.method == 'POST':
-        patient_name = request.form['patient_name']
-        contact = request.form['contact']
-        location = request.form['location']
-        emergency_type = request.form['emergency_type']
+
+        patient_name = request.form.get('patient_name')
+        contact_number = request.form.get('contact_number')  # Make sure HTML name matches this
+        pickup_location = request.form.get('pickup_location')
+        emergency_type = request.form.get('emergency_type')
 
         new_request = AmbulanceRequest(
             patient_name=patient_name,
-            contact=contact,
-            location=location,
+            contact=contact_number,
+            location=pickup_location,
             emergency_type=emergency_type
         )
 
