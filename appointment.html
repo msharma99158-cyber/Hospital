@@ -74,52 +74,9 @@
                    class="form-control appointment-input" required>
         </div>
 
-        <!-- ===== Doctor Selection ===== -->
-        <h5 class="appointment-section-title mt-4 mb-3">Doctor Selection</h5>
-        <hr>
+        
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="appointment-label">Department</label>
-                <select name="department"
-                        class="form-select appointment-select"
-                        onchange="this.form.submit()" required>
-
-                    <option value="">Select Department</option>
-
-                    <option value="Cardiology"
-                        {% if selected_department == "Cardiology" %}selected{% endif %}>
-                        Cardiology
-                    </option>
-
-                    <option value="Neurology"
-                        {% if selected_department == "Neurology" %}selected{% endif %}>
-                        Neurology
-                    </option>
-
-                    <option value="Orthopedics"
-                        {% if selected_department == "Orthopedics" %}selected{% endif %}>
-                        Orthopedics
-                    </option>
-
-                    <option value="General Medicine"
-                        {% if selected_department == "General Medicine" %}selected{% endif %}>
-                        General Medicine
-                    </option>
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="appointment-label">Doctor</label>
-                <select name="doctor"
-                        class="form-select appointment-select" required>
-                    <option value="">Select Doctor</option>
-                    {% for doc in doctors %}
-                        <option value="{{ doc }}">{{ doc }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
+                    
 
         <!-- ===== Appointment Details ===== -->
         <h5 class="appointment-section-title mt-4 mb-3">Appointment Details</h5>
@@ -167,52 +124,8 @@
 
     </form>
 </div>
-<div class="doctor-cards-container">
 
-    <h3 class="appointment-section-title text-center mb-4">
-        Choose Your Doctor
-    </h3>
-
-    <div class="doctor-card-row">
-
-        <!-- Doctor 1 -->
-        <div class="doctor-card">
-            <h5>Dr. Amit Sharma</h5>
-            <p>Cardiologist</p>
-            <p>Time: 10 AM - 2 PM</p>
-            <form method="post">
-                <button type="submit" name="selected_doctor" value="Dr. Amit Sharma" 
-                        class="doctor-select-btn">
-                    Select Doctor
-                </button>
-            </form>
-        </div>
-
-        <!-- Doctor 2 -->
-        <div class="doctor-card">
-            <h5>Dr. Neha Verma</h5>
-            <p>Neurologist</p>
-            <p>Time: 12 PM - 4 PM</p>
-            <form method="post">
-                <button type="submit" name="selected_doctor" value="Dr. Neha Verma" 
-                        class="doctor-select-btn">
-                    Select Doctor
-                </button>
-            </form>
-        </div>
-
-        <!-- Doctor 3 -->
-        <div class="doctor-card">
-            <h5>Dr. Raj Mehta</h5>
-            <p>Orthopedic</p>
-            <p>Time: 9 AM - 1 PM</p>
-            <form method="post">
-                <button type="submit" name="selected_doctor" value="Dr. Raj Mehta" 
-                        class="doctor-select-btn">
-                    Select Doctor
-                </button>
-            </form>
-        </div>
+         
 
     </div>
 </div>

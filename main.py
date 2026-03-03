@@ -84,8 +84,8 @@ class Appointment(db.Model):
     gender = db.Column(db.String(10), nullable=False)
     contact = db.Column(db.String(20), nullable=False)
 
-    department = db.Column(db.String(100), nullable=False)
-    doctor = db.Column(db.String(100), nullable=False)
+   # department = db.Column(db.String(100), nullable=False)
+   # doctor = db.Column(db.String(100), nullable=False)
 
     appointment_date = db.Column(db.Date, nullable=False)
     time_slot = db.Column(db.String(20), nullable=False)
@@ -188,35 +188,21 @@ def bedbooking():
 @login_required
 def appointment():
 
-    doctors_data = {
-        "Cardiology": ["Dr. Aman Sharma", "Dr. Neha Kapoor"],
-        "Neurology": ["Dr. Raj Mehta"],
-        "Orthopedics": ["Dr. Simran Gill"],
-        "General Medicine": ["Dr. Arjun Verma"]
-    }
-
-    selected_department = None
-    doctors = []
+   
 
     if request.method == "POST":
 
-        # If only department selected
-        selected_department = request.form.get("department")
-
-        if selected_department in doctors_data:
-            doctors = doctors_data[selected_department]
-
+        
         # If final booking submitted
         if request.form.get("book") == "yes":
 
-            patient_name = request.form["patient_name"]
-            age = request.form["age"]
-            gender = request.form["gender"]
-            contact = request.form["contact"]
-           # department = request.form["department"]
-           # doctor = request.form["doctor"]
-            date_str = request.form["appointment_date"]
-            time_slot = request.form["time_slot"]
+            patient_name = request.form.get("patient_name")
+            age = request.form.get("age")
+            gender = request.form.get("gender")
+            contact = request.form.get("contact")
+           
+            date_str = request.form.get("appointment_date")
+            time_slot = request.form.get("time_slot")
 
             appointment_date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
@@ -225,8 +211,7 @@ def appointment():
                 age=age,
                 gender=gender,
                 contact=contact,
-               # department=department,
-               # doctor=doctor,
+               
                 appointment_date=appointment_date,
                 time_slot=time_slot
             )
@@ -235,13 +220,11 @@ def appointment():
             db.session.commit()
 
             flash("Appointment booked successfully!")
-            return redirect(url_for("appointment"))
+            return redirect('/appointment')
 
     return render_template(
-        "appointment.html",
-        doctors=doctors,
-        selected_department=selected_department
-    )
+        'appointment.html')
+       
 # ---------------- EMERGENCY REQUEST ----------------
 
 @app.route('/emergency', methods=['GET', 'POST'])
