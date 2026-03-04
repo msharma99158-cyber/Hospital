@@ -355,6 +355,8 @@ def login():
 
 # ---------------- ADMIN DASHBOARD ----------------
 
+# ---------------- ADMIN DASHBOARD ----------------
+
 @app.route('/admin')
 @login_required
 def admin_dashboard():
@@ -362,26 +364,40 @@ def admin_dashboard():
         flash("Access denied! Admins only.")
         return redirect(url_for('home'))
 
+    # 🏥 Hospital Capacity (Change if needed)
+    TOTAL_BEDS = 50  
+
+    # 📊 Dashboard Statistics
+    total_users = User.query.count()
+    total_bed_bookings = Patient.query.count()
+    available_beds = TOTAL_BEDS - total_bed_bookings
+
+    total_appointments = Appointment.query.count()
+    total_emergencies = EmergencyRequest.query.count()
+    total_ambulances = AmbulanceRequest.query.count()
+
+    total_support = Support.query.count()
+    total_support_amount = db.session.query(db.func.sum(Support.amount)).scalar() or 0
+
+    # 👥 Users list
     users = User.query.all()
-    support_data= Support.query.order_by(Support.created_at.desc()).all()
-    
-    return render_template("admin_dashboard.html", users=users, support_data=support_data)
 
-@app.route('/promote/<int:user_id>')
-@login_required
-def promote_user(user_id):
-    if session.get("role") != "admin":
-        flash("Access denied! Admins only.")
-        return redirect(url_for('home'))
+    # 💛 Support donations list
+    support_data = Support.query.order_by(Support.created_at.desc()).all()
 
-    user = User.query.get_or_404(user_id)
-
-    if user.role != "admin":
-        user.role = "admin"
-        db.session.commit()
-        flash(f"{user.username} is now an Admin!")
-
-    return redirect(url_for('admin_dashboard'))
+    return render_template(
+        "admin_dashboard.html",
+        total_users=total_users,
+        total_bed_bookings=total_bed_bookings,
+        available_beds=available_beds,
+        total_appointments=total_appointments,
+        total_emergencies=total_emergencies,
+        total_ambulances=total_ambulances,
+        total_support=total_support,
+        total_support_amount=total_support_amount,
+        users=users,
+        support_data=support_data
+    )
 
 # ---------------- VIEW CONTACT MESSAGES ----------------
 
