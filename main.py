@@ -100,9 +100,9 @@ class Support(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Integer, nullable=False)
+    payment_method = db.Column(db.String(50))   # ✅ ADD THIS
     message = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
 # ---------------- CREATE TABLES + DEFAULT ADMIN ----------------
 
 with app.app_context():
@@ -412,18 +412,20 @@ def support():
         email = request.form.get("email")
         amount = request.form.get("amount")
         message = request.form.get("message")
+        payment_method = request.form.get("payment_method")
 
         new_support = Support(
             name=name,
             email=email,
             amount=amount,
+            payment_method=payment_method,
             message=message
         )
 
         db.session.add(new_support)
         db.session.commit()
 
-        flash("Thank you for supporting us ❤️")
+        flash("Thank you for supporting us ❤️","form_success")
         return redirect(url_for("support"))
 
     return render_template("support.html")

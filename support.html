@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h3 class="text-center mb-4">💛 Support Our Hospital</h3>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "form_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Amount (₹)</label>
+                <input type="number" name="amount" class="form-control" required>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-3">
+                <label><strong>Select Payment Method</strong></label><br>
+
+                <input type="radio" name="payment_method" value="Online" onclick="showOnline()" required>
+                Online Payment 💳 <br>
+
+                <input type="radio" name="payment_method" value="Cash" onclick="showCash()">
+                Cash Donation 💵
+            </div>
+
+            <!-- Online Section -->
+            <div id="onlineSection" style="display:none; text-align:center;">
+
+                <div class="alert alert-info">
+                    Scan QR Code to Pay via UPI 💳
+                </div>
+
+                <!-- QR Image -->
+                <img src="{{ url_for('static', filename='images/gpay.jpg') }}" 
+                     width="220"
+                     class="mb-3 border p-2 rounded shadow">
+
+                <p><strong>UPI ID:</strong> citycare@upi</p>
+
+                <p class="text-success fw-bold">
+                    After payment, please upload screenshot for verification.
+                </p>
+
+                <div class="mb-3">
+                    <label>Upload Payment Screenshot</label>
+                    <input type="file" name="screenshot" class="form-control">
+                </div>
+
+            </div>
+
+            <!-- Cash Section -->
+            <div id="cashSection" style="display:none;">
+                <div class="alert alert-warning">
+                    Please visit hospital reception to donate cash.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label>Message</label>
+                <textarea name="message" class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">
+                Donate Now
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+function showOnline() {
+    document.getElementById("onlineSection").style.display = "block";
+    document.getElementById("cashSection").style.display = "none";
+}
+
+function showCash() {
+    document.getElementById("cashSection").style.display = "block";
+    document.getElementById("onlineSection").style.display = "none";
+}
+</script>
+
+{% endblock %}
