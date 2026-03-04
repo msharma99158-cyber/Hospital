@@ -19,10 +19,21 @@
         </a>
     </div>
 
-    <!-- Service Information + Fees -->
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "form_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+    <!-- Service Information -->
     <div class="alert alert-info mb-4">
 
-        <h5 class="ambulance-include-heading">🚑 Our Ambulance Service Includes:</h5>
+        <h5>🚑 Our Ambulance Service Includes:</h5>
         <ul>
             <li>24×7 Emergency Response</li>
             <li>Trained Medical Staff</li>
@@ -32,7 +43,7 @@
 
         <hr>
 
-        <h6 class="ambulance-charges-heading">💰 Ambulance Charges:</h6>
+        <h6>💰 Ambulance Charges:</h6>
         <p class="mb-1">Basic Ambulance: ₹800 (Within City)</p>
         <p class="mb-1">Advanced Life Support (ALS): ₹1500</p>
         <p class="mb-0">Extra Charges: ₹20 per km (Outside City)</p>
@@ -46,22 +57,26 @@
 
             <div class="mb-3">
                 <label class="form-label">Patient Name</label>
-                <input type="text" class="form-control" placeholder="Enter patient name" required>
+                <input type="text" name="patient_name" class="form-control"
+                       placeholder="Enter patient name" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Contact Number</label>
-                <input type="tel" class="form-control" placeholder="Enter contact number" required>
+                <input type="tel" name="contact_number" class="form-control"
+                       placeholder="Enter contact number" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Pickup Location</label>
-                <textarea class="form-control" rows="3" placeholder="Enter full address" required></textarea>
+                <textarea name="pickup_location" class="form-control"
+                          rows="3" placeholder="Enter full address" required></textarea>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Emergency Type</label>
-                <select class="form-select">
+                <select name="emergency_type" class="form-select" required>
+                    <option value="">Select Emergency Type</option>
                     <option>Accident</option>
                     <option>Heart Problem</option>
                     <option>Pregnancy</option>
@@ -77,6 +92,43 @@
 
         </form>
 
+    </div>
+
+    <!-- 🩺 SERVICES SECTION -->
+    <div class="mt-5">
+        <h2 class="text-center mb-4">Our Ambulance Services</h2>
+
+        <div class="row text-center">
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🚑 24/7 Ambulance</h4>
+                    <p>Fast response ambulance service available anytime.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🏥 ICU Support</h4>
+                    <p>Fully equipped ICU for critical patients.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🩸 Blood Bank</h4>
+                    <p>All major blood groups available.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>👨‍⚕ Expert Doctors</h4>
+                    <p>Experienced emergency medical team.</p>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </section>

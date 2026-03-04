@@ -2,12 +2,14 @@
 {% block content %}
 
 <div class="container mt-5">
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success text-center">
-                {{ message }}
-            </div>
+        {% for category, message in messages %}
+            {% if "bed" in category %}
+                <div class="alert alert-success text-center">
+                    {{ message }}
+                </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endwith %}

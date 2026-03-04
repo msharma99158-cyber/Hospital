@@ -1,3 +1,5 @@
+from dbm import sqlite3
+
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
@@ -93,6 +95,14 @@ class Appointment(db.Model):
     status = db.Column(db.String(20), default="Pending")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+class Support(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    message = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 # ---------------- CREATE TABLES + DEFAULT ADMIN ----------------
 
 with app.app_context():
@@ -110,7 +120,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
-            flash("Please log in first!")
+            flash("Please log in first!", "login_error")
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -179,7 +189,7 @@ def bedbooking():
         db.session.add(new_patient)
         db.session.commit()
 
-        flash("Bed booked successfully!")
+        flash("Bed booked successfully!","form_success")
         return redirect(url_for('bedbooking'))
 
     return render_template('bedbooking.html')
@@ -219,7 +229,7 @@ def appointment():
             db.session.add(new_appointment)
             db.session.commit()
 
-            flash("Appointment booked successfully!")
+            flash("Appointment booked successfully!","form_success")
             return redirect('/appointment')
 
     return render_template(
@@ -256,7 +266,7 @@ def emergency():
         db.session.add(new_request)
         db.session.commit()
 
-        flash("Patient details submitted successfully!")
+        flash("Patient details submitted successfully!","form_success")
         return redirect(url_for('emergency'))
 
     return render_template('emergency.html')
@@ -281,7 +291,7 @@ def ambulance():
         db.session.add(new_request)
         db.session.commit()
 
-        flash("Ambulance requested successfully!")
+        flash("Ambulance requested successfully!","form_success")
         return redirect(url_for('ambulance'))
 
     return render_template("ambulance.html")
@@ -318,20 +328,27 @@ def login():
         password = request.form['password']
 
         user = User.query.filter_by(username=username).first()
-        if not user:
-            flash("user not found! Please register first.")
-            return redirect(url_for('register'))
 
-        if user and check_password_hash(user.password, password):
+        # ❌ User Not Found
+        if not user:
+            flash("User not found! Please register first.", "login_error")
+            return redirect(url_for('home'))
+
+        # ✅ Correct Password
+        if check_password_hash(user.password, password):
             session['user_id'] = user.id
             session['username'] = user.username
             session['role'] = user.role
-            flash("Logged in successfully!")
+
+            flash("Logged in successfully!", "login_success")
+
             if user.role == "admin":
                 return redirect(url_for('admin_dashboard'))
-            return redirect(url_for('services'))
+            return redirect(url_for('home'))
+
+        # ❌ Wrong Password
         else:
-            flash("Invalid Username or Password")
+            flash("Invalid Username or Password", "login_error")
             return redirect(url_for('login'))
 
     return render_template("login.html")
@@ -346,7 +363,25 @@ def admin_dashboard():
         return redirect(url_for('home'))
 
     users = User.query.all()
-    return render_template("admin_dashboard.html", users=users)
+    support_data= Support.query.order_by(Support.created_at.desc()).all()
+    
+    return render_template("admin_dashboard.html", users=users, support_data=support_data)
+
+@app.route('/promote/<int:user_id>')
+@login_required
+def promote_user(user_id):
+    if session.get("role") != "admin":
+        flash("Access denied! Admins only.")
+        return redirect(url_for('home'))
+
+    user = User.query.get_or_404(user_id)
+
+    if user.role != "admin":
+        user.role = "admin"
+        db.session.commit()
+        flash(f"{user.username} is now an Admin!")
+
+    return redirect(url_for('admin_dashboard'))
 
 # ---------------- VIEW CONTACT MESSAGES ----------------
 
@@ -368,8 +403,30 @@ def logout():
     flash("Logged out successfully!")
     return redirect(url_for('home'))
 
+@app.route("/support", methods=["GET", "POST"])
+@login_required
+def support():
 
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        amount = request.form.get("amount")
+        message = request.form.get("message")
 
+        new_support = Support(
+            name=name,
+            email=email,
+            amount=amount,
+            message=message
+        )
+
+        db.session.add(new_support)
+        db.session.commit()
+
+        flash("Thank you for supporting us ❤️")
+        return redirect(url_for("support"))
+
+    return render_template("support.html")
 
 # ---------------- RUN APP ----------------
 
