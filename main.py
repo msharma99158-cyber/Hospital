@@ -353,7 +353,6 @@ def login():
 
     return render_template("login.html")
 
-# ---------------- ADMIN DASHBOARD ----------------
 
 # ---------------- ADMIN DASHBOARD ----------------
 
@@ -398,6 +397,27 @@ def admin_dashboard():
         users=users,
         support_data=support_data
     )
+
+# ---------------- PROMOTE USER ----------------
+
+@app.route("/promote_user/<int:user_id>")
+@login_required
+def promote_user(user_id):
+
+    # Only admin can promote users
+    if session.get("role") != "admin":
+        flash("Access denied! Admins only.")
+        return redirect(url_for("home"))
+
+    # Get the user from database
+    user = User.query.get(user_id)
+
+    if user:
+        user.role = "admin"
+        db.session.commit()
+        flash("User promoted to Admin successfully!")
+
+    return redirect(url_for("admin_dashboard"))
 
 # ---------------- VIEW CONTACT MESSAGES ----------------
 
