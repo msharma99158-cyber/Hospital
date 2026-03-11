@@ -5,10 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import json
 app = Flask(__name__)
-app.secret_key = "hospital_secret_key"
+
 
 # ---------------- DATABASE CONFIG ----------------
+with open("config.json") as config_file:
+    config = json.load(config_file)
+app.config["SECRET_KEY"] = config["SECRET_KEY"]
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hospital.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -332,7 +336,7 @@ def login():
         # ❌ User Not Found
         if not user:
             flash("User not found! Please register first.", "login_error")
-            return redirect(url_for('home'))
+            return redirect(url_for('register'))
 
         # ✅ Correct Password
         if check_password_hash(user.password, password):
