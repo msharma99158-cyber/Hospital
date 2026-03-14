@@ -257,8 +257,10 @@
                     {% elif b.status == "Admitted" %} 
                          <span class="badge bg-primary">Admitted</span>
  
-                        {% else %}
+                        {% elif b.status=="Discharged" %}
                         <span class="badge bg-success">Discharged</span>
+                        {% else %}
+                        <span class="badge bg-success">Unknown</span>
                     {% endif %}
                     </td>
 
@@ -275,13 +277,16 @@
                 class="btn btn-sm btn-danger">
                 Discharge
                 </a>
-
-               {% else %}
+                {% elif b.status == "Discharged" %}
                 <span class="text-success">Completed</span>
+                {% endif %}
 
-               {% endif %}
+               
+
+            
 
                  </td>
+                 </tr>
 
                 {% endfor %}
 

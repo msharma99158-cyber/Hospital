@@ -373,9 +373,7 @@ def admin_dashboard():
 
     # 🏥 Hospital Capacity
     TOTAL_BEDS = 50
-    Patient.query.update({Patient.status: "Reserved"})
-    db.session.commit()
-
+    
     # 📊 Dashboard Statistics
     total_users = User.query.count()
     total_bed_bookings = Patient.query.count()
@@ -456,34 +454,34 @@ def accept_ambulance(id):
 @app.route('/admit_patient/<int:id>')
 @login_required
 def admit_patient(id):
+
     if session.get("role") != "admin":
         flash("Access denied!")
         return redirect(url_for('home'))
 
     patient = Patient.query.get_or_404(id)
 
-    patient.status = "Admitted"
-
-    db.session.commit()
-
-    flash("Patient admitted successfully")
+    if patient.status == "Reserved":
+        patient.status = "Admitted"
+        db.session.commit()
+        flash("Patient admitted successfully!")
 
     return redirect(url_for('admin_dashboard')) 
 
 @app.route('/discharge_patient/<int:id>')
 @login_required
 def discharge_patient(id):
+
     if session.get("role") != "admin":
         flash("Access denied!")
         return redirect(url_for('home'))
 
     patient = Patient.query.get_or_404(id)
 
-    patient.status = "Discharged"
-
-    db.session.commit()
-
-    flash("Patient Disharged")
+    if patient.status == "Admitted":
+        patient.status = "Discharged"
+        db.session.commit()
+        flash("Patient discharged successfully!")
 
     return redirect(url_for('admin_dashboard'))
 
