@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 app = Flask(__name__)
 
@@ -22,12 +22,13 @@ db = SQLAlchemy(app)
 
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    patient_name = db.Column(db.String(100), nullable=False)
     contact = db.Column(db.String(20), nullable=False)
     bed_type = db.Column(db.String(50), nullable=False)
+    emergency_type = db.Column(db.String(100), nullable=False)
     admission_date = db.Column(db.Date, nullable=False)
-    days = db.Column(db.Integer, nullable=False)
-
+    status = db.Column(db.String(20), default="Reserved")
+   
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
@@ -46,8 +47,8 @@ class ContactMessage(db.Model):
 class AmbulanceRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_name = db.Column(db.String(100), nullable=False)
-    contact = db.Column(db.String(20), nullable=False)
-    location = db.Column(db.String(200), nullable=False)
+    contact_number = db.Column(db.String(20), nullable=False)
+    pickup_location = db.Column(db.String(200), nullable=False)
     emergency_type = db.Column(db.String(100), nullable=False)
     request_time = db.Column(db.DateTime, default=db.func.current_timestamp())
     status = db.Column(db.String(50), default="Pending")
@@ -175,19 +176,21 @@ def services():
 def bedbooking():
     if request.method == 'POST':
         patient_name = request.form['patient_name']
-        contact = request.form['contact']
+        contact_number = request.form['contact_number']
         bed_type = request.form['bed_type']
         admission_date_str= request.form['admission_date']
+        emergency_type = request.form['emergency_type']
         admission_date = datetime.strptime(admission_date_str, '%Y-%m-%d').date()
 
-        days = int(request.form['days'])
+        
 
         new_patient = Patient(
-            name=patient_name,
-            contact=contact,
+            patient_name=patient_name,
+            contact=contact_number,
             bed_type=bed_type,
             admission_date=admission_date,
-            days=days
+            emergency_type=emergency_type,
+            status="Reserved"
         )
 
         db.session.add(new_patient)
@@ -287,8 +290,8 @@ def ambulance():
 
         new_request = AmbulanceRequest(
             patient_name=patient_name,
-            contact=contact_number,
-            location=pickup_location,
+            contact_number=contact_number,
+            pickup_location=pickup_location,
             emergency_type=emergency_type
         )
 
@@ -363,18 +366,19 @@ def login():
 @app.route('/admin')
 @login_required
 def admin_dashboard():
+
     if session.get("role") != "admin":
         flash("Access denied! Admins only.")
         return redirect(url_for('home'))
 
-    # 🏥 Hospital Capacity (Change if needed)
-    TOTAL_BEDS = 50  
+    # 🏥 Hospital Capacity
+    TOTAL_BEDS = 50
+    Patient.query.update({Patient.status: "Reserved"})
+    db.session.commit()
 
     # 📊 Dashboard Statistics
     total_users = User.query.count()
     total_bed_bookings = Patient.query.count()
-    available_beds = TOTAL_BEDS - total_bed_bookings
-
     total_appointments = Appointment.query.count()
     total_emergencies = EmergencyRequest.query.count()
     total_ambulances = AmbulanceRequest.query.count()
@@ -385,8 +389,18 @@ def admin_dashboard():
     # 👥 Users list
     users = User.query.all()
 
-    # 💛 Support donations list
-    support_data = Support.query.order_by(Support.created_at.desc()).all()
+    # 💛 Support donations
+    support_data = Support.query.order_by(Support.created_at.asc()).all()
+
+    # 🚑 Ambulance requests
+    ambulance_requests = AmbulanceRequest.query.order_by(AmbulanceRequest.id.asc()).all()
+
+    # 🛏 Bed bookings
+    bed_bookings = Patient.query.order_by(Patient.id.asc()).all()
+
+    # 🛏 Calculate Available Beds
+    admitted_patients = Patient.query.filter_by(status="Admitted").count()
+    available_beds = TOTAL_BEDS - admitted_patients
 
     return render_template(
         "admin_dashboard.html",
@@ -399,7 +413,9 @@ def admin_dashboard():
         total_support=total_support,
         total_support_amount=total_support_amount,
         users=users,
-        support_data=support_data
+        support_data=support_data,
+        ambulance_requests=ambulance_requests,
+        bed_bookings=bed_bookings
     )
 
 # ---------------- PROMOTE USER ----------------
@@ -422,6 +438,57 @@ def promote_user(user_id):
         flash("User promoted to Admin successfully!")
 
     return redirect(url_for("admin_dashboard"))
+
+@app.route('/accept_ambulance/<int:id>')
+@login_required
+def accept_ambulance(id):
+
+    ambulance = AmbulanceRequest.query.get_or_404(id)
+
+    ambulance.status = "Accepted"
+
+    db.session.commit()
+
+    flash("Ambulance request accepted!")
+
+    return redirect(url_for('admin_dashboard')) 
+
+@app.route('/admit_patient/<int:id>')
+@login_required
+def admit_patient(id):
+    if session.get("role") != "admin":
+        flash("Access denied!")
+        return redirect(url_for('home'))
+
+    patient = Patient.query.get_or_404(id)
+
+    patient.status = "Admitted"
+
+    db.session.commit()
+
+    flash("Patient admitted successfully")
+
+    return redirect(url_for('admin_dashboard')) 
+
+@app.route('/discharge_patient/<int:id>')
+@login_required
+def discharge_patient(id):
+    if session.get("role") != "admin":
+        flash("Access denied!")
+        return redirect(url_for('home'))
+
+    patient = Patient.query.get_or_404(id)
+
+    patient.status = "Discharged"
+
+    db.session.commit()
+
+    flash("Patient Disharged")
+
+    return redirect(url_for('admin_dashboard'))
+
+  
+
 
 # ---------------- VIEW CONTACT MESSAGES ----------------
 

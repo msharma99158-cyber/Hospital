@@ -1,32 +1,70 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Bed-Booking Service - City Care Hospital{% endblock %}
+
 {% block content %}
 
-<div class="container mt-5">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            {% if "bed" in category %}
-                <div class="alert alert-success text-center">
-                    {{ message }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-    <div class="card p-4 shadow">
+<section class="container mt-5">
 
-        <h3 class="text-center bed-heading mb-4">🛏 Bed Booking Form</h3>
+    <!-- Page Heading -->
+    <div class="text-center mb-4">
+        <h2 class="service-heading">🚑 Bed-Booking Service</h2>
+        <p class="text-muted">Fast and reliable bed booking service</p>
+    </div>
+
+    <!-- Emergency Call Button -->
+    <div class="text-center mb-4">
+        <a href="tel:108" class="btn btn-danger btn-lg">
+            📞 Call Emergency 108
+        </a>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "form_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+    <!-- Service Information -->
+    <div class="alert alert-info mb-4">
+
+        <h5>🚑 Our Bed-Booking Service Includes:</h5>
+        <ul>
+            <li>24×7 Availability</li>
+            <li>Trained Medical Staff</li>
+            <li>Modern Facilities</li>
+            <li>Fast Booking Process</li>
+        </ul>
+
+        <hr>
+
+        <h6>💰 Bed Charges:</h6>
+        <p class="mb-1">General Ward: ₹1000 per day</p>
+        <p class="mb-1">Semi-Private Room: ₹2000 per day</p>
+        <p class="mb-0">Private Room: ₹3000 per day</p>
+
+    </div>
+
+    <!-- Request Form -->
+    <div class="card shadow p-4">
 
         <form method="POST">
 
             <div class="mb-3">
                 <label class="form-label">Patient Name</label>
-                <input type="text" name="patient_name" class="form-control" required>
+                <input type="text" name="patient_name" class="form-control"
+                       placeholder="Enter patient name" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Contact Number</label>
-                <input type="text" name="contact" class="form-control" required>
+                <input type="tel" name="contact_number" class="form-control"
+                       placeholder="Enter contact number" required>
             </div>
 
             <div class="mb-3">
@@ -41,35 +79,67 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label">Emergency Type</label>
+                <select name="emergency_type" class="form-select" required>
+                    <option value="">Select Emergency Type</option>
+                    <option>Accident</option>
+                    <option>Heart Problem</option>
+                    <option>Pregnancy</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Admission Date</label>
                 <input type="date" name="admission_date" class="form-control" required>
             </div>
 
-           <div class="mb-3">
-                <label class="form-label">Number of Days</label>
-                <input type="number" name="days" class="form-control" required>
-            </div>
-    
-
-            <div class="text-center mt-4">
-                <button type="submit" class="bed-btn">
-                    Book Bed
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-4">
+                    Request Bed
                 </button>
             </div>
 
         </form>
 
-        <hr>
-
-        <h5 class="bed-charges mt-3">💰 Bed Charges:</h5>
-        <ul>
-            <li>General Ward – ₹1000 per day</li>
-            <li>Semi-Private – ₹2000 per day</li>
-            <li>Private Room – ₹3500 per day</li>
-            <li>ICU – ₹5000 per day</li>
-        </ul>
-
     </div>
-</div>
+
+    <!-- 🩺 SERVICES SECTION -->
+    <div class="mt-5">
+        <h2 class="text-center mb-4">Our Services</h2>
+
+        <div class="row text-center">
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🚑 24/7 Ambulance</h4>
+                    <p>Fast response ambulance service available anytime.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🏥 ICU Support</h4>
+                    <p>Fully equipped ICU for critical patients.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🩸 Blood Bank</h4>
+                    <p>All major blood groups available.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>👨‍⚕ Expert Doctors</h4>
+                    <p>Experienced emergency medical team.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
 
 {% endblock %}
