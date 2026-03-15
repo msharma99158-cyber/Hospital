@@ -19,16 +19,34 @@
         </a>
     </div>
 
+    <!-- BED AVAILABILITY -->
+    <div class="alert alert-info text-center mb-4">
+        <h5>🛏 Current Bed Availability</h5>
+
+        <p>General Ward: <strong>{{ available_beds['General'] }}</strong> beds available</p>
+        <p>Semi-Private: <strong>{{ available_beds['Semi-Private'] }}</strong> beds available</p>
+        <p>Private Room: <strong>{{ available_beds['Private'] }}</strong> beds available</p>
+        <p>ICU: <strong>{{ available_beds['ICU'] }}</strong> beds available</p>
+    </div>
+
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-  {% for category, message in messages %}
-    {% if category == "form_success" %}
-      <div class="alert alert-success text-center">
-        {{ message }}
-      </div>
-    {% endif %}
-  {% endfor %}
-{% endwith %}
+      {% for category, message in messages %}
+
+        {% if category == "form_success" %}
+          <div class="alert alert-success text-center">
+            {{ message }}
+          </div>
+        {% endif %}
+
+        {% if category == "error" %}
+          <div class="alert alert-danger text-center">
+            {{ message }}
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    {% endwith %}
 
     <!-- Service Information -->
     <div class="alert alert-info mb-4">
@@ -67,14 +85,38 @@
                        placeholder="Enter contact number" required>
             </div>
 
+            <!-- BED TYPE DROPDOWN -->
             <div class="mb-3">
                 <label class="form-label">Select Bed Type</label>
+
                 <select name="bed_type" class="form-control" required>
+
                     <option value="">-- Select Bed Type --</option>
-                    <option value="General">General Ward - ₹1000/day</option>
-                    <option value="Semi-Private">Semi-Private - ₹2000/day</option>
-                    <option value="Private">Private Room - ₹3500/day</option>
-                    <option value="ICU">ICU - ₹5000/day</option>
+
+                    <option value="General"
+                    {% if available_beds['General'] <= 0 %}disabled{% endif %}>
+                    General Ward - ₹1000/day
+                    {% if available_beds['General'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                    <option value="Semi-Private"
+                    {% if available_beds['Semi-Private'] <= 0 %}disabled{% endif %}>
+                    Semi-Private - ₹2000/day
+                    {% if available_beds['Semi-Private'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                    <option value="Private"
+                    {% if available_beds['Private'] <= 0 %}disabled{% endif %}>
+                    Private Room - ₹3500/day
+                    {% if available_beds['Private'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                    <option value="ICU"
+                    {% if available_beds['ICU'] <= 0 %}disabled{% endif %}>
+                    ICU - ₹5000/day
+                    {% if available_beds['ICU'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
                 </select>
             </div>
 
@@ -88,6 +130,7 @@
                     <option>Other</option>
                 </select>
             </div>
+
             <div class="mb-3">
                 <label class="form-label">Admission Date</label>
                 <input type="date" name="admission_date" class="form-control" required>
@@ -103,7 +146,7 @@
 
     </div>
 
-    <!-- 🩺 SERVICES SECTION -->
+    <!-- SERVICES SECTION -->
     <div class="mt-5">
         <h2 class="text-center mb-4">Our Services</h2>
 

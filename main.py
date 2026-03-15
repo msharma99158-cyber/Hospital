@@ -174,15 +174,38 @@ def services():
 @app.route('/bedbooking', methods=['GET', 'POST'])
 @login_required
 def bedbooking():
+
+    BED_LIMITS = {
+        "General": 10,
+        "Semi-Private": 5,
+        "Private": 3,
+        "ICU": 0
+    }
+
+    # Count reserved beds by type
+    bed_counts = {}
+    available_beds = {}
+
+    for bed_type, limit in BED_LIMITS.items():
+        reserved = Patient.query.filter_by(bed_type=bed_type, status="Reserved").count()
+        bed_counts[bed_type] = reserved
+        available_beds[bed_type] = limit - reserved
+
+
     if request.method == 'POST':
+
         patient_name = request.form['patient_name']
         contact_number = request.form['contact_number']
         bed_type = request.form['bed_type']
-        admission_date_str= request.form['admission_date']
+        admission_date_str = request.form['admission_date']
         emergency_type = request.form['emergency_type']
-        admission_date = datetime.strptime(admission_date_str, '%Y-%m-%d').date()
 
-        
+        # Check availability for selected bed type
+        if available_beds.get(bed_type, 0) <= 0:
+            flash(f"❌ Sorry! No {bed_type} beds are available.", "error")
+            return redirect(url_for('bedbooking'))
+
+        admission_date = datetime.strptime(admission_date_str, '%Y-%m-%d').date()
 
         new_patient = Patient(
             patient_name=patient_name,
@@ -196,39 +219,70 @@ def bedbooking():
         db.session.add(new_patient)
         db.session.commit()
 
-        flash("Bed booked successfully!","form_success")
+        flash("✅ Bed booked successfully!", "form_success")
         return redirect(url_for('bedbooking'))
 
-    return render_template('bedbooking.html')
+    return render_template(
+        'bedbooking.html',
+        available_beds=available_beds
+    )
+
+#----------------Appointment Route----------------------------#
+
+from datetime import datetime
 
 @app.route("/appointment", methods=["GET", "POST"])
 @login_required
 def appointment():
 
-   
+    # All time slots
+    time_slots = [
+        "9:00 AM",
+        "10:00 AM",
+        "11:00 AM",
+        "2:00 PM",
+        "3:00 PM"
+    ]
+
+    # Maximum patients allowed per slot
+    MAX_PER_SLOT = 3
+
+    # Dictionary to track slot booking count
+    slot_counts = {}
+
+    for slot in time_slots:
+        count = Appointment.query.filter_by(time_slot=slot).count()
+        slot_counts[slot] = count
 
     if request.method == "POST":
 
-        
-        # If final booking submitted
         if request.form.get("book") == "yes":
 
             patient_name = request.form.get("patient_name")
             age = request.form.get("age")
             gender = request.form.get("gender")
             contact = request.form.get("contact")
-           
+
             date_str = request.form.get("appointment_date")
             time_slot = request.form.get("time_slot")
 
             appointment_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+            # Count existing bookings for this slot and date
+            existing_count = Appointment.query.filter_by(
+                appointment_date=appointment_date,
+                time_slot=time_slot
+            ).count()
+
+            if existing_count >= MAX_PER_SLOT:
+                flash("❌ This time slot is full. Please choose another.", "error")
+                return redirect("/appointment")
 
             new_appointment = Appointment(
                 patient_name=patient_name,
                 age=age,
                 gender=gender,
                 contact=contact,
-               
                 appointment_date=appointment_date,
                 time_slot=time_slot
             )
@@ -236,11 +290,14 @@ def appointment():
             db.session.add(new_appointment)
             db.session.commit()
 
-            flash("Appointment booked successfully!","form_success")
-            return redirect('/appointment')
+            flash("✅ Appointment booked successfully!", "form_success")
+            return redirect("/appointment")
 
     return render_template(
-        'appointment.html')
+        "appointment.html",
+        slot_counts=slot_counts,
+        max_per_slot=MAX_PER_SLOT
+    )
        
 # ---------------- EMERGENCY REQUEST ----------------
 
@@ -281,27 +338,46 @@ def emergency():
 
 @app.route("/ambulance", methods=['GET', 'POST'])
 def ambulance():
+
+    TOTAL_AMBULANCES = 0
+
+    active_requests = AmbulanceRequest.query.filter_by(status="Dispatched").count()
+
+    ambulance_available = active_requests < TOTAL_AMBULANCES
+
     if request.method == 'POST':
 
         patient_name = request.form.get('patient_name')
-        contact_number = request.form.get('contact_number')  # Make sure HTML name matches this
+        contact_number = request.form.get('contact_number')
         pickup_location = request.form.get('pickup_location')
         emergency_type = request.form.get('emergency_type')
+        emergency_contact = request.form.get('emergency_contact')
+
+        if ambulance_available:
+            status = "Dispatched"
+            flash("🚑 Ambulance dispatched successfully!", "form_success")
+        else:
+            status = "Pending (108 called)"
+            flash("🚨 Ambulances are busy. Your request is saved. Please call 108 immediately.", "error")
 
         new_request = AmbulanceRequest(
             patient_name=patient_name,
             contact_number=contact_number,
             pickup_location=pickup_location,
-            emergency_type=emergency_type
+            emergency_type=emergency_type,
+            emergency_contact=emergency_contact,
+            status=status
         )
 
         db.session.add(new_request)
         db.session.commit()
 
-        flash("Ambulance requested successfully!","form_success")
         return redirect(url_for('ambulance'))
 
-    return render_template("ambulance.html")
+    return render_template(
+        "ambulance.html",
+        ambulance_available=ambulance_available
+    )
 
 # ---------------- REGISTER ----------------
 
