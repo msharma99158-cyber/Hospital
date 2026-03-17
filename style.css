@@ -357,11 +357,15 @@ body {
 }
 
 .contact-header h1 {
+    text-align: center;
     font-size: 36px;
     color: #1f3c88;
     margin-bottom: 10px;
 }
-
+h1 {
+    text-align: center;
+    color: #1565c0;
+}
 .contact-header p {
     color:#003366;
     font-size: 16px;
