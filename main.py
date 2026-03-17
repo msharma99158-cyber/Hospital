@@ -339,7 +339,7 @@ def emergency():
 @app.route("/ambulance", methods=['GET', 'POST'])
 def ambulance():
 
-    TOTAL_AMBULANCES = 0
+    TOTAL_AMBULANCES = 2
 
     active_requests = AmbulanceRequest.query.filter_by(status="Dispatched").count()
 
@@ -476,6 +476,12 @@ def admin_dashboard():
     admitted_patients = Patient.query.filter_by(status="Admitted").count()
     available_beds = TOTAL_BEDS - admitted_patients
 
+    # 🚨 Emergency Requests (✅ ADDED)
+    emergency_requests = EmergencyRequest.query.order_by(EmergencyRequest.id.desc()).all()
+
+    # 📅 Appointments (✅ ADD THIS)
+    appointments = Appointment.query.order_by(Appointment.id.desc()).all()
+
     return render_template(
         "admin_dashboard.html",
         total_users=total_users,
@@ -489,7 +495,9 @@ def admin_dashboard():
         users=users,
         support_data=support_data,
         ambulance_requests=ambulance_requests,
-        bed_bookings=bed_bookings
+        bed_bookings=bed_bookings,
+        emergency_requests=emergency_requests,
+        appointments=appointments 
     )
 
 # ---------------- PROMOTE USER ----------------
@@ -561,7 +569,52 @@ def discharge_patient(id):
 
     return redirect(url_for('admin_dashboard'))
 
-  
+@app.route('/update_emergency_status/<int:id>')
+@login_required
+def update_emergency_status(id):
+
+    if session.get("role") != "admin":
+        flash("Access denied!")
+        return redirect(url_for('home'))
+
+    req = EmergencyRequest.query.get(id)
+
+    if req:
+        req.status = "Resolved"
+        db.session.commit()
+        flash("Emergency marked as resolved!", "success")
+
+    return redirect(url_for('admin_dashboard')) 
+
+@app.route('/approve_appointment/<int:id>')
+@login_required
+def approve_appointment(id):
+
+    if session.get("role") != "admin":
+        return redirect(url_for('home'))
+
+    app = Appointment.query.get(id)
+
+    if app:
+        app.status = "Approved"
+        db.session.commit()
+
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/cancel_appointment/<int:id>')
+@login_required
+def cancel_appointment(id):
+
+    if session.get("role") != "admin":
+        return redirect(url_for('home'))
+
+    app = Appointment.query.get(id)
+
+    if app:
+        app.status = "Cancelled"
+        db.session.commit()
+
+    return redirect(url_for('admin_dashboard'))
 
 
 # ---------------- VIEW CONTACT MESSAGES ----------------
