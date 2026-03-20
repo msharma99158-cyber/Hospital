@@ -22,18 +22,36 @@ db = SQLAlchemy(app)
 
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    patient_name = db.Column(db.String(100), nullable=False)
-    contact = db.Column(db.String(20), nullable=False)
-    bed_type = db.Column(db.String(50), nullable=False)
-    emergency_type = db.Column(db.String(100), nullable=False)
-    admission_date = db.Column(db.Date, nullable=False)
-    status = db.Column(db.String(20), default="Reserved")
+
+    patient_id = db.Column(db.String(10), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    patient_name = db.Column(db.String(100))
+    contact = db.Column(db.String(20))
+
+    # 🔥 ADD THESE FIELDS
+    bed_type = db.Column(db.String(50))
+    admission_date = db.Column(db.Date)
+    emergency_type = db.Column(db.String(100))
+    status = db.Column(db.String(50))
    
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     role = db.Column(db.String(20), default="user")  # Default role is user
+
+class BedBooking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    bed_id= db.Column(db.String(20))
+    patient_id = db.Column(db.String(20))   # link
+    patient_name = db.Column(db.String(100))   # ✅ ADD THIS
+    contact_number = db.Column(db.String(20))  # ✅ ADD THIS
+    bed_type = db.Column(db.String(50))
+    admission_date = db.Column(db.Date)
+    status = db.Column(db.String(50), default="Reserved")
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    emergency_type=db.Column(db.String(50))
 
 class ContactMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,12 +64,19 @@ class ContactMessage(db.Model):
 
 class AmbulanceRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+
+    # 🔥 NEW FIELDS
+    ambulance_id = db.Column(db.String(20))
+    patient_id = db.Column(db.String(20))
+
     patient_name = db.Column(db.String(100), nullable=False)
     contact_number = db.Column(db.String(20), nullable=False)
     pickup_location = db.Column(db.String(200), nullable=False)
     emergency_type = db.Column(db.String(100), nullable=False)
+
     request_time = db.Column(db.DateTime, default=db.func.current_timestamp())
     status = db.Column(db.String(50), default="Pending")
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 class EmergencyRequest(db.Model):
@@ -85,7 +110,8 @@ class EmergencyRequest(db.Model):
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
+    appointment_id=db.Column(db.String(20), unique=True)
+    patient_id=db.Column(db.String(20), unique=True)
     patient_name = db.Column(db.String(100), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String(10), nullable=False)
@@ -182,12 +208,28 @@ def bedbooking():
         "ICU": 0
     }
 
-    # Count reserved beds by type
+    # 🔥 GET / CREATE PATIENT (BASED ON LOGIN)
+    patient = Patient.query.filter_by(user_id=session['user_id']).first()
+
+    if patient:
+        patient_id = patient.patient_id
+    else:
+        count = Patient.query.count() + 1
+        patient_id = f"PAT-{str(count).zfill(3)}"
+
+        patient = Patient(
+            patient_id=patient_id,
+            user_id=session['user_id']
+        )
+        db.session.add(patient)
+        db.session.commit()
+
+    # 🔥 BED COUNT FROM BedBooking (NOT Patient)
     bed_counts = {}
     available_beds = {}
 
     for bed_type, limit in BED_LIMITS.items():
-        reserved = Patient.query.filter_by(bed_type=bed_type, status="Reserved").count()
+        reserved = BedBooking.query.filter_by(bed_type=bed_type,status="Reserved").count()
         bed_counts[bed_type] = reserved
         available_beds[bed_type] = limit - reserved
 
@@ -200,42 +242,58 @@ def bedbooking():
         admission_date_str = request.form['admission_date']
         emergency_type = request.form['emergency_type']
 
-        # Check availability for selected bed type
+        # ✅ CHECK AVAILABILITY
         if available_beds.get(bed_type, 0) <= 0:
             flash(f"❌ Sorry! No {bed_type} beds are available.", "error")
             return redirect(url_for('bedbooking'))
 
         admission_date = datetime.strptime(admission_date_str, '%Y-%m-%d').date()
 
-        new_patient = Patient(
+        # ✅ UPDATE BASIC PATIENT INFO (ONLY BASIC)
+        patient.patient_name = patient_name
+        patient.contact = contact_number
+
+        # ✅ GENERATE BOOKING ID
+        count = BedBooking.query.count() + 1
+        bed_id = f"BED-{str(count).zfill(3)}"
+
+        # ✅ SAVE IN BedBooking TABLE
+        new_booking = BedBooking(
+            bed_id=bed_id,
+            patient_id=patient_id,
             patient_name=patient_name,
-            contact=contact_number,
+            contact_number=contact_number,
             bed_type=bed_type,
             admission_date=admission_date,
             emergency_type=emergency_type,
             status="Reserved"
         )
 
-        db.session.add(new_patient)
+        db.session.add(new_booking)
         db.session.commit()
 
-        flash("✅ Bed booked successfully!", "form_success")
+        flash(
+            f"✅ Bed Booked! Booking ID: {bed_id} | Patient ID: {patient_id}",
+            "form_success"
+        )
+
         return redirect(url_for('bedbooking'))
+
+    # 🔥 SHOW NEXT IDS IN FORM
+    next_bed_id = f"BED-{str(BedBooking.query.count()+1).zfill(3)}"
 
     return render_template(
         'bedbooking.html',
-        available_beds=available_beds
+        available_beds=available_beds,
+        patient_id=patient_id,
+        bed_id=next_bed_id   # 🔥 SEND THIS
     )
-
 #----------------Appointment Route----------------------------#
-
-from datetime import datetime
 
 @app.route("/appointment", methods=["GET", "POST"])
 @login_required
 def appointment():
 
-    # All time slots
     time_slots = [
         "9:00 AM",
         "10:00 AM",
@@ -244,15 +302,32 @@ def appointment():
         "3:00 PM"
     ]
 
-    # Maximum patients allowed per slot
     MAX_PER_SLOT = 3
 
-    # Dictionary to track slot booking count
+    # Slot count
     slot_counts = {}
-
     for slot in time_slots:
         count = Appointment.query.filter_by(time_slot=slot).count()
         slot_counts[slot] = count
+
+    # 🔥 STEP 1: GET / CREATE PATIENT USING USER LOGIN
+    patient = Patient.query.filter_by(user_id=session['user_id']).first()
+
+    if patient:
+        patient_id = patient.patient_id
+    else:
+        count = Patient.query.count() + 1
+        patient_id = f"PAT-{str(count).zfill(3)}"
+
+        new_patient = Patient(
+            patient_id=patient_id,
+            user_id=session['user_id']
+        )
+        db.session.add(new_patient)
+        db.session.commit()
+
+    # 🔥 STEP 2: GENERATE APPOINTMENT ID
+    next_app_id = f"APP-{str(Appointment.query.count()+1).zfill(3)}"
 
     if request.method == "POST":
 
@@ -268,17 +343,20 @@ def appointment():
 
             appointment_date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
-            # Count existing bookings for this slot and date
+            # ✅ SLOT CHECK
             existing_count = Appointment.query.filter_by(
                 appointment_date=appointment_date,
                 time_slot=time_slot
             ).count()
 
             if existing_count >= MAX_PER_SLOT:
-                flash("❌ This time slot is full. Please choose another.", "error")
+                flash("❌ This time slot is full.", "error")
                 return redirect("/appointment")
 
+            # ✅ SAVE APPOINTMENT (USE SAME PATIENT ID)
             new_appointment = Appointment(
+                appointment_id=next_app_id,
+                patient_id=patient_id,
                 patient_name=patient_name,
                 age=age,
                 gender=gender,
@@ -290,15 +368,20 @@ def appointment():
             db.session.add(new_appointment)
             db.session.commit()
 
-            flash("✅ Appointment booked successfully!", "form_success")
+            flash(
+                f"✅ Appointment Booked! Appointment ID: {next_app_id} | Patient ID: {patient_id}",
+                "form_success"
+            )
+
             return redirect("/appointment")
 
     return render_template(
         "appointment.html",
         slot_counts=slot_counts,
-        max_per_slot=MAX_PER_SLOT
+        max_per_slot=MAX_PER_SLOT,
+        appointment_id=next_app_id,
+        patient_id=patient_id   # 🔥 SAME ID ALWAYS
     )
-       
 # ---------------- EMERGENCY REQUEST ----------------
 
 @app.route('/emergency', methods=['GET', 'POST'])
@@ -337,13 +420,32 @@ def emergency():
 # ---------------- AMBULANCE ----------------
 
 @app.route("/ambulance", methods=['GET', 'POST'])
+@login_required
 def ambulance():
 
-    TOTAL_AMBULANCES = 2
+    TOTAL_AMBULANCES = 10
 
     active_requests = AmbulanceRequest.query.filter_by(status="Dispatched").count()
-
     ambulance_available = active_requests < TOTAL_AMBULANCES
+
+    # 🔥 STEP 1: GET / CREATE PATIENT USING LOGIN
+    patient = Patient.query.filter_by(user_id=session['user_id']).first()
+
+    if patient:
+        patient_id = patient.patient_id
+    else:
+        count = Patient.query.count() + 1
+        patient_id = f"PAT-{str(count).zfill(3)}"
+
+        new_patient = Patient(
+            patient_id=patient_id,
+            user_id=session['user_id']
+        )
+        db.session.add(new_patient)
+        db.session.commit()
+
+    # 🔥 STEP 2: GENERATE AMBULANCE ID
+    next_amb_id = f"AMB-{str(AmbulanceRequest.query.count()+1).zfill(3)}"
 
     if request.method == 'POST':
 
@@ -351,34 +453,40 @@ def ambulance():
         contact_number = request.form.get('contact_number')
         pickup_location = request.form.get('pickup_location')
         emergency_type = request.form.get('emergency_type')
-        emergency_contact = request.form.get('emergency_contact')
 
+        # ✅ STATUS
         if ambulance_available:
             status = "Dispatched"
-            flash("🚑 Ambulance dispatched successfully!", "form_success")
         else:
-            status = "Pending (108 called)"
-            flash("🚨 Ambulances are busy. Your request is saved. Please call 108 immediately.", "error")
+            status = "Pending"
 
+        # ✅ SAVE REQUEST
         new_request = AmbulanceRequest(
+            ambulance_id=next_amb_id,
+            patient_id=patient_id,
             patient_name=patient_name,
             contact_number=contact_number,
             pickup_location=pickup_location,
             emergency_type=emergency_type,
-            emergency_contact=emergency_contact,
             status=status
         )
 
         db.session.add(new_request)
         db.session.commit()
 
+        flash(
+            f"🚑 Ambulance Booked! Ambulance ID: {next_amb_id} | Patient ID: {patient_id}",
+            "form_success"
+        )
+
         return redirect(url_for('ambulance'))
 
     return render_template(
         "ambulance.html",
-        ambulance_available=ambulance_available
+        ambulance_available=ambulance_available,
+        ambulance_id=next_amb_id,
+        patient_id=patient_id   # 🔥 SAME ID ALWAYS
     )
-
 # ---------------- REGISTER ----------------
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -470,10 +578,10 @@ def admin_dashboard():
     ambulance_requests = AmbulanceRequest.query.order_by(AmbulanceRequest.id.asc()).all()
 
     # 🛏 Bed bookings
-    bed_bookings = Patient.query.order_by(Patient.id.asc()).all()
+    bed_bookings = BedBooking.query.order_by(BedBooking.id.asc()).all()
 
     # 🛏 Calculate Available Beds
-    admitted_patients = Patient.query.filter_by(status="Admitted").count()
+    admitted_patients = BedBooking.query.filter_by(status="Admitted").count()
     available_beds = TOTAL_BEDS - admitted_patients
 
     # 🚨 Emergency Requests (✅ ADDED)
@@ -543,10 +651,10 @@ def admit_patient(id):
         flash("Access denied!")
         return redirect(url_for('home'))
 
-    patient = Patient.query.get_or_404(id)
+    booking = BedBooking.query.get_or_404(id)
 
-    if patient.status == "Reserved":
-        patient.status = "Admitted"
+    if booking.status == "Reserved":
+        booking.status = "Admitted"
         db.session.commit()
         flash("Patient admitted successfully!")
 
@@ -560,10 +668,10 @@ def discharge_patient(id):
         flash("Access denied!")
         return redirect(url_for('home'))
 
-    patient = Patient.query.get_or_404(id)
+    booking = BedBooking.query.get_or_404(id)
 
-    if patient.status == "Admitted":
-        patient.status = "Discharged"
+    if booking.status == "Admitted":
+        booking.status = "Discharged"
         db.session.commit()
         flash("Patient discharged successfully!")
 
@@ -621,7 +729,7 @@ def cancel_appointment(id):
 
 @app.route('/admin/messages')
 @login_required
-def view_messages():
+def admin_messages():
     if session.get("role") != "admin":
         flash("Access denied! Admins only.")
         return redirect(url_for('home'))

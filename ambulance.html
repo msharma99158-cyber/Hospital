@@ -6,37 +6,25 @@
 
 <section class="container mt-5">
 
-<!-- Page Heading -->
 <div class="text-center mb-4">
 <h2 class="service-heading">🚑 Ambulance Service</h2>
 <p class="text-muted">Fast and reliable emergency transportation</p>
 </div>
 
-<!-- Emergency Call Button -->
 <div class="text-center mb-4">
 <a href="tel:108" class="btn btn-danger btn-lg">
 📞 Call Emergency 108
 </a>
 </div>
 
-<!-- If No Ambulance Available -->
 {% if not ambulance_available %}
-
 <div class="alert alert-danger text-center">
-
 <h5>🚨 All hospital ambulances are currently busy</h5>
-
-<p>
-If this is a serious emergency, please call the national
-emergency number <strong>108</strong> immediately or and we will bring
-the patient to the hospital using any other available vehicle.
-</p>
-
+<p>Please call 108 immediately, and we will send any other available vehicle.</p>
 </div>
-
 {% endif %}
 
-<!-- Flash Messages -->
+<!-- ✅ FLASH MESSAGES -->
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% for category, message in messages %}
     {% if category == "form_success" %}
@@ -44,42 +32,42 @@ the patient to the hospital using any other available vehicle.
         {{ message }}
       </div>
     {% endif %}
+    {% if category == "error" %}
+      <div class="alert alert-danger text-center">
+        {{ message }}
+      </div>
+    {% endif %}
   {% endfor %}
 {% endwith %}
 
-<!-- Service Information -->
-<div class="alert alert-info mb-4">
-
-<h5>🚑 Our Ambulance Service Includes:</h5>
-
-<ul>
-<li>24×7 Emergency Response</li>
-<li>Trained Medical Staff</li>
-<li>Oxygen & First Aid Equipment</li>
-<li>Fast Pickup Across Amritsar</li>
-</ul>
-
-<hr>
-
-<h6>💰 Ambulance Charges:</h6>
-
-<p class="mb-1">Basic Ambulance: ₹800 (Within City)</p>
-<p class="mb-1">Advanced Life Support (ALS): ₹1500</p>
-<p class="mb-0">Extra Charges: ₹20 per km (Outside City)</p>
-
-</div>
-
-<!-- Request Form -->
 <div class="card shadow p-4">
 
 <form method="POST">
+
+<!-- ✅ Ambulance ID -->
+<div class="mb-3">
+<label class="form-label">Ambulance Request ID</label>
+<input type="text"
+value="{{ ambulance_id }}"
+class="form-control fw-bold text-success"
+readonly>
+</div>
+
+<!-- ✅ Patient ID -->
+<div class="mb-3">
+<label class="form-label">Patient ID</label>
+<input type="text"
+value="{{ patient_id }}"
+class="form-control fw-bold text-primary"
+readonly>
+<small class="text-muted">Auto-generated based on your login</small>
+</div>
 
 <div class="mb-3">
 <label class="form-label">Patient Name</label>
 <input type="text"
 name="patient_name"
 class="form-control"
-placeholder="Enter patient name"
 required>
 </div>
 
@@ -88,7 +76,6 @@ required>
 <input type="tel"
 name="contact_number"
 class="form-control"
-placeholder="Enter contact number"
 required>
 </div>
 
@@ -98,81 +85,33 @@ required>
 name="pickup_location"
 class="form-control"
 rows="3"
-placeholder="Enter full address"
 required></textarea>
 </div>
 
 <div class="mb-3">
 <label class="form-label">Emergency Type</label>
-
 <select
 name="emergency_type"
 class="form-select"
 required>
-
 <option value="">Select Emergency Type</option>
 <option>Accident</option>
 <option>Heart Problem</option>
 <option>Pregnancy</option>
 <option>Other</option>
-
 </select>
-
 </div>
 
 <div class="text-center">
-
 <button
 type="submit"
 class="btn btn-success px-4"
 {% if not ambulance_available %}disabled{% endif %}>
-
 Request Ambulance
-
 </button>
-
 </div>
 
 </form>
-
-</div>
-
-<!-- SERVICES SECTION -->
-<div class="mt-5">
-
-<h2 class="text-center mb-4">Our Ambulance Services</h2>
-
-<div class="row text-center">
-
-<div class="col-md-3 mb-3">
-<div class="card p-3 shadow-sm">
-<h4>🚑 24/7 Ambulance</h4>
-<p>Fast response ambulance service available anytime.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-3">
-<div class="card p-3 shadow-sm">
-<h4>🏥 ICU Support</h4>
-<p>Fully equipped ICU for critical patients.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-3">
-<div class="card p-3 shadow-sm">
-<h4>🩸 Blood Bank</h4>
-<p>All major blood groups available.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-3">
-<div class="card p-3 shadow-sm">
-<h4>👨‍⚕ Expert Doctors</h4>
-<p>Experienced emergency medical team.</p>
-</div>
-</div>
-
-</div>
 
 </div>
 
