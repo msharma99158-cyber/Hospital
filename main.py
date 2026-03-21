@@ -229,9 +229,9 @@ def bedbooking():
     available_beds = {}
 
     for bed_type, limit in BED_LIMITS.items():
-        reserved = BedBooking.query.filter_by(bed_type=bed_type,status="Reserved").count()
-        bed_counts[bed_type] = reserved
-        available_beds[bed_type] = limit - reserved
+        occupied = BedBooking.query.filter(BedBooking.bed_type==bed_type,BedBooking.status.in_(["Reserved","Admitted"])).count()
+        bed_counts[bed_type] = occupied
+        available_beds[bed_type] = limit - occupied
 
 
     if request.method == 'POST':
@@ -454,11 +454,7 @@ def ambulance():
         pickup_location = request.form.get('pickup_location')
         emergency_type = request.form.get('emergency_type')
 
-        # ✅ STATUS
-        if ambulance_available:
-            status = "Dispatched"
-        else:
-            status = "Pending"
+        
 
         # ✅ SAVE REQUEST
         new_request = AmbulanceRequest(
@@ -468,7 +464,7 @@ def ambulance():
             contact_number=contact_number,
             pickup_location=pickup_location,
             emergency_type=emergency_type,
-            status=status
+            status="Pending"
         )
 
         db.session.add(new_request)
@@ -560,7 +556,7 @@ def admin_dashboard():
     
     # 📊 Dashboard Statistics
     total_users = User.query.count()
-    total_bed_bookings = Patient.query.count()
+    total_bed_bookings = BedBooking.query.count()
     total_appointments = Appointment.query.count()
     total_emergencies = EmergencyRequest.query.count()
     total_ambulances = AmbulanceRequest.query.count()
@@ -581,8 +577,8 @@ def admin_dashboard():
     bed_bookings = BedBooking.query.order_by(BedBooking.id.asc()).all()
 
     # 🛏 Calculate Available Beds
-    admitted_patients = BedBooking.query.filter_by(status="Admitted").count()
-    available_beds = TOTAL_BEDS - admitted_patients
+    occupied_beds=BedBooking.query.filter(BedBooking.status.in_(["Reserverd","Admitted"])).count()
+    available_beds = TOTAL_BEDS - occupied_beds
 
     # 🚨 Emergency Requests (✅ ADDED)
     emergency_requests = EmergencyRequest.query.order_by(EmergencyRequest.id.desc()).all()
@@ -633,15 +629,52 @@ def promote_user(user_id):
 @login_required
 def accept_ambulance(id):
 
+    if session.get("role") != "admin":
+        flash("Access denied!")
+        return redirect(url_for('home'))
+
     ambulance = AmbulanceRequest.query.get_or_404(id)
 
-    ambulance.status = "Accepted"
+    if ambulance.status == "Pending":
+        ambulance.status = "Accepted"
+        db.session.commit()
+        flash("Ambulance accepted!")
 
-    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
 
-    flash("Ambulance request accepted!")
+@app.route('/dispatch_ambulance/<int:id>')
+@login_required
+def dispatch_ambulance(id):
 
-    return redirect(url_for('admin_dashboard')) 
+    if session.get("role") != "admin":
+        flash("Access denied!")
+        return redirect(url_for('home'))
+
+    ambulance = AmbulanceRequest.query.get_or_404(id)
+
+    if ambulance.status == "Accepted":
+        ambulance.status = "Dispatched"
+        db.session.commit()
+        flash("Ambulance dispatched!")
+
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/complete_ambulance/<int:id>')
+@login_required
+def complete_ambulance(id):
+
+    if session.get("role") != "admin":
+        flash("Access denied!")
+        return redirect(url_for('home'))
+
+    ambulance = AmbulanceRequest.query.get_or_404(id)
+
+    if ambulance.status == "Dispatched":
+        ambulance.status = "Completed"
+        db.session.commit()
+        flash("Request completed!")
+
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/admit_patient/<int:id>')
 @login_required

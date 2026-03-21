@@ -145,22 +145,18 @@
 
 <!-- ================= AMBULANCE REQUESTS ================= -->
 
-<div class="card shadow">
-
-    <div class="card-header bg-danger text-white fw-bold">
-        🚑 Ambulance Requests
-    </div>
+<div class="card shadow mb-5">
+    <div class="card-header bg-danger text-white fw-bold">🚑 Ambulance Requests</div>
 
     <div class="card-body p-0">
+        <table class="table table-striped mb-0">
 
-        <table class="table table-striped table-hover mb-0">
-
-            <thead class="table-secondary">
+            <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Patient Name</th>
+                    <th>Name</th>
                     <th>Contact</th>
-                    <th>Pickup Location</th>
+                    <th>Location</th>
                     <th>Emergency</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -168,9 +164,7 @@
             </thead>
 
             <tbody>
-
-                {% for a in ambulance_requests %}
-
+            {% for a in ambulance_requests %}
                 <tr>
 
                     <td>{{ a.id }}</td>
@@ -182,34 +176,50 @@
                     <!-- STATUS -->
                     <td>
                         {% if a.status == "Pending" %}
-                        <span class="badge bg-warning text-dark">Pending</span>
+                            <span class="badge bg-warning text-dark">Pending</span>
+
+                        {% elif a.status == "Accepted" %}
+                            <span class="badge bg-info">Accepted</span>
+
+                        {% elif a.status == "Dispatched" %}
+                            <span class="badge bg-primary">Dispatched</span>
+
+                        {% elif a.status == "Completed" %}
+                            <span class="badge bg-success">Completed</span>
+
                         {% else %}
-                        <span class="badge bg-success">Accepted</span>
+                            <span class="badge bg-secondary">Unknown</span>
                         {% endif %}
                     </td>
 
                     <!-- ACTION -->
                     <td>
+
                         {% if a.status == "Pending" %}
-                        <a href="{{ url_for('accept_ambulance', id=a.id) }}"
-                           class="btn btn-sm btn-success">
-                           Accept
-                        </a>
+                            <a href="{{ url_for('accept_ambulance', id=a.id) }}"
+                               class="btn btn-warning btn-sm">Accept</a>
+
+                        {% elif a.status == "Accepted" %}
+                            <a href="{{ url_for('dispatch_ambulance', id=a.id) }}"
+                               class="btn btn-primary btn-sm">Dispatch</a>
+
+                        {% elif a.status == "Dispatched" %}
+                            <a href="{{ url_for('complete_ambulance', id=a.id) }}"
+                               class="btn btn-success btn-sm">Complete</a>
+
                         {% else %}
-                        <span class="text-success">Driver Assigned</span>
+                            <span class="text-success">Done</span>
+
                         {% endif %}
+
                     </td>
 
                 </tr>
-
-                {% endfor %}
-
+            {% endfor %}
             </tbody>
 
         </table>
-
     </div>
-
 </div>
 <!-- ================= BED BOOKINGS ================= -->
 
