@@ -52,6 +52,7 @@ class BedBooking(db.Model):
     status = db.Column(db.String(50), default="Reserved")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     emergency_type=db.Column(db.String(50))
+    
 
 class ContactMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -77,6 +78,7 @@ class AmbulanceRequest(db.Model):
     request_time = db.Column(db.DateTime, default=db.func.current_timestamp())
     status = db.Column(db.String(50), default="Pending")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
 
 
 class EmergencyRequest(db.Model):
@@ -241,6 +243,7 @@ def bedbooking():
         bed_type = request.form['bed_type']
         admission_date_str = request.form['admission_date']
         emergency_type = request.form['emergency_type']
+        
 
         # ✅ CHECK AVAILABILITY
         if available_beds.get(bed_type, 0) <= 0:
@@ -277,7 +280,7 @@ def bedbooking():
             "form_success"
         )
 
-        return redirect(url_for('bedbooking'))
+        return redirect(url_for('bed_slip', booking_id=new_booking.id))
 
     # 🔥 SHOW NEXT IDS IN FORM
     next_bed_id = f"BED-{str(BedBooking.query.count()+1).zfill(3)}"
@@ -288,6 +291,11 @@ def bedbooking():
         patient_id=patient_id,
         bed_id=next_bed_id   # 🔥 SEND THIS
     )
+
+@app.route('/bed_slip/<int:booking_id>')
+def bed_slip(booking_id):
+    booking = BedBooking.query.get_or_404(booking_id)
+    return render_template('bed_slip.html', booking=booking)
 #----------------Appointment Route----------------------------#
 
 @app.route("/appointment", methods=["GET", "POST"])
@@ -373,7 +381,8 @@ def appointment():
                 "form_success"
             )
 
-            return redirect("/appointment")
+            return redirect(url_for('appointment_slip', booking_id=new_appointment.id))
+
 
     return render_template(
         "appointment.html",
@@ -382,6 +391,10 @@ def appointment():
         appointment_id=next_app_id,
         patient_id=patient_id   # 🔥 SAME ID ALWAYS
     )
+@app.route('/appointment_slip/<int:booking_id>')
+def appointment_slip(booking_id):
+    appointment = Appointment.query.get_or_404(booking_id)
+    return render_template('appointment_slip.html', appointment=appointment)
 # ---------------- EMERGENCY REQUEST ----------------
 
 @app.route('/emergency', methods=['GET', 'POST'])
@@ -475,7 +488,7 @@ def ambulance():
             "form_success"
         )
 
-        return redirect(url_for('ambulance'))
+        return redirect(url_for('ambulance_slip', id=new_request.id))
 
     return render_template(
         "ambulance.html",
@@ -483,6 +496,12 @@ def ambulance():
         ambulance_id=next_amb_id,
         patient_id=patient_id   # 🔥 SAME ID ALWAYS
     )
+
+@app.route('/slip/<int:id>')
+def ambulance_slip(id):
+    data=AmbulanceRequest.query.get(id)
+    return render_template('slip.html', data=data)
+
 # ---------------- REGISTER ----------------
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -804,6 +823,67 @@ def support():
         return redirect(url_for("support"))
 
     return render_template("support.html")
+
+@app.route('/my_bookings')
+def my_bookings():
+    slips = AmbulanceRequest.query.all()
+    return render_template('my_slips.html', slips=slips)
+    
+
+
+
+# 🚑 View Ambulance Slip
+@app.route('/slip/<int:id>')
+def view_slip(id):
+    data = AmbulanceRequest.query.get(id)
+    return render_template('slip.html', data=data)
+
+
+# 🛏️ View Bed Slip
+@app.route('/bed/<int:id>')
+def view_bed(id):
+    data = BedBooking.query.get(id)
+    return render_template('bed_slip.html', data=data)
+
+
+# ❌ Cancel Ambulance
+@app.route('/cancel/<int:id>')
+def cancel_booking(id):
+    booking = AmbulanceRequest.query.get(id)
+
+    if booking and booking.user_id == session.get('user_id') and booking.status == "Pending":
+        booking.status = "Cancelled"
+        db.session.commit()
+        flash("Ambulance booking cancelled!", "success")
+
+    return redirect('/my_bookings')
+
+
+# ❌ Cancel Bed
+@app.route('/cancel_bed/<int:id>')
+def cancel_bed(id):
+    booking = BedBooking.query.get(id)
+
+    if booking and booking.user_id == session.get('user_id') and booking.status == "Pending":
+        booking.status = "Cancelled"
+        db.session.commit()
+        flash("Bed booking cancelled!", "success")
+
+    return redirect('/my_bookings')
+
+@app.route('/dashboard')
+def user_dashboard():
+    ambulance_data = AmbulanceRequest.query.all()
+    bed_data = BedBooking.query.all()
+    appointment_data = Appointment.query.all()
+
+    return render_template(
+        'dashboard.html',
+        ambulance_data=ambulance_data,
+        bed_data=bed_data,
+        appointment_data=appointment_data
+    )
+
 
 # ---------------- RUN APP ----------------
 
