@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Appointment Service{% endblock %}
+
+{% block content %}
+
+<div class="text-center mb-4">
+    <h1 class="appointment-main-title">
+        City Care Hospital - Appointment Service
+    </h1>
+</div>
+
+<div class="appointment-card shadow-lg">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "form_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+    {% if category == "error" %}
+      <div class="alert alert-danger text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+<form method="POST">
+
+<h5 class="appointment-section-title mb-3">Patient Details</h5>
+<hr>
+
+<div class="row">
+
+<!-- ✅ Patient ID -->
+<div class="col-md-6 mb-3">
+<label class="appointment-label">Patient ID</label>
+<input type="text"
+name="patient_id"
+value="{{ patient_id }}"
+class="form-control appointment-input text-primary fw-bold"
+readonly>
+<small class="text-muted">Auto-generated based on your account</small>
+</div>
+
+<!-- ✅ Appointment ID -->
+<div class="col-md-6 mb-3">
+<label class="appointment-label">Appointment ID</label>
+<input type="text"
+value="{{ appointment_id }}"
+class="form-control appointment-input text-success fw-bold"
+readonly>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="appointment-label">Full Name</label>
+<input type="text" name="patient_name"
+class="form-control appointment-input" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label class="appointment-label">Age</label>
+<input type="number" name="age"
+class="form-control appointment-input" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label class="appointment-label">Gender</label>
+<select name="gender"
+class="form-select appointment-select" required>
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
+
+</div>
+
+<div class="mb-3">
+<label class="appointment-label">Contact Number</label>
+<input type="text" name="contact"
+class="form-control appointment-input" required>
+</div>
+
+<h5 class="appointment-section-title mt-4 mb-3">Appointment Details</h5>
+<hr>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="appointment-label">Appointment Date</label>
+<input type="date" name="appointment_date"
+class="form-control appointment-input" required>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="appointment-label">Time Slot</label>
+
+<select name="time_slot"
+class="form-select appointment-select" required>
+
+<option value="">Select Time</option>
+
+<option value="9:00 AM"
+{% if slot_counts['9:00 AM'] >= max_per_slot %}disabled{% endif %}>
+9:00 AM ({{ slot_counts['9:00 AM'] }}/{{ max_per_slot }} booked)
+</option>
+
+<option value="10:00 AM"
+{% if slot_counts['10:00 AM'] >= max_per_slot %}disabled{% endif %}>
+10:00 AM ({{ slot_counts['10:00 AM'] }}/{{ max_per_slot }} booked)
+</option>
+
+<option value="11:00 AM"
+{% if slot_counts['11:00 AM'] >= max_per_slot %}disabled{% endif %}>
+11:00 AM ({{ slot_counts['11:00 AM'] }}/{{ max_per_slot }} booked)
+</option>
+
+<option disabled>12:00 PM (Lunch Break)</option>
+
+<option value="2:00 PM"
+{% if slot_counts['2:00 PM'] >= max_per_slot %}disabled{% endif %}>
+2:00 PM ({{ slot_counts['2:00 PM'] }}/{{ max_per_slot }} booked)
+</option>
+
+<option value="3:00 PM"
+{% if slot_counts['3:00 PM'] >= max_per_slot %}disabled{% endif %}>
+3:00 PM ({{ slot_counts['3:00 PM'] }}/{{ max_per_slot }} booked)
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+<button type="submit" name="book" value="yes" class="appointment-btn">
+Book Appointment
+</button>
+</div>
+
+</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,1220 @@
+.hero-section{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 0;
+    margin-top: 10px;
+    min-height: 40px;
+}
+
+.hero-text{
+    width: 50%;
+    color: white !important;
+}
+
+.hero-text h1{
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height:1.2;
+}
+.hero-text h2{
+    font-size: 24px;
+    font-weight: 400;
+    color:#333;
+    margin-bottom: 30px;
+}
+.hero-text span {
+    color: #003366;
+}
+
+.hero-img{
+    width: 600px;
+    height: auto;
+    text-align: right;
+}
+
+.hero-img img{
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 9%;
+    border:6px solid white;
+    object-fit: cover;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* =====================
+   MOBILE RESPONSIVE
+===================== */
+
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text,
+    .hero-img {
+        width: 100%;
+    }
+
+    .hero-img {
+        margin-top: 30px;
+        text-align: center;
+    }
+}
+
+
+/* =====================
+   NAVBAR – SINGLE LINE
+   ===================== */
+/* Navbar Buttons Rounded Style */
+.navbar-nav .nav-link {
+    padding: 10px 25px;
+    border-radius: 25px;   /* Makes them pill/circle shape */
+    min-width: 100px;
+    text-align: center;
+    margin: 0 5px;
+    color: white !important;
+    background:#003366;  /* Blue default */
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1),-2px -2px 5px rgba(255,255,255,0.6);
+    border:2px solid white;
+}
+
+/* Hover Effect */
+.navbar-nav .nav-link:hover {
+    background: #003366;
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.2),-6px -6px 12px rgba(255,255,255,0.8);
+}
+
+/* Active Page Button */
+.navbar-nav .nav-link.active {
+    background: white !important;  /* White when active */
+    color: #003366 !important;     /* Text blue */
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.1);
+}
+
+.navbar {
+    background:#003366;
+    backdrop-filter: blur(8px);
+    padding: 6px 15px;
+    border:none;
+    font-weight: 500;
+    
+    box-shadow: none;
+}
+
+/* Brand text */
+.navbar-brand {
+    font-size: 22px;
+    font-weight: bold;
+    color: white ;
+}
+/* Emergency Button – Slightly Rounded + Soft Shadow + White Outline */
+.btn-danger {
+    border-radius: 12px;                        /* Slightly rounded corners */
+    padding: 10px 25px;
+    font-weight: 600;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1),    /* soft shadow */
+                -2px -2px 5px rgba(255,255,255,0.6);
+    border: 2px solid white;                    /* white outline for style consistency */
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.btn-danger {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.12),
+                -3px -3px 6px rgba(255,255,255,0.7);
+}
+
+/* Click / Active Effect */
+.btn-danger:active {
+    transform: translateY(1px);
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.08); /* pressed look */
+}
+
+
+/* =====================
+   HERO BUTTONS
+   ===================== */
+.btn-success {
+    background-color: #03305f;
+    color: white;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+.btn-success {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #03305f;
+    --bs-btn-border-color: #03305f;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg:#03305f;
+    --bs-btn-hover-border-color: #03305f;
+    --bs-btn-focus-shadow-rgb: 60, 153, 110;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #03305f;
+    --bs-btn-active-border-color: #03305f;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #03305f;
+    --bs-btn-disabled-border-color: #03305f;
+}
+.hero-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+}
+.hero-text button{
+    background-color: #03305f;
+    color: white;
+    border: none;
+    transition: 0.3s ease;
+}
+/* =====================
+   FOOTER – COMPACT
+   ===================== */
+
+.custom-footer {
+    background-color: #0b1c2d;
+    color: #f1f1f1;
+    padding: 18px 0 10px;
+}
+
+.custom-footer h5 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color:#ffffff;
+}
+
+.custom-footer p {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color:#cce6ff;
+}
+.custom-footer hr{
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.custom-footer .text-center{
+    color: #99ccff;
+    font-size: 13px;
+}
+.footer-bottom{
+    text-align: center;
+    padding-top: 10px;
+    font-size: 14px;
+    color:#cce6ff;
+    letter-spacing:0.5px;
+}
+
+.footer-line {
+    margin: 8px 0;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+
+@media (max-width: 768px) {
+    .hero-text h1 {
+        font-size: 34px;
+    }
+
+    .navbar-brand {
+        font-size: 18px;
+    }
+} 
+.about-container .hospital-name {
+    color:white;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.about-header {
+
+    background-image:url("../images/35.webp");
+    background-size:cover ;
+    background-position: center ;
+    color:white;
+    text-align: center;
+    padding: 70px 20px;
+    
+}
+.about-text 
+{
+    margin:20px;
+}
+.about-text h2{
+    color:#003366;
+    font-weight: 540;
+}
+
+.about-header h1 {
+    font-weight: 580;
+    font-size: 36px;
+    color: #003366;
+}
+
+.about-header p {
+    font-size: 16px;
+    color:#003366;
+}
+
+.about-section {
+    margin-bottom:35px;
+}
+
+.about-section h2 {
+    font-weight:540;
+    color:#003366;
+    margin-bottom: 10px;
+}
+
+.about-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color:#003366;
+}
+
+.about-section ul {
+    padding-left: 20px;
+}
+
+.about-section ul li {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.about-page .developer{
+    background-color: #ffffff;
+    padding: 25px 30px;
+    margin-bottom:25px ;
+    border-radius: 10px;
+    box-shadow:0 4px 10px rgba(0, 0, 0, 0.8) ;
+}
+.about-flex {
+    display: flex;
+    gap:100px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.about-flex > div{
+    flex:1;
+    min-width: 280px;
+    padding-left: 30px;
+}
+body{
+    background-color:#a0f0f0d3 ;
+}
+.about-page .about-image{
+    margin-right: 60px;
+}
+.about-image{
+    width:100%;
+    height:300px;
+    object-fit: cover;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border:5px solid white;
+}
+/*=============================
+   Contact Page Styling
+================================= */
+
+    
+
+
+/* ===== BODY ===== 
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #dbeafe, #f0f7ff);
+}
+
+/* ===== HEADER ===== */
+.contact-header {
+    text-align: center;
+    padding: 40px 20px 10px;
+}
+
+.contact-header h1 {
+    text-align: center;
+    font-size: 36px;
+    color: #1f3c88;
+    margin-bottom: 10px;
+}
+h1 {
+    text-align: center;
+    color: #1565c0;
+}
+.contact-header p {
+    color:#003366;
+    font-size: 16px;
+}
+
+/* ===== WRAPPER ===== */
+.contact-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+/* ===== LEFT CARD ===== */
+.info-card {
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.info-card h2 {
+    color: #1f3c88;
+    margin-bottom: 20px;
+}
+
+.info-card p {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ===== RIGHT CARD ===== */
+.form-card {
+    background: white;
+    padding: 30px;
+    width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.form-card h2 {
+    color: #1f3c88;
+    margin-bottom: 20px;
+}
+
+/* ===== FORM INPUTS ===== */
+.form-card input,
+.form-card textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.form-card textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* ===== BUTTON ===== */
+.form-card button {
+    width: 100%;
+    padding: 12px;
+    background-color:#003366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-card button:hover {
+    background-color:#003366;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .contact-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-card {
+        width: 350px;
+    }
+}
+
+
+/* Emergency Box */
+.emergency-box {
+    border-radius: 12px;
+    font-weight: 600;
+}
+.emergency-section {
+    background-color: #0d1b2a;   /* Dark sidebar color */
+    border-radius: 8px;
+}
+
+.emergency-section .btn {
+    border-radius: 6px;
+    transition: 0.3s ease;
+}
+
+.emergency-section .btn:hover {
+    background-color: #ff4d4d;
+    transform: scale(1.05);
+}
+.neumo-section {
+    min-height: 60vh;
+}
+
+.neumo-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 22px;
+    color: #555;
+    height: 150px;
+    border-radius: 20px;
+    background: #e0e5ec;
+    box-shadow: 8px 8px 15px #a3b1c6,
+                -8px -8px 15px #ffffff;
+    transition: all 0.3s ease;
+}
+
+.neumo-btn span {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.neumo-btn:hover {
+    box-shadow: inset 8px 8px 15px #a3b1c6,
+                inset -8px -8px 15px #ffffff;
+}
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #03305f;
+    --bs-btn-border-color: #03305f;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #03305f;
+    --bs-btn-hover-border-color: #03305f;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #03305f;
+    --bs-btn-active-border-color: #03305f;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #03305f;
+    --bs-btn-disabled-border-color: #03305f;
+}
+.service-heading{
+    color:#003366;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.service-heading {
+    color:#003366;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.ambulance-include-heading {
+    color: #003366;
+    font-weight: bold;
+}
+.ambulance-charges-heading {
+    color: #003366;
+    font-weight: bold;
+}
+.request-btn {
+    background-color:#003366;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.request-btn:hover {
+    background-color: #1367ab;
+}
+
+.form-control:focus {
+    border-color: #003366;
+    box-shadow: 0 0 6px rgba(25, 135, 116, 0.3);
+    font-weight: bold;
+}
+.bed-heading {
+    color: #003366;
+    font-weight: 700;
+}
+
+.bed-btn {
+    background-color: #0d4f8b;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.bed-btn:hover {
+    background-color:#0d4f8b;
+    transform: scale(1.05);
+}
+
+.bed-charges {
+    color: #003366;
+    font-weight: 700;
+}
+/* ===== GENERAL ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to right, #8cc1f5, #ffffff);
+}
+.navbar-nav .nav-link,
+.login-btn,
+.Register-btn {
+    padding: 10px 25px;
+    border-radius: 20px;
+    margin:0 5px;
+    background: #003366;
+    color: white!important;
+    border: 2px solid white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1),
+                -2px -2px 5px rgba(255,255,255,0.6);
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.login-btn:hover,
+.Register-btn:hover {
+    background:#003366;
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.2),
+                -6px -6px 12px rgba(255,255,255,0.8);
+}
+
+.navbar-nav .nav-link.active,
+.login-btn.active,
+.Register-btn.active {
+    background: white;
+    color: #003366!important;
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.2);
+    border: 2px solid white;
+}
+/* ===== LOGIN CONTAINER ===== */
+.login-container {
+    width: 350px;
+    background: white;
+    padding: 30px;
+    margin: 100px auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* ===== LOGIN TITLE ===== */
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #003366;
+}
+
+/* ===== INPUT FIELDS ===== */
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* ===== BUTTON ===== */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color:#003366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-container button:hover {
+    background-color: rgb(12, 102, 138);
+}
+
+/* ===== OPTIONAL SMALL TEXT ===== */
+.login-container p {
+    font-size: 14px;
+    margin-top: 15px;
+} 
+/* ================= REGISTER PAGE ================= */
+
+.register-container {
+    width: 350px;
+    height: 450px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin: 100px auto;
+}
+
+.register-container h2 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+}
+
+.register-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.register-container input:focus {
+    border-color:#003366;
+    outline: none;
+    box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+}
+
+.register-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #003366;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-container button:hover {
+    background-color:#003366;
+}
+
+.register-container p {
+    text-align: center;
+    margin-top: 15px;
+}
+.register-container {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🚨 Alert Banner */
+.alert-banner {
+    background: #d32f2f;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-weight: bold;
+}
+
+/* Main Container */
+.main-container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: left;
+    color: #1565c0;
+}
+
+/* Instructions */
+.instructions {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.instructions ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* Form Card */
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.form-container input,
+.form-container select
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+    border-color: #03305f;
+    outline: none;
+}
+/* hide default checkbox */
+.custom-check input {
+    display: none;
+}
+
+.form-container input, .form-container select .form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+/* Submit Button */
+.submit-btn {
+    background: #03305f;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #03305f;
+}
+
+/* Success Message */
+.success-message {
+    background: #e8f5e9;
+    color: #03305f;
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Services Section */
+.services {
+    text-align: center;
+}
+
+.service-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.service-cards .card {
+    background: white;
+    width: 200px;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.service-card h4 {
+    margin: 10px 0 5px 0;
+    color: #1565c0;
+}
+/* ============================= */
+/* Ambulance Service Cards Only */
+/* ============================= */
+
+/* ============================= */
+/* Ambulance Service Cards Style */
+/* ============================= */
+
+/* Simple Clean Ambulance Cards */
+.cards-section{
+    margin-bottom: 60px
+}
+
+.ambulance-card {
+    background: #f6f8fb;          /* very soft background */
+    border-radius: 18px;          /* smooth rounded corners */
+    padding: 40px 25px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+    border: none;
+}
+
+.ambulance-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Title */
+.ambulance-card h5 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Description */
+.ambulance-card p {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+}
+
+
+/* Emergency Call Section */
+.emergency-call-section {
+    text-align: center;
+    margin: 15px 0;
+}
+
+/* Call Button */
+.call-btn {
+    background: #c62828;
+    color: white;
+    padding: 9px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s ease;
+}
+
+/* Hover Effect */
+.call-btn:hover {
+    background: #b71c1c;
+    transform: scale(1.05);
+}
+/* ===============================
+   Appointment Page Custom Styling
+================================ */
+
+/* =========================================
+   City Care Hospital - Appointment Page
+========================================= */
+
+/* Page Spacing */
+.appointment-page {
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+/* =========================================
+   Heading Section
+========================================= */
+
+.appointment-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.appointment-title {
+    font-size: 34px;
+    color: #003366;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   Instruction Box
+========================================= */
+
+.appointment-instruction-box {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.appointment-instruction-box h4 {
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.appointment-instruction-box ul {
+    padding-left: 20px;
+}
+
+.appointment-instruction-box li {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #555;
+}
+
+/* =========================================
+   Form Container
+========================================= */
+
+.appointment-form-container {
+    width: 80%;
+    margin: 40px auto;
+}
+
+/* Card Styling */
+.appointment-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* Section Headings */
+.appointment-section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #003366;
+    border-left: 4px solid #003366;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   Form Fields
+========================================= */
+
+.appointment-label {
+    font-weight: 500;
+    color: #333;
+}
+
+.appointment-input,
+.appointment-select,
+.appointment-textarea {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.appointment-input:focus,
+.appointment-select:focus,
+.appointment-textarea:focus {
+    border-color: #003366;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.2);
+    outline: none;
+}
+
+/* =========================================
+   Doctor Selection
+========================================= */
+
+.doctor-selection-box {
+    background-color: #f1f7ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   Submit Button
+========================================= */
+
+.appointment-btn {
+    background-color:#003366;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.appointment-btn:hover {
+    background-color:#003366;
+    transform: scale(1.05);
+}
+
+/* =========================================
+   Alert Messages
+========================================= */
+
+.appointment-alert {
+    border-radius: 10px;
+    padding: 12px;
+}
+/* =========================================
+   Doctor Cards Section
+========================================= */
+
+.doctor-cards-container {
+    width: 85%;
+    margin: 40px auto;
+}
+
+.doctor-card-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.doctor-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    width: 30%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: 0.3s;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+}
+
+.doctor-card h5 {
+    font-weight: 600;
+    color:#003366;
+    margin-bottom: 10px;
+}
+
+.doctor-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Select Button */
+.doctor-select-btn {
+    margin-top: 10px;
+    background-color:#003366;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.doctor-select-btn:hover {
+    background-color:#003366;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .doctor-card {
+        width: 100%;
+    }
+}
+/* =========================================
+   Responsive Design
+========================================= */
+
+@media (max-width: 768px) {
+    .appointment-instruction-box,
+    .appointment-form-container {
+        width: 95%;
+    }
+
+    .appointment-title {
+        font-size: 26px;
+    }
+}
+.QR.img{
+    width: 200px;
+    border:3px solid #28a745;
+    padding:10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+/* ambulance_slip.css */
+
+
+.slip {
+    width: 400px;
+    margin: 60px auto;
+    padding: 25px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 2px solid #2c3e50;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.slip h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.slip p {
+    font-size: 15px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.slip strong {
+    color: #000;
+}
+
+
+
+
+.btnslip {
+    width: 110px;
+    padding: 6px;
+    background-color:#03305f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+
+
+/* Print styling */
+@media print {
+    body {
+        background: white;
+    }
+
+    .btn {
+        display: none;
+    }
+
+    .slip {
+        box-shadow: none;
+        border: 1px solid skyblue;
+    }
+}

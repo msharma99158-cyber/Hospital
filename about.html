@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="about-container">
+    <header class="about-header">
+        <img src="{{ url_for('static', filename='images/35.webp') }}" alt="About Image" class="about-image">
+
+        
+    </header>
+        
+    <div class="about-section">
+        <h2>Project Overview</h2>
+        <p>
+            This project is designed to help hospitals manage patient information
+            during emergency situations when family members are not available.
+            It provides a digital platform to collect, store, and access patient
+            details securely and efficiently.
+
+        <p>
+            In addition to patient information management, the system also supports 
+            hospital bed availability checking and ambualance booking. This feature
+            is especially useful in rural areas where finding available hospital beds 
+            and ambulances during emergencies can be difficult. The system helps reduse
+            delays and improve access to timely medical care.
+
+        </p>
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>Objectives</h2>
+        <ul>
+            <li>Reduce paperwork during emergencies</li>
+            <li>Save time for hospital staff</li>
+            <li>Ensure accurate patient data storage</li>
+            <li>Improve emergency healthcare services</li>
+        </ul>
+    </div>
+
+    <div class="about-section">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Online patient information form</li>
+            <li>Emergency contact details</li>
+            <li>Hospital bed booking system</li>
+            <li>Ambulance availability and booking</li>
+            <li>User-friendly interface</li>
+        </ul>
+    </div>
+
+    <div class="about-section developer">
+        <h2>About the Developer</h2>
+        <p>
+            Developed by <strong>Muskan Sharma , Tania</strong><br>
+            BCA Student<br>
+            GNDU University
+        </p>
+    </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- 🚨 ALERT BANNER -->
+<div class="alert-banner">
+    🚨 If this is a life-threatening emergency, call 108 immediately!
+</div>
+
+<div class="emergency-call-section">
+    <a href="tel:108" class="call-btn">
+        📞 Call Emergency 108
+    </a>
+</div>
+
+<div class="main-container">
+
+    <!-- 🏥 PAGE TITLE -->
+    <h1>🚑 City Care Hospital - Emergency Patient Portal</h1>
+
+    <!-- 📌 INSTRUCTIONS SECTION -->
+    <div class="instructions">
+        <h3>Instructions for Family Members</h3>
+        <ul>
+            <li>Use the Patient ID provided by hospital staff.</li>
+            <li>If patient name is unknown, leave it blank.</li>
+            <li>Provide accurate medical information.</li>
+            <li>All details will be verified before approval.</li>
+            <li>Your information is secure and confidential.</li>
+        </ul>
+    </div>
+
+    <!-- 📝 EMERGENCY FORM -->
+    <div class="form-container">
+        <h2>Emergency Patient Details Submission</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "form_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <!-- 🔐 Patient Verification -->
+            <h3>Patient Verification</h3>
+            <input type="text" name="patient_id" placeholder="Enter Patient ID Provided by Hospital" required>
+
+            <!-- 👤 Patient Information -->
+            <h3>Patient Information</h3>
+
+            <!-- Optional Name -->
+            <input type="text" name="patient_name" placeholder="Patient Full Name (If Known)">
+            <input type="date" name="dob" required>
+
+            <select name="blood_group" required>
+                <option value="">Blood Group</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+                <option>O+</option>
+                <option>O-</option>
+                <option>Other</option>
+            </select>
+
+            <textarea name="medical_history" placeholder="Medical History / Allergies" required></textarea>
+
+            <!-- 👨‍👩‍👧 Guardian Information -->
+            <h3>Guardian Information</h3>
+
+            <div class="two-fields">
+                <input type="text" name="guardian_name" placeholder="Guardian Name" required>
+                <input type="text" name="relation" placeholder="Relation with Patient" required>
+            </div>
+
+            <div class="two-fields">
+                <input type="text" name="contact_number" placeholder="Contact Number" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+
+            <textarea name="address" placeholder="Permanent Address" required></textarea>
+
+            <!-- 🏥 Insurance Details -->
+            <h3>Insurance Details (Optional)</h3>
+
+            <div class="two-fields">
+                <input type="text" name="insurance_provider" placeholder="Insurance Provider">
+                <input type="text" name="policy_number" placeholder="Policy Number">
+            </div>
+
+            <input type="file" name="insurance_file">
+
+            <!-- 📍 Reason -->
+            <select name="reason" required>
+                <option value="">Reason for Remote Submission</option>
+                <option>Out of City</option>
+                <option>Travel Delay</option>
+                <option>Medical Emergency</option>
+                <option>Work Commitment</option>
+                <option>Other</option>
+            </select>
+
+            <!-- ✅ Declaration -->
+            <div class="declaration">
+                <input type="checkbox" name="declaration" required>
+                I confirm that I am a family member or authorized person and the above information is true.
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Submit Patient Details
+            </button>
+
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

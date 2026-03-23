@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Bed-Booking Service - City Care Hospital{% endblock %}
+
+{% block content %}
+
+<section class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h2 class="service-heading">🚑 Bed-Booking Service</h2>
+        <p class="text-muted">Fast and reliable bed booking service</p>
+    </div>
+
+    <div class="text-center mb-4">
+        <a href="tel:108" class="btn btn-danger btn-lg">
+            📞 Call Emergency 108
+        </a>
+    </div>
+
+    <!-- BED AVAILABILITY -->
+    <div class="alert alert-info text-center mb-4">
+        <h5>🛏 Current Bed Availability</h5>
+
+        <p>General Ward: <strong>{{ available_beds['General'] }}</strong> beds available</p>
+        <p>Semi-Private: <strong>{{ available_beds['Semi-Private'] }}</strong> beds available</p>
+        <p>Private Room: <strong>{{ available_beds['Private'] }}</strong> beds available</p>
+        <p>ICU: <strong>{{ available_beds['ICU'] }}</strong> beds available</p>
+    </div>
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+
+        {% if category == "form_success" %}
+          <div class="alert alert-success text-center">
+            {{ message }}
+          </div>
+        {% endif %}
+
+        {% if category == "error" %}
+          <div class="alert alert-danger text-center">
+            {{ message }}
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    {% endwith %}
+
+    <!-- FORM -->
+    <div class="card shadow p-4">
+
+        <form method="POST">
+
+            <!-- 🔥 Booking ID -->
+            <div class="mb-3">
+                <label class="form-label">Booking ID</label>
+                <input type="text"
+                name="bed_id"
+                value="{{ bed_id }}"
+                class="form-control fw-bold text-success"
+                readonly>
+            </div>
+
+            <!-- 🔥 Patient ID (FIXED ✅) -->
+            <div class="mb-3">
+                <label class="form-label">Patient ID</label>
+                <input type="text"
+                value="{{ patient_id }}"
+                class="form-control fw-bold text-primary"
+                readonly>
+                <small class="text-muted">Auto-generated based on your login</small>
+            </div>
+
+            <!-- PATIENT NAME -->
+            <div class="mb-3">
+                <label class="form-label">Patient Name</label>
+                <input type="text"
+                name="patient_name"
+                class="form-control"
+                placeholder="Enter patient name"
+                required>
+            </div>
+
+            <!-- CONTACT NUMBER -->
+            <div class="mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="tel"
+                name="contact_number"
+                class="form-control"
+                placeholder="Enter contact number"
+                required>
+            </div>
+
+            <!-- BED TYPE -->
+            <div class="mb-3">
+                <label class="form-label">Select Bed Type</label>
+
+                <select name="bed_type" class="form-control" required>
+
+                    <option value="">-- Select Bed Type --</option>
+
+                    <option value="General"
+                    {% if available_beds['General'] <= 0 %}disabled{% endif %}>
+                    General Ward - ₹1000/day
+                    {% if available_beds['General'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                    <option value="Semi-Private"
+                    {% if available_beds['Semi-Private'] <= 0 %}disabled{% endif %}>
+                    Semi-Private - ₹2000/day
+                    {% if available_beds['Semi-Private'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                    <option value="Private"
+                    {% if available_beds['Private'] <= 0 %}disabled{% endif %}>
+                    Private Room - ₹3500/day
+                    {% if available_beds['Private'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                    <option value="ICU"
+                    {% if available_beds['ICU'] <= 0 %}disabled{% endif %}>
+                    ICU - ₹5000/day
+                    {% if available_beds['ICU'] <= 0 %}(Not Available){% endif %}
+                    </option>
+
+                </select>
+            </div>
+
+            <!-- EMERGENCY TYPE -->
+            <div class="mb-3">
+                <label class="form-label">Emergency Type</label>
+                <select name="emergency_type" class="form-select" required>
+                    <option value="">Select Emergency Type</option>
+                    <option>Accident</option>
+                    <option>Heart Problem</option>
+                    <option>Pregnancy</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <!-- ADMISSION DATE -->
+            <div class="mb-3">
+                <label class="form-label">Admission Date</label>
+                <input type="date"
+                name="admission_date"
+                class="form-control"
+                required>
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-4">
+                    Request Bed
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

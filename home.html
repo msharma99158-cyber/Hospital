@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Home | City Care Hospital{% endblock %}
+
+{% block content %}
+
+<div class="hero-section">
+
+    <!-- LEFT SIDE CONTENT -->
+    <div class="hero-text">
+
+        <h5 class="tagline">
+            Healthcare Clinics & Partnership Organizations
+        </h5>
+
+        <h1>
+            Our expertise at <br>
+            <span>your service</span>
+        </h1>
+
+        <div class="hero-buttons">
+            <a href="{{ url_for('appointment') }}" class="btn btn-light">
+                Book an Appointment
+            </a>
+
+            <a href="{{ url_for('emergency') }}" class="btn btn-success" >
+                Have an Emergency?
+            </a>
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE IMAGE -->
+    <div class="hero-img">
+        <img src="{{ url_for('static', filename='images/ms.jpg') }}" alt="Hospital Image">
+    </div>
+
+</div>
+
+{% endblock %}
