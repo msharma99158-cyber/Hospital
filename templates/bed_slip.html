@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bed Booking Slip</title>
+    <!-- ✅ FLASH MESSAGES -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "bed_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="slip">
+
+        <!-- 🔥 HOSPITAL NAME -->
+        <h2 style="text-align:center; color:#03305f;">
+            🏥 City Care Hospital
+        </h2>
+
+        <h3>🛏 Bed Booking Slip</h3>
+
+        <!-- ✅ USE booking (NOT data) -->
+        <p><strong>Booking ID:</strong> {{ bed.id }}</p>
+        <p><strong>Bed ID:</strong> {{ bed.bed_id }}</p>
+        <p><strong>Patient ID:</strong> {{ bed.patient_id }}</p>
+
+        <p><strong>Name:</strong> {{ bed.patient_name }}</p>
+        <p><strong>Contact:</strong> {{ bed.contact_number }}</p>
+        <p><strong>Bed Type:</strong> {{ bed.bed_type }}</p>
+        <p><strong>Emergency Type:</strong> {{ bed.emergency_type }}</p>
+
+        <p><strong>Admission Date:</strong> {{ bed.admission_date }}</p>
+
+        <p><strong>Status:</strong> {{ bed.status }}</p>
+
+        <div class="btn-group">
+            <button class="btnslip" onclick="window.print()">🖨️ Print Slip</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+{% endblock %}

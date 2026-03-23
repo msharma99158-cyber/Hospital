@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Slip</title>
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="slip">
+
+        <!-- 🔥 HOSPITAL NAME -->
+        <h2 style="text-align:center; color:#03305f;">
+            🏥 City Care Hospital
+        </h2>
+
+        <h3>📅 Appointment Slip</h3>
+
+        <!-- IDs -->
+        <p><strong>Appointment ID:</strong> {{ appointment.appointment_id }}</p>
+        <p><strong>Patient ID:</strong> {{ appointment.patient_id }}</p>
+
+        <!-- Patient Details -->
+        <p><strong>Name:</strong> {{ appointment.patient_name }}</p>
+        <p><strong>Age:</strong> {{ appointment.age }}</p>
+        <p><strong>Gender:</strong> {{ appointment.gender }}</p>
+        <p><strong>Contact:</strong> {{ appointment.contact }}</p>
+
+        <!-- Appointment Details -->
+        <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
+        <p><strong>Time Slot:</strong> {{ appointment.time_slot }}</p>
+
+        <!-- Status -->
+        <p><strong>Status:</strong> 
+            <span style="color:green; font-weight:bold;">Booked</span>
+        </p>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+            <button class="btnslip" onclick="window.print()">🖨️ Print Slip</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+{% endblock %}

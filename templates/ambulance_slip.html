@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Booking Slip</title>
+    <!-- ✅ FLASH MESSAGES -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == "ambulance_success" %}
+      <div class="alert alert-success text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+    {% if category == "error" %}
+      <div class="alert alert-danger text-center">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+    <!-- Correct CSS link -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+     <div class="slip">
+        <h2 style="text-align:center; color:#03305f;">
+            🏥 City Care Hospital
+        </h2>
+
+        <h3> Ambulance Booking Slip</h3>
+
+    <p><strong>Booking ID:</strong> {{ ambulance.id }}</p>
+    <p><strong>Ambulance ID:</strong> {{ ambulance.ambulance_id }}</p>
+    <p><strong>Patient ID:</strong> {{ ambulance.patient_id }}</p>
+
+    <p><strong>Name:</strong> {{ ambulance.patient_name }}</p>
+    <p><strong>Contact:</strong> {{ ambulance.contact_number }}</p>
+    <p><strong>Location:</strong> {{ ambulance.pickup_location }}</p>
+    <p><strong>Emergency Type:</strong> {{ ambulance.emergency_type }}</p>
+
+    <p><strong>Status:</strong> {{ ambulance.status }}</p>
+    <p><strong>Time:</strong> {{ ambulance.request_time.strftime('%d-%m-%Y %I:%M %p') }}</p>
+
+    <div class="btn-group">
+    <button class="btnslip" onclick="window.print()">🖨️ Print Slip</button>
+    
+    </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}

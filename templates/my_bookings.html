@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align:center;">📋 My Bookings</h2>
+
+<!-- 🚑 Ambulance Bookings -->
+<h3>🚑 Ambulance Bookings</h3>
+<table border="1" width="100%">
+    <tr>
+        <th>ID</th>
+        <th>Ambulance ID</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for a in ambulance_bookings %}
+    <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.ambulance_id }}</td>
+        <td>{{ a.status }}</td>
+        <td>
+            <a href="{{ url_for('ambulance_slip', id=a.id) }}">View Slip</a>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No ambulance bookings</td></tr>
+    {% endfor %}
+</table>
+
+
+<!-- 🛏️ Bed Bookings -->
+<h3>🛏️ Bed Bookings</h3>
+<table border="1" width="100%">
+    <tr>
+        <th>ID</th>
+        <th>Bed ID</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for b in bed_bookings %}
+    <tr>
+        <td>{{ b.id }}</td>
+        <td>{{ b.bed_id }}</td>
+        <td>{{ b.status }}</td>
+        <td>
+            <a href="{{ url_for('bed_slip', id=b.id) }}">View Slip</a>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No bed bookings</td></tr>
+    {% endfor %}
+</table>
+
+<!-- 📅 Appointments -->
+<h3>📅 Appointment Bookings</h3>
+<table border="1" width="100%">
+    <tr>
+        <th>ID</th>
+        <th>Appointment ID</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for ap in appointment_bookings %}
+    <tr>
+        <td>{{ ap.id }}</td>
+        <td>{{ ap.bed_id }}</td>
+        <td>{{ ap.status }}</td>
+        <td>
+            <a href="{{ url_for('appointment_slip', id=b.id) }}">View Slip</a>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No appointment bookings</td></tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- 🚨 ALERT BANNER -->
+<div class="alert-banner text-center p-2 bg-danger text-white">
+    🚨 If this is a life-threatening emergency, call 108 immediately!
+</div>
+
+<!-- 📞 EMERGENCY CALL BUTTON -->
+<div class="emergency-call-section text-center my-3">
+    <a href="tel:108" class="btn btn-danger">
+        📞 Call Emergency 108
+    </a>
+</div>
+
+<div class="container main-container">
+
+    <!-- 🏥 PAGE TITLE -->
+    <h1 class="text-center mb-4">🚑 City Care Hospital - Emergency Patient Portal</h1>
+
+    <!-- 📌 INSTRUCTIONS -->
+    <div class="instructions mb-4 p-3 border rounded">
+        <h3>Instructions for Family Members</h3>
+        <ul>
+            <li>Use the Patient ID provided by hospital staff.</li>
+            <li>If patient name is unknown, leave it blank.</li>
+            <li>Provide accurate medical information.</li>
+            <li>All details will be verified before approval.</li>
+            <li>Your information is secure and confidential.</li>
+        </ul>
+    </div>
+
+    <!-- 📝 FORM SECTION -->
+    <div class="form-container p-4 border rounded">
+
+        <h2 class="text-center mb-4">Emergency Patient Details Submission</h2>
+
+        <!-- FLASH MESSAGE -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {% if category == "emergency_success" %}
+                    <div class="alert alert-success text-center">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <!-- PATIENT VERIFICATION -->
+            <h4>Patient Verification</h4>
+            <input type="text" name="patient_id" class="form-control mb-3"
+                   placeholder="Enter Patient ID Provided by Hospital" required>
+
+            <!-- PATIENT INFORMATION -->
+            <h4>Patient Information</h4>
+
+            <input type="text" name="patient_name" class="form-control mb-3"
+                   placeholder="Patient Full Name (If Known)">
+
+            <input type="date" name="dob" class="form-control mb-3" required>
+
+            <select name="blood_group" class="form-control mb-3" required>
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <textarea name="medical_history" class="form-control mb-3"
+                      placeholder="Medical History / Allergies" required></textarea>
+
+            <!-- GUARDIAN INFORMATION -->
+            <h4>Guardian Information</h4>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" name="guardian_name" class="form-control"
+                           placeholder="Guardian Name" required>
+                </div>
+
+                <div class="col-md-6">
+                    <input type="text" name="relation" class="form-control"
+                           placeholder="Relation with Patient" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="tel" name="contact_number" class="form-control"
+                           placeholder="Contact Number" required>
+                </div>
+
+                <div class="col-md-6">
+                    <input type="email" name="email" class="form-control"
+                           placeholder="Email Address" required>
+                </div>
+            </div>
+
+            <textarea name="address" class="form-control mb-3"
+                      placeholder="Permanent Address" required></textarea>
+
+            <!-- INSURANCE DETAILS -->
+            <h4>Insurance Details (Optional)</h4>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" name="insurance_provider" class="form-control"
+                           placeholder="Insurance Provider">
+                </div>
+
+                <div class="col-md-6">
+                    <input type="text" name="policy_number" class="form-control"
+                           placeholder="Policy Number">
+                </div>
+            </div>
+
+            <input type="file" name="insurance_file" class="form-control mb-3"
+                   accept=".pdf,.jpg,.png">
+
+            <!-- REASON -->
+            <select name="reason" class="form-control mb-3" required>
+                <option value="">Reason for Remote Submission</option>
+                <option value="Out of City">Out of City</option>
+                <option value="Travel Delay">Travel Delay</option>
+                <option value="Medical Emergency">Medical Emergency</option>
+                <option value="Work Commitment">Work Commitment</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <!-- DECLARATION -->
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input"
+                       name="declaration" required>
+                <label class="form-check-label">
+                    I confirm that I am a family member or authorized person
+                    and the above information is true.
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Submit Patient Details
+            </button>
+
+        </form>
+    </div>
+
+    <!-- SERVICES SECTION -->
+    <div class="mt-5">
+
+        <h2 class="text-center mb-4">Our Services</h2>
+
+        <div class="row text-center">
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🚑 24/7 Ambulance</h4>
+                    <p>Fast response ambulance service available anytime.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🏥 ICU Support</h4>
+                    <p>Fully equipped ICU for critical patients.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>🩸 Blood Bank</h4>
+                    <p>All major blood groups available.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h4>👨‍⚕ Expert Doctors</h4>
+                    <p>Experienced emergency medical team.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
