@@ -325,7 +325,7 @@ def appointment():
 
         new_patient = Patient(
             patient_id=patient_id,
-            user_id=session['user_id']
+            user_id=session.get['user_id']
         )
         db.session.add(new_patient)
         db.session.commit()
@@ -377,7 +377,7 @@ def appointment():
                 "appointment_success"
             )
 
-            return redirect(url_for('appointment_slip', booking_id=new_appointment.id))
+            return redirect(url_for('appointment_slip', id=new_appointment.id))
 
 
     return render_template(
@@ -393,43 +393,72 @@ def appointment_slip(id):
     return render_template('appointment_slip.html', appointment=appointment)
 # ---------------- EMERGENCY REQUEST ----------------
 
-@app.route('/emergency', methods=['GET', 'POST'])
+@app.route("/emergency", methods=["GET", "POST"])
+@login_required
 def emergency():
-    if request.method == 'POST':
 
-        dob_str = request.form['dob']
-        dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+    if request.method == "POST":
 
-        new_request = EmergencyRequest(
-            patient_id=request.form['patient_id'],
-            patient_name=request.form['patient_name'],
+        # 🔐 Get form data
+        patient_id = request.form.get("patient_id")
+        patient_name = request.form.get("patient_name")
+        dob = request.form.get("dob")
+        blood_group = request.form.get("blood_group")
+        medical_history = request.form.get("medical_history")
+
+        guardian_name = request.form.get("guardian_name")
+        relation = request.form.get("relation")
+        contact_number = request.form.get("contact_number")
+        email = request.form.get("email")
+        address = request.form.get("address")
+
+        insurance_provider = request.form.get("insurance_provider")
+        policy_number = request.form.get("policy_number")
+
+        reason = request.form.get("reason")
+
+        # ✅ Optional file upload (safe handling)
+        insurance_file = request.files.get("insurance_file")
+        file_name = None
+
+        if insurance_file and insurance_file.filename != "":
+            file_name = insurance_file.filename
+            insurance_file.save("static/uploads/" + file_name)
+
+        # ✅ Save to database
+        new_emergency = emergency(
+            patient_id=patient_id,
+            patient_name=patient_name,
             dob=dob,
-            blood_group=request.form['blood_group'],
-            medical_history=request.form['medical_history'],
-
-            guardian_name=request.form['guardian_name'],
-            relation=request.form['relation'],
-            contact_number=request.form['contact_number'],
-            email=request.form['email'],
-            address=request.form['address'],
-
-            insurance_provider=request.form.get('insurance_provider'),
-            policy_number=request.form.get('policy_number'),
-
-            reason=request.form['reason']
+            blood_group=blood_group,
+            medical_history=medical_history,
+            guardian_name=guardian_name,
+            relation=relation,
+            contact_number=contact_number,
+            email=email,
+            address=address,
+            insurance_provider=insurance_provider,
+            policy_number=policy_number,
+            reason=reason,
+            insurance_file=file_name,
+            status="Pending"   # optional but useful
         )
 
-        db.session.add(new_request)
+        db.session.add(new_emergency)
         db.session.commit()
 
-        flash("Patient details submitted successfully!","emergency_success")
-        return redirect(url_for('emergency'))
+        # 🔥 REDIRECT TO SLIP PAGE
+        return redirect(url_for('emergency_slip', id=new_emergency.id))
 
-    return render_template('emergency.html')
+    return render_template("emergency.html")
+
+@app.route('/emergency_slip/<int:id>')
+def emergency_slip(id):
+    emergency = emergency.query.get_or_404(id)
+    return render_template('emergency_slip.html', emergency=emergency)
 # ---------------- AMBULANCE ----------------
 
 @app.route("/ambulance", methods=['GET', 'POST'])
-@login_required
 def ambulance():
 
     TOTAL_AMBULANCES = 10
@@ -448,7 +477,7 @@ def ambulance():
 
         new_patient = Patient(
             patient_id=patient_id,
-            user_id=session['user_id']
+            user_id=session.get['user_id']
         )
         db.session.add(new_patient)
         db.session.commit()
