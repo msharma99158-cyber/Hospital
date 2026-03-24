@@ -100,15 +100,16 @@ class EmergencyRequest(db.Model):
     address = db.Column(db.Text, nullable=False)
 
     # Insurance
-    insurance_provider = db.Column(db.String(100), nullable=True)
+    insurance_provider = db.Column(db.String(500), nullable=True)
     policy_number = db.Column(db.String(100), nullable=True)
+    insurance_file = db.Column(db.String(500), nullable=True)
 
     # Reason
     reason = db.Column(db.String(100), nullable=False)
 
     status = db.Column(db.String(20), default="Pending")
     submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
-
+    
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     appointment_id=db.Column(db.String(20), unique=True)
@@ -394,15 +395,14 @@ def appointment_slip(id):
 # ---------------- EMERGENCY REQUEST ----------------
 
 @app.route("/emergency", methods=["GET", "POST"])
-@login_required
 def emergency():
 
     if request.method == "POST":
 
-        # 🔐 Get form data
         patient_id = request.form.get("patient_id")
         patient_name = request.form.get("patient_name")
-        dob = request.form.get("dob")
+        dob_str = request.form.get("dob")
+        dob = datetime.strptime(dob_str, "%Y-%m-%d").date() if dob_str else None
         blood_group = request.form.get("blood_group")
         medical_history = request.form.get("medical_history")
 
@@ -417,7 +417,6 @@ def emergency():
 
         reason = request.form.get("reason")
 
-        # ✅ Optional file upload (safe handling)
         insurance_file = request.files.get("insurance_file")
         file_name = None
 
@@ -425,8 +424,8 @@ def emergency():
             file_name = insurance_file.filename
             insurance_file.save("static/uploads/" + file_name)
 
-        # ✅ Save to database
-        new_emergency = emergency(
+        # ✅ FIXED HERE
+        new_emergency = EmergencyRequest(
             patient_id=patient_id,
             patient_name=patient_name,
             dob=dob,
@@ -441,20 +440,20 @@ def emergency():
             policy_number=policy_number,
             reason=reason,
             insurance_file=file_name,
-            status="Pending"   # optional but useful
+            status="Pending"
         )
 
         db.session.add(new_emergency)
         db.session.commit()
 
-        # 🔥 REDIRECT TO SLIP PAGE
         return redirect(url_for('emergency_slip', id=new_emergency.id))
 
     return render_template("emergency.html")
 
+
 @app.route('/emergency_slip/<int:id>')
 def emergency_slip(id):
-    emergency = emergency.query.get_or_404(id)
+    emergency = EmergencyRequest.query.get_or_404(id)   # ✅ FIXED
     return render_template('emergency_slip.html', emergency=emergency)
 # ---------------- AMBULANCE ----------------
 
