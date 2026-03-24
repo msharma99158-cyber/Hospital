@@ -1,10 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 <h2 style="text-align:center;">📋 My Bookings</h2>
+<div class="dashboard-cards">
+
+    <div class="card blue">
+        <h4>Total Bookings</h4>
+        <h2>{{ total_ambulance + total_bed + total_appointment + total_emergency }}</h2>
+    </div>
+
+    <div class="card green">
+        <h4>Available Beds</h4>
+        <h2>{{ available_beds }}</h2>
+    </div>
+
+    <div class="card red">
+        <h4>Cancelled</h4>
+        <h2>{{ cancelled_ambulance + cancelled_bed + cancelled_appointment + cancelled_emergency }}</h2>
+    </div>
+
+    <div class="card yellow">
+        <h4>Emergency Cases</h4>
+        <h2>{{ total_emergency }}</h2>
+    </div>
+
+</div>
 
 <!-- 🚑 Ambulance Bookings -->
 <h3>🚑 Ambulance Bookings</h3>
+
 <table border="1" width="100%">
     <tr>
         <th>ID</th>
@@ -18,15 +43,34 @@
         <td>{{ a.id }}</td>
         <td>{{ a.ambulance_id }}</td>
         <td>{{ a.status }}</td>
-        <td>
-            <a href="{{ url_for('ambulance_slip', id=a.id) }}">View Slip</a>
+
+        <td class="action-cell">
+            <!-- View Button -->
+            <form action="{{ url_for('ambulance_slip', id=a.id) }}" method="GET">
+                 <button type="submit" class="view-btn">
+                 View Slip
+                </button>
+            </form>
+
+            <!-- Cancel Button -->
+            {% if a.status != "Cancelled" %}
+                <form action="{{ url_for('cancel_ambulance', id=a.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="cancel-btn"
+                        onclick="return confirm('Are you sure you want to cancel booking?')">
+                        Cancel
+                    </button>
+                </form>
+            {% else %}
+                <span class="cancelled-text">Cancelled</span>
+            {% endif %}
         </td>
     </tr>
     {% else %}
-    <tr><td colspan="4">No ambulance bookings</td></tr>
+    <tr>
+        <td colspan="4">No ambulance bookings</td>
+    </tr>
     {% endfor %}
 </table>
-
 
 <!-- 🛏️ Bed Bookings -->
 <h3>🛏️ Bed Bookings</h3>
@@ -43,15 +87,35 @@
         <td>{{ b.id }}</td>
         <td>{{ b.bed_id }}</td>
         <td>{{ b.status }}</td>
-        <td>
-            <a href="{{ url_for('bed_slip', id=b.id) }}">View Slip</a>
+
+        <td class="action-cell">
+
+            <!-- View Button -->
+            <form action="{{ url_for('bed_slip', id=b.id) }}" method="GET">
+                <button type="submit" class="view-btn">
+                    View Slip
+                </button>
+            </form>
+
+            <!-- Cancel Button -->
+            {% if b.status != "Cancelled" %}
+                <form action="{{ url_for('cancel_bed', id=b.id) }}" method="POST">
+                    <button type="submit" class="cancel-btn"
+                        onclick="return confirm('Are you sure you want to cancel booking?')">
+                        Cancel
+                    </button>
+                </form>
+            {% else %}
+                <span class="cancelled-text">Cancelled</span>
+            {% endif %}
+
         </td>
     </tr>
+
     {% else %}
     <tr><td colspan="4">No bed bookings</td></tr>
     {% endfor %}
 </table>
-
 <!-- 📅 Appointments -->
 <h3>📅 Appointment Bookings</h3>
 <table border="1" width="100%">
@@ -62,13 +126,32 @@
         <th>Action</th>
     </tr>
 
-    {% for ap in appointment_bookings %}
+    {% for ap in appointments %}
     <tr>
         <td>{{ ap.id }}</td>
-        <td>{{ ap.bed_id }}</td>
+        <td>{{ ap.appointment_id }}</td>
         <td>{{ ap.status }}</td>
-        <td>
-            <a href="{{ url_for('appointment_slip', id=b.id) }}">View Slip</a>
+        <td class="action-cell">
+
+            <!-- View Button -->
+            <form action="{{ url_for('appointment_slip', id=ap.id) }}" method="GET">
+                <button type="submit" class="view-btn">
+                    View Slip
+                </button>
+            </form>
+
+            <!-- Cancel Button -->
+            {% if ap.status != "Cancelled" %}
+                <form action="{{ url_for('cancel_appointment', id=ap.id) }}" method="POST">
+                    <button type="submit" class="cancel-btn"
+                        onclick="return confirm('Are you sure you want to cancel?')">
+                        Cancel
+                    </button>
+                </form>
+            {% else %}
+                <span class="cancelled-text">Cancelled</span>
+            {% endif %}
+
         </td>
     </tr>
     {% else %}
@@ -76,5 +159,47 @@
     {% endfor %}
 </table>
 
+<!-- 🚨 Emergency Bookings -->
+<h3>🚨 Emergency Bookings</h3>
+<table border="1" width="100%">
+    <tr>
+        <th>ID</th>
+        <th>Emergency ID</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for e in emergencies %}
+    <tr>
+        <td>{{ e.id }}</td>
+        <td>{{ e.emergency_code }}</td>   <!-- or e.emergency_id if you created one -->
+        <td>{{ e.status }}</td>
+        <td class="action-cell">
+
+            <!-- View Button -->
+            <form action="{{ url_for('emergency_slip', id=e.id) }}" method="GET">
+                <button type="submit" class="view-btn">
+                    View Slip
+                </button>
+            </form>
+
+            <!-- Cancel Button -->
+            {% if e.status != "Cancelled" %}
+                <form action="{{ url_for('cancel_emergency', id=e.id) }}" method="POST">
+                    <button type="submit" class="cancel-btn"
+                        onclick="return confirm('Are you sure you want to cancel emergency submission?')">
+                        Cancel
+                    </button>
+                </form>
+            {% else %}
+                <span class="cancelled-text">Cancelled</span>
+            {% endif %}
+
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No emergency bookings</td></tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

@@ -51,6 +51,7 @@ class BedBooking(db.Model):
     status = db.Column(db.String(50), default="Reserved")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     emergency_type=db.Column(db.String(50))
+    is_available = db.Column(db.Boolean,default=True)
     
 
 class ContactMessage(db.Model):
@@ -82,6 +83,9 @@ class AmbulanceRequest(db.Model):
 
 class EmergencyRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    emergency_id = db.Column(db.String(20), unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    emergency_code = db.Column(db.String(20))
 
     # Patient Verification
     patient_id = db.Column(db.String(50), nullable=False)
@@ -374,7 +378,7 @@ def appointment():
             db.session.commit()
 
             flash(
-                f"✅ Appointment Booked! Appointment ID: {next_app_id} | Patient ID: {patient_id}",
+                f"✅ Appointment Booked!",
                 "appointment_success"
             )
 
@@ -397,12 +401,16 @@ def appointment_slip(id):
 @app.route("/emergency", methods=["GET", "POST"])
 def emergency():
 
+    next_emg_id = f"EMG-{str(EmergencyRequest.query.count()+1).zfill(3)}"
+
     if request.method == "POST":
 
         patient_id = request.form.get("patient_id")
         patient_name = request.form.get("patient_name")
+
         dob_str = request.form.get("dob")
         dob = datetime.strptime(dob_str, "%Y-%m-%d").date() if dob_str else None
+
         blood_group = request.form.get("blood_group")
         medical_history = request.form.get("medical_history")
 
@@ -417,6 +425,7 @@ def emergency():
 
         reason = request.form.get("reason")
 
+        # File upload
         insurance_file = request.files.get("insurance_file")
         file_name = None
 
@@ -424,8 +433,10 @@ def emergency():
             file_name = insurance_file.filename
             insurance_file.save("static/uploads/" + file_name)
 
-        # ✅ FIXED HERE
+        # ✅ FINAL FIXED OBJECT
         new_emergency = EmergencyRequest(
+            user_id=session.get("user_id"),          # 🔥 IMPORTANT
+            emergency_code=next_emg_id,       # 🔥 NEW
             patient_id=patient_id,
             patient_name=patient_name,
             dob=dob,
@@ -446,9 +457,11 @@ def emergency():
         db.session.add(new_emergency)
         db.session.commit()
 
+        flash("✅ Emergency Submitted!", "emergency_success")
+
         return redirect(url_for('emergency_slip', id=new_emergency.id))
 
-    return render_template("emergency.html")
+    return render_template("emergency.html", next_emg_id=next_emg_id)
 
 
 @app.route('/emergency_slip/<int:id>')
@@ -785,9 +798,9 @@ def approve_appointment(id):
 
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/cancel_appointment/<int:id>')
+@app.route('/admin/cancel_appointment/<int:id>')
 @login_required
-def cancel_appointment(id):
+def admin_cancel_appointment(id):
 
     if session.get("role") != "admin":
         return redirect(url_for('home'))
@@ -854,26 +867,142 @@ def my_bookings():
 
     user_id = session['user_id']
 
-    # Get patient
     patient = Patient.query.filter_by(user_id=user_id).first()
 
     ambulance_bookings = []
     bed_bookings = []
     appointments = []
 
+    # ✅ ALWAYS fetch emergency
+    emergencies = EmergencyRequest.query.filter_by(
+        user_id=user_id
+    ).all()
+
     if patient:
-        # Fetch all bookings of this patient
         ambulance_bookings = AmbulanceRequest.query.filter_by(patient_id=patient.patient_id).all()
         bed_bookings = BedBooking.query.filter_by(patient_id=patient.patient_id).all()
         appointments = Appointment.query.filter_by(patient_id=patient.patient_id).all()
+    
+    # =======================
+    # DASHBOARD COUNTS
+    # =======================
+
+    total_ambulance = AmbulanceRequest.query.count()
+    total_bed = BedBooking.query.count()
+    total_appointment = Appointment.query.count()
+    total_emergency = EmergencyRequest.query.count()
+
+    cancelled_ambulance = AmbulanceRequest.query.filter_by(status="Cancelled").count()
+    cancelled_bed = BedBooking.query.filter_by(status="Cancelled").count()
+    cancelled_appointment = Appointment.query.filter_by(status="Cancelled").count()
+    cancelled_emergency = EmergencyRequest.query.filter_by(status="Cancelled").count()
+
+    # ✅ Available beds (IMPORTANT)
+    available_beds = BedBooking.query.filter_by(is_available=True).count()
 
     return render_template(
         'my_bookings.html',
+
+        # User bookings
         ambulance_bookings=ambulance_bookings,
         bed_bookings=bed_bookings,
-        appointments=appointments
-    )
+        appointments=appointments,
+        emergencies=emergencies,
 
+        # Totals
+        total_ambulance=total_ambulance,
+        total_bed=total_bed,
+        total_appointment=total_appointment,
+        total_emergency=total_emergency,
+
+        # Cancelled
+        cancelled_ambulance=cancelled_ambulance,
+        cancelled_bed=cancelled_bed,
+        cancelled_appointment=cancelled_appointment,
+        cancelled_emergency=cancelled_emergency,
+
+        # Available beds
+        available_beds=available_beds
+    )
+@app.route('/cancel_ambulance/<int:id>', methods=['POST'])
+@login_required
+def cancel_ambulance(id):
+    booking = AmbulanceRequest.query.get_or_404(id)
+
+    # ✅ Check correct user
+    if booking.user_id != session['user_id']:
+        flash("Unauthorized!", "danger")
+        return redirect(url_for('my_bookings'))
+
+    # ✅ Prevent double cancel
+    if booking.status == "Cancelled":
+        flash("Already cancelled!", "warning")
+        return redirect(url_for('my_bookings'))
+
+    # ✅ Cancel booking
+    booking.status = "Cancelled"
+
+    # ✅ Free ambulance (STRING SAFE)
+    if booking.ambulance_id:
+        ambulance = AmbulanceRequest.query.filter_by(id=booking.ambulance_id).first()
+        if ambulance:
+            ambulance.status = "Available"
+
+    db.session.commit()
+
+    flash("Ambulance booking cancelled!", "success")
+    return redirect(url_for('my_bookings'))
+
+@app.route('/cancel_bed/<int:id>', methods=['POST'])
+@login_required
+def cancel_bed(id):
+    booking = BedBooking.query.get_or_404(id)
+
+    if booking.status == "Cancelled":
+        flash("Already cancelled!", "warning")
+        return redirect(url_for('my_bookings'))
+
+    booking.status = "Cancelled"
+
+    # Free bed
+    bed = BedBooking.query.get(booking.bed_id)
+    if bed:
+        bed.status = "Available"
+
+    db.session.commit()
+
+    flash("Bed booking cancelled!", "success")
+    return redirect(url_for('my_bookings'))
+
+@app.route('/cancel_appointment/<int:id>', methods=['POST'])
+@login_required
+def cancel_appointment(id):
+    booking = Appointment.query.get_or_404(id)
+
+    if booking.status == "Cancelled":
+        flash("Already cancelled!", "warning")
+        return redirect(url_for('my_bookings'))
+
+    booking.status = "Cancelled"
+    db.session.commit()
+
+    flash("Appointment cancelled!", "success")
+    return redirect(url_for('my_bookings'))
+
+@app.route('/cancel_emergency/<int:id>', methods=['POST'])
+@login_required
+def cancel_emergency(id):
+    booking = EmergencyRequest.query.get_or_404(id)
+
+    if booking.status == "Cancelled":
+        flash("Already cancelled!", "warning")
+        return redirect(url_for('my_bookings'))
+
+    booking.status = "Cancelled"
+    db.session.commit()
+
+    flash("Emergency submission cancelled!", "success")
+    return redirect(url_for('my_bookings'))
 # ---------------- RUN APP ----------------
 
 if __name__ == '__main__':

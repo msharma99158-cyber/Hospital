@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emergency Booking Slip</title>
-    <!-- FLASH MESSAGE -->
+        <!-- FLASH MESSAGE -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
                 {% if category == "emergency_success" %}
@@ -37,10 +37,10 @@
     <p><strong>Reason:</strong> {{ emergency.reason }}</p>
     <p><strong>Time:</strong> {{ emergency.submitted_at.strftime('%d-%m-%Y %I:%M %p') }}</p>
 
-    <p class="status">✅ Status: Submitted</p>
+    <p><strong>✅ Status:</strong> Submitted</p>
 
         <p class="note">
-            Note: Hospital staff will review and verify the submitted details shortly.
+            </p><strong>Note: Hospital staff will review and verify the submitted details shortly.</strong>
         </p>
 
     

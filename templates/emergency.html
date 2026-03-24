@@ -24,7 +24,6 @@
         <h3>Instructions for Family Members</h3>
         <ul>
             <li>Use the Patient ID provided by hospital staff.</li>
-            <li>If patient name is unknown, leave it blank.</li>
             <li>Provide accurate medical information.</li>
             <li>All details will be verified before approval.</li>
             <li>Your information is secure and confidential.</li>
@@ -35,17 +34,11 @@
     <div class="form-container p-4 border rounded">
 
         <h2 class="text-center mb-4">Emergency Patient Details Submission</h2>
+         <h4>Emergency ID</h4>
 
-        <!-- FLASH MESSAGE -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% for category, message in messages %}
-                {% if category == "emergency_success" %}
-                    <div class="alert alert-success text-center">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endwith %}
+        <input type="text" class="form-control mb-3"
+               value="{{ next_emg_id }}" readonly>
+        
 
         <form method="POST" enctype="multipart/form-data">
 

@@ -1218,3 +1218,80 @@ h1 {
         border: 1px solid skyblue;
     }
 }
+/* Ambulance Action Buttons */
+.action-cell {
+    display: flex;
+    justify-content: flex-right;
+    align-items: center;
+    gap: 30px;
+}
+
+/* View Slip Link */
+.view-btn {
+    background-color: #007bff;
+    color:white;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.view-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+ 
+/* Cancelled Text */
+.cancelled-text {
+    color: red;
+    font-weight: bold;
+}
+.view-btn, .cancel-btn{
+    min-width: 100px;
+}
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.card {
+    flex: 1;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Colors */
+.blue {
+    background: linear-gradient(45deg, #007bff, #3399ff);
+}
+
+.green {
+    background: linear-gradient(45deg, #28a745, #5cd65c);
+}
+
+.red {
+    background: linear-gradient(45deg, #dc3545, #ff6666);
+}
+
+.yellow {
+    background: linear-gradient(45deg, #ffc107, #ffdb4d);
+    color: black;
+}
