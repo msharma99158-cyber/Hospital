@@ -1295,3 +1295,8 @@ h1 {
     background: linear-gradient(45deg, #ffc107, #ffdb4d);
     color: black;
 }
+.form-label{
+    text-align: left !important;
+    color:#000 !important;
+    font-weight: 600;
+}

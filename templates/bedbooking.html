@@ -7,7 +7,7 @@
 <section class="container mt-5">
 
     <div class="text-center mb-4">
-        <h2 class="service-heading"> Bed-Booking Service</h2>
+        <h2 class="service-heading">Bed-Booking Service</h2>
         <p class="text-muted">Fast and reliable bed booking service</p>
     </div>
 
@@ -27,56 +27,51 @@
         <p>ICU: <strong>{{ available_beds['ICU'] }}</strong> beds available</p>
     </div>
 
-    
-
-      
     <!-- FORM -->
     <div class="card shadow p-4">
 
         <form method="POST">
 
-            <!-- 🔥 Booking ID -->
-            <div class="mb-3">
-                <label class="form-label">Booking ID</label>
-                <input type="text"
-                name="bed_id"
-                value="{{ bed_id }}"
-                class="form-control fw-bold text-success"
-                readonly>
-            </div>
+            <!-- ✅ bed ID -->
+<div class=" mb-3 text-start">
+<label class="form-label fw-semibold">BedBooking ID</label>
+<input type="text"
+class="form-control fw-bold text-primary"
+value="{{ bed_id }}"
+readonly>
+</div>
 
-            <!-- 🔥 Patient ID (FIXED ✅) -->
-            <div class="mb-3">
-                <label class="form-label">Patient ID</label>
-                <input type="text"
-                value="{{ patient_id }}"
-                class="form-control fw-bold text-primary"
-                readonly>
-                <small class="text-muted">Auto-generated based on your login</small>
-            </div>
+            <!-- ✅ Patient ID -->
+<div class=" mb-3 text-start">
+<label class="form-label">Patient ID</label>
+<input type="text"
+class="form-control fw-bold text-success"
+value="{{ patient_id}}"
+readonly>
+</div>
 
             <!-- PATIENT NAME -->
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Patient Name</label>
                 <input type="text"
-                name="patient_name"
-                class="form-control"
-                placeholder="Enter patient name"
-                required>
+                       name="patient_name"
+                       class="form-control"
+                       placeholder="Enter patient name"
+                       required>
             </div>
 
             <!-- CONTACT NUMBER -->
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Contact Number</label>
                 <input type="tel"
-                name="contact_number"
-                class="form-control"
-                placeholder="Enter contact number"
-                required>
+                       name="contact_number"
+                       class="form-control"
+                       placeholder="Enter contact number"
+                       required>
             </div>
 
             <!-- BED TYPE -->
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Select Bed Type</label>
 
                 <select name="bed_type" class="form-control" required>
@@ -111,7 +106,7 @@
             </div>
 
             <!-- EMERGENCY TYPE -->
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Emergency Type</label>
                 <select name="emergency_type" class="form-select" required>
                     <option value="">Select Emergency Type</option>
@@ -123,12 +118,12 @@
             </div>
 
             <!-- ADMISSION DATE -->
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Admission Date</label>
                 <input type="date"
-                name="admission_date"
-                class="form-control"
-                required>
+                       name="admission_date"
+                       class="form-control"
+                       required>
             </div>
 
             <!-- SUBMIT -->

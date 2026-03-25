@@ -24,28 +24,14 @@
 </div>
 {% endif %}
 
-<!-- ✅ FLASH MESSAGES -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% for category, message in messages %}
-    {% if category == "ambulance_success" %}
-      <div class="alert alert-success text-center">
-        {{ message }}
-      </div>
-    {% endif %}
-    {% if category == "error" %}
-      <div class="alert alert-danger text-center">
-        {{ message }}
-      </div>
-    {% endif %}
-  {% endfor %}
-{% endwith %}
+
 
 <div class="card shadow p-4">
 
 <form method="POST">
 
 <!-- ✅ Ambulance ID -->
-<div class="mb-3">
+<div class="mb-3 text-start">
 <label class="form-label">Ambulance Request ID</label>
 <input type="text"
 value="{{ ambulance_id }}"
@@ -54,7 +40,7 @@ readonly>
 </div>
 
 <!-- ✅ Patient ID -->
-<div class="mb-3">
+<div class="mb-3 text-start">
 <label class="form-label">Patient ID</label>
 <input type="text"
 value="{{ patient_id }}"
@@ -63,7 +49,7 @@ readonly>
 <small class="text-muted">Auto-generated based on your login</small>
 </div>
 
-<div class="mb-3">
+<div class="mb-3 text-start">
 <label class="form-label">Patient Name</label>
 <input type="text"
 name="patient_name"
@@ -71,7 +57,7 @@ class="form-control"
 required>
 </div>
 
-<div class="mb-3">
+<div class="mb-3 text-start">
 <label class="form-label">Contact Number</label>
 <input type="tel"
 name="contact_number"
@@ -79,7 +65,7 @@ class="form-control"
 required>
 </div>
 
-<div class="mb-3">
+<div class="mb-3 text-start">
 <label class="form-label">Pickup Location</label>
 <textarea
 name="pickup_location"
@@ -88,7 +74,7 @@ rows="3"
 required></textarea>
 </div>
 
-<div class="mb-3">
+<div class="mb-3 text-start">
 <label class="form-label">Emergency Type</label>
 <select
 name="emergency_type"
