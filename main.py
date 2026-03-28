@@ -602,7 +602,6 @@ def login():
 @app.route('/admin')
 @login_required
 def admin_dashboard():
-
     if session.get("role") != "admin":
         flash("Access denied! Admins only.")
         return redirect(url_for('home'))
