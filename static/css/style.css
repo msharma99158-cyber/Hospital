@@ -1300,3 +1300,58 @@ h1 {
     color:#000 !important;
     font-weight: 600;
 }
+.welcome-page {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    font-family: Arial, sans-serif;
+    text-align: center;
+
+    /* Background Image */
+    background-image:url("../images/ms.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Overlay */
+.welcome-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.welcome-page h1 {
+    font-size: 45px;
+    color: white;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-page button {
+    padding: 12px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-page button:hover {
+    background-color: #2980b9;
+}

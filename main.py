@@ -164,6 +164,11 @@ def login_required(f):
 
 # ---------------- ROUTES ----------------
 
+@app.route('/welcome')
+@login_required
+def welcome():
+    return render_template('welcome.html')
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -587,7 +592,7 @@ def login():
 
             if user.role == "admin":
                 return redirect(url_for('admin_dashboard'))
-            return redirect(url_for('home'))
+            return redirect(url_for('welcome'))
 
         # ❌ Wrong Password
         else:
@@ -601,7 +606,7 @@ def login():
 
 @app.route('/admin')
 @login_required
-def admin_dashboard():
+def admin_dashboard():    
     if session.get("role") != "admin":
         flash("Access denied! Admins only.")
         return redirect(url_for('home'))
