@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container mt-5">
+ <div class="container mt-5 donate-page">
+
+     
     <div class="card shadow p-4">
         <h3 class="text-center mb-4">💛 Support Our Hospital</h3>
 
@@ -34,13 +36,17 @@
 
             <!-- Payment Method -->
             <div class="mb-3">
-                <label><strong>Select Payment Method</strong></label><br>
+                <label class="form-label"><strong>Select Payment Method</strong></label><br>
+                <label class="d-block text-dark">
+                    <input type="radio" name="payment_method" value="Online" onclick="showOnline()" required>
+                    Online Payment 💳
 
-                <input type="radio" name="payment_method" value="Online" onclick="showOnline()" required>
-                Online Payment 💳 <br>
+                </label>
 
-                <input type="radio" name="payment_method" value="Cash" onclick="showCash()">
-                Cash Donation 💵
+                <label class="d-block text-dark">
+                    <input type="radio" name="payment_method" value="Cash" onclick="showCash()">
+                    Cash Donation 💵
+                </label>
             </div>
 
             <!-- Online Section -->
@@ -51,7 +57,7 @@
                 </div>
 
                 <!-- QR Image -->
-                <img src="{{ url_for('static', filename='images/gpay.jpg') }}" 
+                <img src="{{ url_for('static', filename='images/qr.jpeg') }}" 
                      width="220"
                      class="mb-3 border p-2 rounded shadow">
 
@@ -88,6 +94,7 @@
     </div>
 </div>
 
+
 <!-- JavaScript -->
 <script>
 function showOnline() {
@@ -100,5 +107,6 @@ function showCash() {
     document.getElementById("onlineSection").style.display = "none";
 }
 </script>
+
 
 {% endblock %}
