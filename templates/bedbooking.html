@@ -6,131 +6,341 @@
 
 <section class="container mt-5">
 
+    <!-- PAGE HEADER -->
     <div class="text-center mb-4">
-        <h2 class="service-heading">Bed-Booking Service</h2>
-        <p class="text-muted">Fast and reliable bed booking service</p>
+
+        <h2 class="service-heading text-primary">
+            🛏 Bed Booking Service
+        </h2>
+
+        <p class="text-muted">
+            Fast and reliable hospital bed booking system
+        </p>
+
     </div>
 
+    <!-- EMERGENCY BUTTON -->
     <div class="text-center mb-4">
-        <a href="tel:108" class="btn btn-danger btn-lg">
+
+        <a href="tel:108"
+           class="btn btn-danger btn-lg shadow">
+
             📞 Call Emergency 108
+
         </a>
+
     </div>
 
     <!-- BED AVAILABILITY -->
-    <div class="alert alert-info text-center mb-4">
+    <div class="alert alert-info text-center shadow-sm mb-4">
+
         <h5>🛏 Current Bed Availability</h5>
 
-        <p>General Ward: <strong>{{ available_beds['General'] }}</strong> beds available</p>
-        <p>Semi-Private: <strong>{{ available_beds['Semi-Private'] }}</strong> beds available</p>
-        <p>Private Room: <strong>{{ available_beds['Private'] }}</strong> beds available</p>
-        <p>ICU: <strong>{{ available_beds['ICU'] }}</strong> beds available</p>
+        <p>
+            General Ward:
+            <strong>{{ available_beds['General'] }}</strong>
+            beds available
+        </p>
+
+        <p>
+            Semi-Private:
+            <strong>{{ available_beds['Semi-Private'] }}</strong>
+            beds available
+        </p>
+
+        <p>
+            Private Room:
+            <strong>{{ available_beds['Private'] }}</strong>
+            beds available
+        </p>
+
+        <p>
+            ICU:
+            <strong>{{ available_beds['ICU'] }}</strong>
+            beds available
+        </p>
+
     </div>
 
-    <!-- FORM -->
-    <div class="card shadow p-4">
+    <!-- WARNING -->
+    <div class="alert alert-warning text-center shadow-sm">
+
+        ⚠ Bed availability may change depending on
+        emergency hospital admissions.
+
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="card shadow-lg p-4 border-0 rounded-4">
 
         <form method="POST">
 
-            <!-- ✅ bed ID -->
-<div class=" mb-3 text-start">
-<label class="form-label fw-semibold">BedBooking ID</label>
-<input type="text"
-class="form-control fw-bold text-primary"
-value="{{ bed_id }}"
-readonly>
-</div>
+            <!-- BED BOOKING ID -->
+            <div class="mb-3 text-start">
 
-            <!-- ✅ Patient ID -->
-<div class=" mb-3 text-start">
-<label class="form-label">Patient ID</label>
-<input type="text"
-class="form-control fw-bold text-success"
-value="{{ patient_id}}"
-readonly>
-</div>
+                <label class="form-label fw-bold">
+                    Bed Booking ID
+                </label>
+
+                <input type="text"
+                       class="form-control fw-bold text-primary"
+                       value="{{ bed_id }}"
+                       readonly>
+
+            </div>
+
+            <!-- PATIENT ID -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Patient ID
+                </label>
+
+                <input type="text"
+                       name="patient_id"
+                       class="form-control fw-bold text-success"
+                       value="{{ patient_id }}"
+                       placeholder="Enter Patient ID if available">
+
+                <small class="text-muted">
+
+                    Patient ID linked with hospital emergency records
+                </small>
+
+            </div>
 
             <!-- PATIENT NAME -->
             <div class="mb-3 text-start">
-                <label class="form-label">Patient Name</label>
+
+                <label class="form-label fw-bold">
+                    Patient Name
+                </label>
+
                 <input type="text"
                        name="patient_name"
                        class="form-control"
-                       placeholder="Enter patient name"
+                       placeholder="Enter patient full name"
                        required>
+
             </div>
 
-            <!-- CONTACT NUMBER -->
+            <!-- AGE -->
             <div class="mb-3 text-start">
-                <label class="form-label">Contact Number</label>
+
+                <label class="form-label fw-bold">
+                    Patient Age
+                </label>
+
+                <input type="number"
+                       name="age"
+                       class="form-control"
+                       min="0"
+                       max="120"
+                       required>
+
+            </div>
+
+            <!-- GENDER -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Gender
+                </label>
+
+                <select name="gender"
+                        class="form-select"
+                        required>
+
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+            <!-- CONTACT -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Contact Number
+                </label>
+
                 <input type="tel"
                        name="contact_number"
                        class="form-control"
                        placeholder="Enter contact number"
                        required>
+
             </div>
 
             <!-- BED TYPE -->
             <div class="mb-3 text-start">
-                <label class="form-label">Select Bed Type</label>
 
-                <select name="bed_type" class="form-control" required>
+                <label class="form-label fw-bold">
+                    Select Bed Type
+                </label>
 
-                    <option value="">-- Select Bed Type --</option>
+                <select name="bed_type"
+                        class="form-select"
+                        required>
 
+                    <option value="">
+                        -- Select Bed Type --
+                    </option>
+
+                    <!-- GENERAL -->
                     <option value="General"
-                    {% if available_beds['General'] <= 0 %}disabled{% endif %}>
+                    {% if available_beds['General'] <= 0 %}
+                    disabled
+                    {% endif %}>
+
                     General Ward - ₹1000/day
-                    {% if available_beds['General'] <= 0 %}(Not Available){% endif %}
+
+                    {% if available_beds['General'] <= 0 %}
+                    (Not Available)
+                    {% endif %}
+
                     </option>
 
+                    <!-- SEMI PRIVATE -->
                     <option value="Semi-Private"
-                    {% if available_beds['Semi-Private'] <= 0 %}disabled{% endif %}>
+                    {% if available_beds['Semi-Private'] <= 0 %}
+                    disabled
+                    {% endif %}>
+
                     Semi-Private - ₹2000/day
-                    {% if available_beds['Semi-Private'] <= 0 %}(Not Available){% endif %}
+
+                    {% if available_beds['Semi-Private'] <= 0 %}
+                    (Not Available)
+                    {% endif %}
+
                     </option>
 
+                    <!-- PRIVATE -->
                     <option value="Private"
-                    {% if available_beds['Private'] <= 0 %}disabled{% endif %}>
+                    {% if available_beds['Private'] <= 0 %}
+                    disabled
+                    {% endif %}>
+
                     Private Room - ₹3500/day
-                    {% if available_beds['Private'] <= 0 %}(Not Available){% endif %}
+
+                    {% if available_beds['Private'] <= 0 %}
+                    (Not Available)
+                    {% endif %}
+
                     </option>
 
+                    <!-- ICU -->
                     <option value="ICU"
-                    {% if available_beds['ICU'] <= 0 %}disabled{% endif %}>
+                    {% if available_beds['ICU'] <= 0 %}
+                    disabled
+                    {% endif %}>
+
                     ICU - ₹5000/day
-                    {% if available_beds['ICU'] <= 0 %}(Not Available){% endif %}
+
+                    {% if available_beds['ICU'] <= 0 %}
+                    (Not Available)
+                    {% endif %}
+
                     </option>
 
                 </select>
+
             </div>
 
             <!-- EMERGENCY TYPE -->
             <div class="mb-3 text-start">
-                <label class="form-label">Emergency Type</label>
-                <select name="emergency_type" class="form-select" required>
-                    <option value="">Select Emergency Type</option>
-                    <option>Accident</option>
-                    <option>Heart Problem</option>
-                    <option>Pregnancy</option>
+
+                <label class="form-label fw-bold">
+                    Emergency Type
+                </label>
+
+                <select name="emergency_type"
+                        class="form-select"
+                        required>
+
+                    <option value="">
+                        Select Emergency Type
+                    </option>
+
+                    <option>Road Accident</option>
+                    <option>Heart Attack</option>
+                    <option>Stroke</option>
+                    <option>Pregnancy Emergency</option>
+                    <option>Burn Injury</option>
+                    <option>Fracture</option>
+                    <option>General Illness</option>
+                    <option>Surgery Recovery</option>
                     <option>Other</option>
+
                 </select>
+
+            </div>
+
+            <!-- ADMISSION REASON -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Reason for Admission
+                </label>
+
+                <textarea
+                    name="admission_reason"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Describe patient condition"
+                    required></textarea>
+
             </div>
 
             <!-- ADMISSION DATE -->
             <div class="mb-3 text-start">
-                <label class="form-label">Admission Date</label>
+
+                <label class="form-label fw-bold">
+                    Admission Date
+                </label>
+
                 <input type="date"
                        name="admission_date"
                        class="form-control"
                        required>
+
+            </div>
+
+            <!-- CONSENT -->
+            <div class="form-check mb-4">
+
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="bedConsent"
+                       style="transform: scale(1.5); margin-right: 10px; cursor: pointer;"
+                       required>
+
+                <label class="form-check-label fw-bold"
+                       for="bedConsent">
+
+                    I confirm that the above information is correct
+                    and hospital admission is required.
+
+                </label>
+
             </div>
 
             <!-- SUBMIT -->
             <div class="text-center">
-                <button type="submit" class="btn btn-success px-4">
-                    Request Bed
+
+                <button type="submit"
+                        class="btn btn-success btn-lg px-5 shadow">
+
+                    🛏 Request Bed
+
                 </button>
+
             </div>
 
         </form>
@@ -138,5 +348,80 @@ readonly>
     </div>
 
 </section>
+<!-- EMERGENCY SERVICES -->
+    <div class="mt-5">
+
+        <h2 class="text-center mb-4">
+            Our Emergency Services
+        </h2>
+
+        <div class="row text-center">
+
+            <!-- CARD 1 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>🚑 24/7 Ambulance</h4>
+
+                    <p>
+                        Emergency transportation available anytime.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>🏥 ICU Transfer</h4>
+
+                    <p>
+                        Advanced ICU ambulance support for critical patients.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>👨‍⚕ Medical Team</h4>
+
+                    <p>
+                        Experienced emergency medical staff available.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>📍 Fast Dispatch</h4>
+
+                    <p>
+                        Quick ambulance dispatch using accurate location details.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 
 {% endblock %}

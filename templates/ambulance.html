@@ -6,100 +6,349 @@
 
 <section class="container mt-5">
 
-<div class="text-center mb-4">
-<h2 class="service-heading">🚑 Ambulance Service</h2>
-<p class="text-muted">Fast and reliable emergency transportation</p>
+    <!-- PAGE HEADER -->
+    <div class="text-center mb-4">
+
+        <h2 class="service-heading text-danger">
+            🚑 Emergency Ambulance Service
+        </h2>
+
+        <p class="text-muted">
+            Fast and reliable emergency transportation available 24/7
+        </p>
+
+    </div>
+
+    <!-- EMERGENCY CALL BUTTON -->
+    <div class="text-center mb-4">
+
+        <a href="tel:108"
+           class="btn btn-danger btn-lg shadow">
+
+            📞 Call Emergency 108
+
+        </a>
+
+    </div>
+
+    <!-- GPS NOTE -->
+    <div class="alert alert-info text-center shadow-sm">
+
+        📍 Please provide accurate pickup location details
+        for faster ambulance dispatch.
+
+    </div>
+
+    <!-- NO AMBULANCE ALERT -->
+    {% if not ambulance_available %}
+
+    <div class="alert alert-danger text-center shadow-sm">
+
+        <h5>🚨 All hospital ambulances are currently busy</h5>
+
+        <p>
+            Please call 108 immediately.
+            We will dispatch the next available emergency vehicle.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+    <!-- FORM CARD -->
+    <div class="card shadow-lg p-4 border-0 rounded-4">
+
+        <form method="POST">
+
+            <!-- AMBULANCE REQUEST ID -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Ambulance Request ID
+                </label>
+
+                <input type="text"
+                       value="{{ ambulance_id }}"
+                       class="form-control fw-bold text-success"
+                       readonly>
+
+            </div>
+
+            <!-- PATIENT ID -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Patient ID
+                </label>
+
+                <input type="text"
+                       value="{{ patient_id }}"
+                       class="form-control fw-bold text-primary"
+                       readonly>
+
+                <small class="text-muted">
+                    Patient ID linked with hospital emergency records
+                </small>
+
+            </div>
+
+            <!-- PATIENT NAME -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Patient Name
+                </label>
+
+                <input type="text"
+                       name="patient_name"
+                       class="form-control"
+                       placeholder="Enter patient full name"
+                       required>
+
+            </div>
+
+            <!-- CONTACT -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Contact Number
+                </label>
+
+                <input type="tel"
+                       name="contact_number"
+                       class="form-control"
+                       placeholder="Enter contact number"
+                       required>
+
+            </div>
+
+            <!-- PICKUP LOCATION -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Pickup Location
+                </label>
+
+                <textarea
+                    name="pickup_location"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Enter complete pickup address"
+                    required></textarea>
+
+            </div>
+
+            <!-- LANDMARK -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Nearby Landmark
+                </label>
+
+                <input type="text"
+                       name="landmark"
+                       class="form-control"
+                       placeholder="Example: Near Bus Stand">
+
+            </div>
+
+            <!-- EMERGENCY TYPE -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Emergency Type
+                </label>
+
+                <select
+                    name="emergency_type"
+                    class="form-select"
+                    required>
+
+                    <option value="">
+                        Select Emergency Type
+                    </option>
+
+                    <option>Road Accident</option>
+                    <option>Heart Attack</option>
+                    <option>Stroke</option>
+                    <option>Pregnancy Emergency</option>
+                    <option>Burn Injury</option>
+                    <option>Breathing Problem</option>
+                    <option>Unconscious Patient</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+            <!-- PATIENT CONDITION -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Patient Condition
+                </label>
+
+                <select
+                    name="condition_level"
+                    class="form-select"
+                    required>
+
+                    <option value="">
+                        Select Condition
+                    </option>
+
+                    <option>Critical</option>
+                    <option>Serious</option>
+                    <option>Stable</option>
+
+                </select>
+
+            </div>
+
+            <!-- NUMBER OF PATIENTS -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Number of Patients
+                </label>
+
+                <input type="number"
+                       name="patient_count"
+                       class="form-control"
+                       min="1"
+                       max="5"
+                       value="1"
+                       required>
+
+            </div>
+
+            <!-- SPECIAL NOTE -->
+            <div class="mb-3 text-start">
+
+                <label class="form-label fw-bold">
+                    Additional Notes (Optional)
+                </label>
+
+                <textarea
+                    name="notes"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Any important patient condition or emergency details"></textarea>
+
+            </div>
+
+            <!-- CONSENT -->
+<div class="form-check mb-4">
+
+    <input type="checkbox"
+           class="form-check-input"
+           id="ambulanceConsent"
+            style="transform: scale(1.5); margin-right: 10px; cursor: pointer;"
+           required>
+
+    <label class="form-check-label"
+           for="ambulanceConsent">
+
+        I confirm that the above information is correct
+        and emergency ambulance assistance is required.
+
+    </label>
+
 </div>
 
-<div class="text-center mb-4">
-<a href="tel:108" class="btn btn-danger btn-lg">
-📞 Call Emergency 108
-</a>
-</div>
+            <!-- SUBMIT -->
+            <div class="text-center">
 
-{% if not ambulance_available %}
-<div class="alert alert-danger text-center">
-<h5>🚨 All hospital ambulances are currently busy</h5>
-<p>Please call 108 immediately, and we will send any other available vehicle.</p>
-</div>
-{% endif %}
+                <button
+                    type="submit"
+                    class="btn btn-success btn-lg px-5 shadow"
 
+                    {% if not ambulance_available %}
+                    disabled
+                    {% endif %}>
 
+                    🚑 Request Ambulance
 
-<div class="card shadow p-4">
+                </button>
 
-<form method="POST">
+            </div>
 
-<!-- ✅ Ambulance ID -->
-<div class="mb-3 text-start">
-<label class="form-label">Ambulance Request ID</label>
-<input type="text"
-value="{{ ambulance_id }}"
-class="form-control fw-bold text-success"
-readonly>
-</div>
+        </form>
 
-<!-- ✅ Patient ID -->
-<div class="mb-3 text-start">
-<label class="form-label">Patient ID</label>
-<input type="text"
-value="{{ patient_id }}"
-class="form-control fw-bold text-primary"
-readonly>
-<small class="text-muted">Auto-generated based on your login</small>
-</div>
+    </div>
 
-<div class="mb-3 text-start">
-<label class="form-label">Patient Name</label>
-<input type="text"
-name="patient_name"
-class="form-control"
-required>
-</div>
+    <!-- EMERGENCY SERVICES -->
+    <div class="mt-5">
 
-<div class="mb-3 text-start">
-<label class="form-label">Contact Number</label>
-<input type="tel"
-name="contact_number"
-class="form-control"
-required>
-</div>
+        <h2 class="text-center mb-4">
+            Our Emergency Services
+        </h2>
 
-<div class="mb-3 text-start">
-<label class="form-label">Pickup Location</label>
-<textarea
-name="pickup_location"
-class="form-control"
-rows="3"
-required></textarea>
-</div>
+        <div class="row text-center">
 
-<div class="mb-3 text-start">
-<label class="form-label">Emergency Type</label>
-<select
-name="emergency_type"
-class="form-select"
-required>
-<option value="">Select Emergency Type</option>
-<option>Accident</option>
-<option>Heart Problem</option>
-<option>Pregnancy</option>
-<option>Other</option>
-</select>
-</div>
+            <!-- CARD 1 -->
+            <div class="col-md-3 mb-3">
 
-<div class="text-center">
-<button
-type="submit"
-class="btn btn-success px-4"
-{% if not ambulance_available %}disabled{% endif %}>
-Request Ambulance
-</button>
-</div>
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
 
-</form>
+                    <h4>🚑 24/7 Ambulance</h4>
 
-</div>
+                    <p>
+                        Emergency transportation available anytime.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>🏥 ICU Transfer</h4>
+
+                    <p>
+                        Advanced ICU ambulance support for critical patients.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>👨‍⚕ Medical Team</h4>
+
+                    <p>
+                        Experienced emergency medical staff available.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="col-md-3 mb-3">
+
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
+
+                    <h4>📍 Fast Dispatch</h4>
+
+                    <p>
+                        Quick ambulance dispatch using accurate location details.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 

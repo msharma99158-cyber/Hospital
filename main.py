@@ -325,7 +325,7 @@ def appointment():
         slot_counts[slot] = count
 
     # 🔥 STEP 1: GET / CREATE PATIENT USING USER LOGIN
-    patient = Patient.query.filter_by(user_id=session['user_id']).first()
+    patient = Patient.query.filter_by(user_id=session.get('user_id')).first()
 
     if patient:
         patient_id = patient.patient_id
@@ -335,7 +335,7 @@ def appointment():
 
         new_patient = Patient(
             patient_id=patient_id,
-            user_id=session.get['user_id']
+            user_id=session.get('user_id')
         )
         db.session.add(new_patient)
         db.session.commit()
@@ -484,7 +484,7 @@ def ambulance():
     ambulance_available = active_requests < TOTAL_AMBULANCES
 
     # 🔥 STEP 1: GET / CREATE PATIENT USING LOGIN
-    patient = Patient.query.filter_by(user_id=session['user_id']).first()
+    patient = Patient.query.filter_by(user_id=session.get('user_id')).first()
 
     if patient:
         patient_id = patient.patient_id
@@ -494,7 +494,7 @@ def ambulance():
 
         new_patient = Patient(
             patient_id=patient_id,
-            user_id=session.get['user_id']
+            user_id=session.get('user_id')
         )
         db.session.add(new_patient)
         db.session.commit()
@@ -519,7 +519,8 @@ def ambulance():
             contact_number=contact_number,
             pickup_location=pickup_location,
             emergency_type=emergency_type,
-            status="Pending"
+            status="Pending",
+            user_id=session.get("user_id")   # 🔥 IMPORTANT
         )
 
         db.session.add(new_request)

@@ -3,60 +3,108 @@
 {% block content %}
 
 <!-- 🚨 ALERT BANNER -->
-<div class="alert-banner text-center p-2 bg-danger text-white">
+<div class="alert-banner text-center p-2 bg-danger text-white fw-bold">
     🚨 If this is a life-threatening emergency, call 108 immediately!
 </div>
 
 <!-- 📞 EMERGENCY CALL BUTTON -->
 <div class="emergency-call-section text-center my-3">
-    <a href="tel:108" class="btn btn-danger">
+    <a href="tel:108" class="btn btn-danger btn-lg shadow">
         📞 Call Emergency 108
     </a>
 </div>
 
-<div class="container main-container">
+<div class="container main-container my-4">
 
     <!-- 🏥 PAGE TITLE -->
-    <h1 class="text-center mb-4">🚑 City Care Hospital - Emergency Patient Portal</h1>
+    <h1 class="text-center mb-4 text-danger">
+        🚑 City Care Hospital - Emergency Patient Portal
+    </h1>
 
     <!-- 📌 INSTRUCTIONS -->
-    <div class="instructions mb-4 p-3 border rounded">
-        <h3>Instructions for Family Members</h3>
+    <div class="instructions mb-4 p-4 border rounded shadow-sm bg-light">
+
+        <h3 class="text-primary">Instructions for Family Members</h3>
+
         <ul>
             <li>Use the Patient ID provided by hospital staff.</li>
-            <li>Provide accurate medical information.</li>
-            <li>All details will be verified before approval.</li>
+            <li>Provide accurate patient and guardian information.</li>
+            <li>This form is used for emergency treatment authorization.</li>
+            <li>Hospital treatment can begin faster without waiting for physical paperwork.</li>
             <li>Your information is secure and confidential.</li>
         </ul>
+
     </div>
 
     <!-- 📝 FORM SECTION -->
-    <div class="form-container p-4 border rounded">
+    <div class="form-container p-4 border rounded shadow-lg bg-light">
 
-        <h2 class="text-center mb-4">Emergency Patient Details Submission</h2>
-         <h4>Emergency ID</h4>
+        <h2 class="text-center mb-4 text-danger">
+            Emergency Patient Details Submission
+        </h2>
 
-        <input type="text" class="form-control mb-3"
-               value="{{ next_emg_id }}" readonly>
-        
+        <!-- Emergency ID -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Emergency ID</label>
+
+            <input type="text"
+                   class="form-control"
+                   value="{{ next_emg_id }}"
+                   readonly>
+        </div>
 
         <form method="POST" enctype="multipart/form-data">
 
             <!-- PATIENT VERIFICATION -->
-            <h4>Patient Verification</h4>
-            <input type="text" name="patient_id" class="form-control mb-3"
-                   placeholder="Enter Patient ID Provided by Hospital" required>
+            <h4 class="text-danger mt-4">Patient Verification</h4>
+
+            <input type="text"
+                   name="patient_id"
+                   class="form-control mb-1"
+                   placeholder="Enter Patient ID Provided by Hospital"
+                   pattern="PAT-[0-9]{3}"
+                   title="Format should be PAT-001"
+                   required>
+
+            <small class="text-muted">
+                Patient ID is issued by hospital administration.
+            </small>
 
             <!-- PATIENT INFORMATION -->
-            <h4>Patient Information</h4>
+            <h4 class="text-primary mt-4">Patient Information</h4>
 
-            <input type="text" name="patient_name" class="form-control mb-3"
+            <input type="text"
+                   name="patient_name"
+                   class="form-control mb-3"
                    placeholder="Patient Full Name (If Known)">
 
-            <input type="date" name="dob" class="form-control mb-3" required>
+            <input type="date"
+                   name="dob"
+                   class="form-control mb-3"
+                   required>
 
-            <select name="blood_group" class="form-control mb-3" required>
+            <!-- Emergency Type -->
+            <select name="emergency_type"
+                    class="form-control mb-3"
+                    required>
+
+                <option value="">Select Emergency Type</option>
+
+                <option value="Heart Attack">Heart Attack</option>
+                <option value="Accident">Accident</option>
+                <option value="Stroke">Stroke</option>
+                <option value="Burn Injury">Burn Injury</option>
+                <option value="Pregnancy">Pregnancy Emergency</option>
+                <option value="Other">Other</option>
+
+            </select>
+
+            <select name="blood_group"
+                    class="form-control mb-3"
+                    required>
+
                 <option value="">Select Blood Group</option>
+
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
                 <option value="B+">B+</option>
@@ -66,119 +114,248 @@
                 <option value="O+">O+</option>
                 <option value="O-">O-</option>
                 <option value="Other">Other</option>
+
             </select>
 
-            <textarea name="medical_history" class="form-control mb-3"
-                      placeholder="Medical History / Allergies" required></textarea>
+            <textarea name="medical_history"
+                      class="form-control mb-3"
+                      maxlength="500"
+                      placeholder="Medical History / Allergies"
+                      required></textarea>
 
             <!-- GUARDIAN INFORMATION -->
-            <h4>Guardian Information</h4>
+            <h4 class="text-success mt-4">Guardian Information</h4>
 
             <div class="row mb-3">
+
                 <div class="col-md-6">
-                    <input type="text" name="guardian_name" class="form-control"
-                           placeholder="Guardian Name" required>
+
+                    <input type="text"
+                           name="guardian_name"
+                           class="form-control"
+                           placeholder="Guardian Name"
+                           required>
+
                 </div>
 
                 <div class="col-md-6">
-                    <input type="text" name="relation" class="form-control"
-                           placeholder="Relation with Patient" required>
+
+                    <select name="relation"
+                            class="form-control"
+                            required>
+
+                        <option value="">Relation with Patient</option>
+
+                        <option value="Father">Father</option>
+                        <option value="Mother">Mother</option>
+                        <option value="Brother">Brother</option>
+                        <option value="Sister">Sister</option>
+                        <option value="Spouse">Spouse</option>
+                        <option value="Guardian">Guardian</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+
                 </div>
+
             </div>
 
             <div class="row mb-3">
+
                 <div class="col-md-6">
-                    <input type="tel" name="contact_number" class="form-control"
-                           placeholder="Contact Number" required>
+
+                    <input type="tel"
+                           name="contact_number"
+                           class="form-control"
+                           placeholder="Contact Number"
+                           required>
+
                 </div>
 
                 <div class="col-md-6">
-                    <input type="email" name="email" class="form-control"
-                           placeholder="Email Address" required>
+
+                    <input type="email"
+                           name="email"
+                           class="form-control"
+                           placeholder="Email Address"
+                           required>
+
                 </div>
+
             </div>
 
-            <textarea name="address" class="form-control mb-3"
-                      placeholder="Permanent Address" required></textarea>
+            <textarea name="address"
+                      class="form-control mb-3"
+                      placeholder="Permanent Address"
+                      required></textarea>
 
-            <!-- INSURANCE DETAILS -->
-            <h4>Insurance Details (Optional)</h4>
+            <!-- CURRENT LOCATION -->
+            <textarea name="current_location"
+                      class="form-control mb-3"
+                      placeholder="Current Location / Hospital"></textarea>
+
+            <!-- INSURANCE -->
+            <h4 class="text-info mt-4">Insurance Details (Optional)</h4>
 
             <div class="row mb-3">
+
                 <div class="col-md-6">
-                    <input type="text" name="insurance_provider" class="form-control"
+
+                    <input type="text"
+                           name="insurance_provider"
+                           class="form-control"
                            placeholder="Insurance Provider">
+
                 </div>
 
                 <div class="col-md-6">
-                    <input type="text" name="policy_number" class="form-control"
+
+                    <input type="text"
+                           name="policy_number"
+                           class="form-control"
                            placeholder="Policy Number">
+
                 </div>
+
             </div>
 
-            <input type="file" name="insurance_file" class="form-control mb-3"
-                   accept=".pdf,.jpg,.png">
+            <input type="file"
+                   name="insurance_file"
+                   class="form-control mb-3"
+                   accept=".pdf,.jpg,.jpeg,.png">
 
             <!-- REASON -->
-            <select name="reason" class="form-control mb-3" required>
+            <select name="reason"
+                    class="form-control mb-3"
+                    required>
+
                 <option value="">Reason for Remote Submission</option>
+
                 <option value="Out of City">Out of City</option>
                 <option value="Travel Delay">Travel Delay</option>
                 <option value="Medical Emergency">Medical Emergency</option>
+                <option value="Traffic / Distance">Traffic / Distance</option>
                 <option value="Work Commitment">Work Commitment</option>
                 <option value="Other">Other</option>
+
             </select>
 
-            <!-- DECLARATION -->
-            <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input"
-                       name="declaration" required>
-                <label class="form-check-label">
-                    I confirm that I am a family member or authorized person
-                    and the above information is true.
-                </label>
+            <!-- DIGITAL SIGNATURE -->
+            <h4 class="text-dark mt-4">Digital Authorization</h4>
+
+            <input type="text"
+                   name="digital_signature"
+                   class="form-control mb-3"
+                   placeholder="Type Full Name as Digital Signature"
+                   required>
+
+            <!-- CONSENT -->
+            <div class="border p-3 rounded mb-3 bg-white">
+
+                <h5 class="text-danger">
+                    Emergency Treatment Consent
+                </h5>
+
+                <p>
+                    I confirm that I am a family member or authorized
+                    representative of the patient. I authorize
+                    City Care Hospital to begin emergency medical
+                    treatment immediately to avoid delay in
+                    critical care.
+                </p>
+
+                <div class="form-check">
+
+                    <input type="checkbox"
+                           class="form-check-input"
+                           name="consent"
+                           required>
+
+                    <label class="form-check-label">
+                        I agree and provide emergency treatment consent.
+                    </label>
+
+                </div>
+
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">
-                Submit Patient Details
+           
+            <!-- SUBMIT -->
+            <button type="submit"
+                    class="btn btn-danger btn-lg w-100 shadow"
+                    onclick="this.innerHTML='Submitting...';">
+
+                Submit Emergency Authorization
+
             </button>
 
         </form>
+
     </div>
 
-    <!-- SERVICES SECTION -->
+    <!-- SERVICES -->
     <div class="mt-5">
 
-        <h2 class="text-center mb-4">Our Services</h2>
+        <h2 class="text-center mb-4">
+            Our Emergency Services
+        </h2>
 
         <div class="row text-center">
 
             <div class="col-md-3 mb-3">
-                <div class="card p-3 shadow-sm">
+
+                <div class="card p-3 shadow-sm h-100">
+
                     <h4>🚑 24/7 Ambulance</h4>
-                    <p>Fast response ambulance service available anytime.</p>
+
+                    <p>
+                        Fast response ambulance service available anytime.
+                    </p>
+
                 </div>
+
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card p-3 shadow-sm">
+
+                <div class="card p-3 shadow-sm h-100">
+
                     <h4>🏥 ICU Support</h4>
-                    <p>Fully equipped ICU for critical patients.</p>
+
+                    <p>
+                        Fully equipped ICU for critical patients.
+                    </p>
+
                 </div>
+
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card p-3 shadow-sm">
+
+                <div class="card p-3 shadow-sm h-100">
+
                     <h4>🩸 Blood Bank</h4>
-                    <p>All major blood groups available.</p>
+
+                    <p>
+                        All major blood groups available.
+                    </p>
+
                 </div>
+
             </div>
 
             <div class="col-md-3 mb-3">
-                <div class="card p-3 shadow-sm">
+
+                <div class="card p-3 shadow-sm h-100">
+
                     <h4>👨‍⚕ Expert Doctors</h4>
-                    <p>Experienced emergency medical team.</p>
+
+                    <p>
+                        Experienced emergency medical team.
+                    </p>
+
                 </div>
+
             </div>
 
         </div>

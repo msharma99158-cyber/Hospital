@@ -251,7 +251,7 @@
 
 .about-header {
 
-    background-image:url("../images/35.webp");
+    background-image:url("static/css/images/ms.jpg");
     background-size:cover ;
     background-position: center ;
     color:white;
@@ -383,7 +383,7 @@ h1 {
 
 /* ===== LEFT CARD ===== */
 .info-card {
-    background: white;
+    background: black;
     padding: 30px;
     width: 350px;
     border-radius: 12px;
@@ -1407,4 +1407,19 @@ h1 {
 }
 .donate-page form{
     text-align: left !important;
+}
+.card{
+    flex: 1;
+    padding: 20px;
+    border-radius: 10px;
+     color: black; 
+    text-align: center;
+    font-weight: bold;
+}
+.info-card {
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }

@@ -3,133 +3,418 @@
 
 {% block content %}
 
-<div class="text-center mb-4">
-    <h1 class="appointment-main-title">
-        City Care Hospital - Appointment Service
-    </h1>
+<div class="container mt-5">
+
+    <!-- PAGE TITLE -->
+    <div class="text-center mb-4">
+
+        <h1 class="appointment-main-title text-primary fw-bold">
+            🏥 City Care Hospital - Appointment Service
+        </h1>
+
+        <p class="text-muted">
+            Book appointments with experienced doctors quickly and easily
+        </p>
+
+    </div>
+
+    <!-- APPOINTMENT CARD -->
+    <div class="appointment-card shadow-lg p-4 rounded-4">
+
+        <form method="POST">
+
+            <!-- PATIENT DETAILS -->
+            <h5 class="appointment-section-title mb-3">
+                Patient Details
+            </h5>
+
+            <hr>
+
+            <div class="row">
+
+                <!-- PATIENT ID -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Patient ID
+                    </label>
+
+                    <input type="text"
+                           name="patient_id"
+                           value="{{ patient_id }}"
+                           class="form-control appointment-input text-primary fw-bold"
+                           readonly>
+
+                    <small class="text-muted">
+                        Patient ID is automatically linked with hospital records.
+                    </small>
+
+                </div>
+
+                <!-- APPOINTMENT ID -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Appointment ID
+                    </label>
+
+                    <input type="text"
+                           value="{{ appointment_id }}"
+                           class="form-control appointment-input text-success fw-bold"
+                           readonly>
+
+                </div>
+
+                <!-- NAME -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Full Name
+                    </label>
+
+                    <input type="text"
+                           name="patient_name"
+                           class="form-control appointment-input"
+                           placeholder="Enter full name"
+                           required>
+
+                </div>
+
+                <!-- AGE -->
+                <div class="col-md-3 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Age
+                    </label>
+
+                    <input type="number"
+                           name="age"
+                           class="form-control appointment-input"
+                           min="0"
+                           max="120"
+                           required>
+
+                </div>
+
+                <!-- GENDER -->
+                <div class="col-md-3 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Gender
+                    </label>
+
+                    <select name="gender"
+                            class="form-select appointment-select"
+                            required>
+
+                        <option value="">Select</option>
+
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- CONTACT -->
+            <div class="mb-3">
+
+                <label class="appointment-label fw-bold">
+                    Contact Number
+                </label>
+
+                <input type="text"
+                       name="contact"
+                       class="form-control appointment-input"
+                       placeholder="Enter contact number"
+                       required>
+
+            </div>
+
+            <!-- APPOINTMENT DETAILS -->
+            <h5 class="appointment-section-title mt-4 mb-3">
+                Appointment Details
+            </h5>
+
+            <hr>
+
+            <div class="row">
+
+                <!-- DEPARTMENT -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Department
+                    </label>
+
+                    <select name="department"
+                            class="form-select appointment-select"
+                            required>
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option>Cardiology</option>
+                        <option>Orthopedics</option>
+                        <option>Neurology</option>
+                        <option>Gynecology</option>
+                        <option>Pediatrics</option>
+                        <option>General Medicine</option>
+                        <option>ENT</option>
+                        <option>Dermatology</option>
+
+                    </select>
+
+                </div>
+
+                <!-- DOCTOR -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Doctor
+                    </label>
+
+                    <select name="doctor"
+                            class="form-select appointment-select"
+                            required>
+
+                        <option value="">
+                            Select Doctor
+                        </option>
+
+                        <option>Dr. Sharma</option>
+                        <option>Dr. Mehta</option>
+                        <option>Dr. Singh</option>
+                        <option>Dr. Kaur</option>
+
+                    </select>
+
+                </div>
+
+                <!-- APPOINTMENT DATE -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Appointment Date
+                    </label>
+
+                    <input type="date"
+                           name="appointment_date"
+                           class="form-control appointment-input"
+                           min="{{ today }}"
+                           required>
+
+                </div>
+
+                <!-- TIME SLOT -->
+                <div class="col-md-6 mb-3">
+
+                    <label class="appointment-label fw-bold">
+                        Time Slot
+                    </label>
+
+                    <select name="time_slot"
+                            class="form-select appointment-select"
+                            required>
+
+                        <option value="">
+                            Select Time
+                        </option>
+
+                        <option value="9:00 AM"
+                        {% if slot_counts['9:00 AM'] >= max_per_slot %}
+                        disabled
+                        {% endif %}>
+                        9:00 AM
+                        ({{ slot_counts['9:00 AM'] }}/{{ max_per_slot }} booked)
+                        </option>
+
+                        <option value="10:00 AM"
+                        {% if slot_counts['10:00 AM'] >= max_per_slot %}
+                        disabled
+                        {% endif %}>
+                        10:00 AM
+                        ({{ slot_counts['10:00 AM'] }}/{{ max_per_slot }} booked)
+                        </option>
+
+                        <option value="11:00 AM"
+                        {% if slot_counts['11:00 AM'] >= max_per_slot %}
+                        disabled
+                        {% endif %}>
+                        11:00 AM
+                        ({{ slot_counts['11:00 AM'] }}/{{ max_per_slot }} booked)
+                        </option>
+
+                        <option disabled>
+                            12:00 PM (Lunch Break)
+                        </option>
+
+                        <option value="2:00 PM"
+                        {% if slot_counts['2:00 PM'] >= max_per_slot %}
+                        disabled
+                        {% endif %}>
+                        2:00 PM
+                        ({{ slot_counts['2:00 PM'] }}/{{ max_per_slot }} booked)
+                        </option>
+
+                        <option value="3:00 PM"
+                        {% if slot_counts['3:00 PM'] >= max_per_slot %}
+                        disabled
+                        {% endif %}>
+                        3:00 PM
+                        ({{ slot_counts['3:00 PM'] }}/{{ max_per_slot }} booked)
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- REASON -->
+            <div class="mb-3">
+
+                <label class="appointment-label fw-bold">
+                    Reason for Visit
+                </label>
+
+                <textarea
+                    name="reason"
+                    class="form-control appointment-input"
+                    rows="3"
+                    placeholder="Describe symptoms or reason for appointment"
+                    required></textarea>
+
+            </div>
+
+            <!-- INSTRUCTIONS -->
+            <div class="alert alert-info mt-4">
+
+                <ul class="mb-0 text-start">
+
+                    <li>Please arrive 15 minutes before appointment time.</li>
+
+                    <li>Carry previous medical reports if available.</li>
+
+                    <li>Appointment timing may change during emergencies.</li>
+
+                </ul>
+
+            </div>
+
+            <!-- CONSENT -->
+            <div class="form-check mt-4 mb-4">
+
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="appointmentConsent"
+                       style="transform: scale(1.5); margin-right: 10px; cursor: pointer;"
+                       required>
+
+                <label class="form-check-label fw-bold"
+                       for="appointmentConsent">
+
+                    I confirm that the above information is correct.
+
+                </label>
+
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="text-center mt-4">
+
+                <button type="submit"
+                        name="book"
+                        value="yes"
+                        class="btn btn-primary btn-lg px-5 shadow">
+
+                    📅 Book Appointment
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
+<!-- EMERGENCY SERVICES -->
+    <div class="mt-5">
 
-<div class="appointment-card shadow-lg">
+        <h2 class="text-center mb-4">
+            Our Emergency Services
+        </h2>
 
+        <div class="row text-center">
 
+            <!-- CARD 1 -->
+            <div class="col-md-3 mb-3">
 
-<form method="POST">
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
 
-<h5 class="appointment-section-title mb-3">Patient Details</h5>
-<hr>
+                    <h4>🚑 24/7 Ambulance</h4>
 
-<div class="row">
+                    <p>
+                        Emergency transportation available anytime.
+                    </p>
 
-<!-- ✅ Patient ID -->
-<div class="col-md-6 mb-3">
-<label class="appointment-label">Patient ID</label>
-<input type="text"
-name="patient_id"
-value="{{ patient_id }}"
-class="form-control appointment-input text-primary fw-bold"
-readonly>
-<small class="text-muted">Auto-generated based on your account</small>
-</div>
+                </div>
 
-<!-- ✅ Appointment ID -->
-<div class="col-md-6 mb-3">
-<label class="appointment-label">Appointment ID</label>
-<input type="text"
-value="{{ appointment_id }}"
-class="form-control appointment-input text-success fw-bold"
-readonly>
-</div>
+            </div>
 
-<div class="col-md-6 mb-3">
-<label class="appointment-label">Full Name</label>
-<input type="text" name="patient_name"
-class="form-control appointment-input" required>
-</div>
+            <!-- CARD 2 -->
+            <div class="col-md-3 mb-3">
 
-<div class="col-md-3 mb-3">
-<label class="appointment-label">Age</label>
-<input type="number" name="age"
-class="form-control appointment-input" required>
-</div>
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
 
-<div class="col-md-3 mb-3">
-<label class="appointment-label">Gender</label>
-<select name="gender"
-class="form-select appointment-select" required>
-<option value="">Select</option>
-<option>Male</option>
-<option>Female</option>
-<option>Other</option>
-</select>
-</div>
+                    <h4>🏥 ICU Transfer</h4>
 
-</div>
+                    <p>
+                        Advanced ICU ambulance support for critical patients.
+                    </p>
 
-<div class="mb-3">
-<label class="appointment-label">Contact Number</label>
-<input type="text" name="contact"
-class="form-control appointment-input" required>
-</div>
+                </div>
 
-<h5 class="appointment-section-title mt-4 mb-3">Appointment Details</h5>
-<hr>
+            </div>
 
-<div class="row">
+            <!-- CARD 3 -->
+            <div class="col-md-3 mb-3">
 
-<div class="col-md-6 mb-3">
-<label class="appointment-label">Appointment Date</label>
-<input type="date" name="appointment_date"
-class="form-control appointment-input" required>
-</div>
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
 
-<div class="col-md-6 mb-3">
-<label class="appointment-label">Time Slot</label>
+                    <h4>👨‍⚕ Medical Team</h4>
 
-<select name="time_slot"
-class="form-select appointment-select" required>
+                    <p>
+                        Experienced emergency medical staff available.
+                    </p>
 
-<option value="">Select Time</option>
+                </div>
 
-<option value="9:00 AM"
-{% if slot_counts['9:00 AM'] >= max_per_slot %}disabled{% endif %}>
-9:00 AM ({{ slot_counts['9:00 AM'] }}/{{ max_per_slot }} booked)
-</option>
+            </div>
 
-<option value="10:00 AM"
-{% if slot_counts['10:00 AM'] >= max_per_slot %}disabled{% endif %}>
-10:00 AM ({{ slot_counts['10:00 AM'] }}/{{ max_per_slot }} booked)
-</option>
+            <!-- CARD 4 -->
+            <div class="col-md-3 mb-3">
 
-<option value="11:00 AM"
-{% if slot_counts['11:00 AM'] >= max_per_slot %}disabled{% endif %}>
-11:00 AM ({{ slot_counts['11:00 AM'] }}/{{ max_per_slot }} booked)
-</option>
+                <div class="card p-3 shadow-sm h-100 border-0 rounded-4">
 
-<option disabled>12:00 PM (Lunch Break)</option>
+                    <h4>📍 Fast Dispatch</h4>
 
-<option value="2:00 PM"
-{% if slot_counts['2:00 PM'] >= max_per_slot %}disabled{% endif %}>
-2:00 PM ({{ slot_counts['2:00 PM'] }}/{{ max_per_slot }} booked)
-</option>
+                    <p>
+                        Quick ambulance dispatch using accurate location details.
+                    </p>
 
-<option value="3:00 PM"
-{% if slot_counts['3:00 PM'] >= max_per_slot %}disabled{% endif %}>
-3:00 PM ({{ slot_counts['3:00 PM'] }}/{{ max_per_slot }} booked)
-</option>
+                </div>
 
-</select>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<div class="text-center mt-4">
-<button type="submit" name="book" value="yes" class="appointment-btn">
-Book Appointment
-</button>
-</div>
-
-</form>
-</div>
-
+</section>
 {% endblock %}
