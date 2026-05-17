@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Receipt</title>
+
+    <!-- FLASH MESSAGE -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == "form_success" %}
+                <div class="alert alert-success text-center">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="slip">
+
+    <!-- HOSPITAL NAME -->
+    <h2 style="text-align:center; color:#03305f;">
+        🏥 City Care Hospital
+    </h2>
+
+    <h3>💛 Donation Receipt</h3>
+
+    <!-- DONATION DETAILS -->
+    <p><strong>Donation ID:</strong> {{ donation.id }}</p>
+
+    <p><strong>Donor Name:</strong> {{ donation.name }}</p>
+
+    <p><strong>Email:</strong> {{ donation.email }}</p>
+
+    <p><strong>Amount:</strong> ₹{{ donation.amount }}</p>
+
+    <p>
+        <strong>Payment Method:</strong>
+        {{ donation.payment_method }}
+    </p>
+
+    {% if donation.message %}
+    <p>
+        <strong>Message:</strong>
+        {{ donation.message }}
+    </p>
+    {% endif %}
+
+    <!-- STATUS -->
+    <p>
+        <strong>Status:</strong>
+
+        <span style="color:green; font-weight:bold;">
+            Donation Received
+        </span>
+    </p>
+
+    <!-- DATE -->
+    <p>
+        <strong>Date:</strong>
+
+        {{ donation.created_at.strftime('%d-%m-%Y %I:%M %p') }}
+    </p>
+
+    <!-- THANK YOU MESSAGE -->
+    <div class="alert alert-success mt-3 text-center">
+
+        ❤️ Thank you for supporting City Care Hospital.
+
+        Your contribution helps support:
+        emergency patients, poor patient care,
+        ambulance services, ICU support,
+        and blood donation camps.
+
+    </div>
+
+    <!-- PRINT BUTTON -->
+    <div class="btn-group">
+
+        <button class="btnslip"
+                onclick="window.print()">
+
+            🖨️ Print Receipt
+
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+{% endblock %}

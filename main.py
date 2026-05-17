@@ -278,7 +278,8 @@ def bedbooking():
             bed_type=bed_type,
             admission_date=admission_date,
             emergency_type=emergency_type,
-            status="Reserved"
+            status="Reserved",
+            user_id=session['user_id']
         )
 
         db.session.add(new_booking)
@@ -638,7 +639,7 @@ def admin_dashboard():
     bed_bookings = BedBooking.query.order_by(BedBooking.id.asc()).all()
 
     # 🛏 Calculate Available Beds
-    occupied_beds=BedBooking.query.filter(BedBooking.status.in_(["Reserverd","Admitted"])).count()
+    occupied_beds=BedBooking.query.filter(BedBooking.status.in_(["Reserved","Admitted"])).count()
     available_beds = TOTAL_BEDS - occupied_beds
 
     # 🚨 Emergency Requests (✅ ADDED)
@@ -961,18 +962,22 @@ def cancel_ambulance(id):
 @app.route('/cancel_bed/<int:id>', methods=['POST'])
 @login_required
 def cancel_bed(id):
+
     booking = BedBooking.query.get_or_404(id)
 
+    # Security check
+    if booking.user_id != session['user_id']:
+        flash("Unauthorized!", "danger")
+        return redirect(url_for('my_bookings'))
+
+    # Prevent double cancel
     if booking.status == "Cancelled":
         flash("Already cancelled!", "warning")
         return redirect(url_for('my_bookings'))
 
+    # Cancel booking
     booking.status = "Cancelled"
-
-    # Free bed
-    bed = BedBooking.query.get(booking.bed_id)
-    if bed:
-        bed.status = "Available"
+    booking.is_available=True
 
     db.session.commit()
 

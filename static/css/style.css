@@ -530,7 +530,7 @@ h1 {
     letter-spacing: 1px;
 }
 .service-heading {
-    color:#003366;
+    color:#003366 !important;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -1422,4 +1422,20 @@ h1 {
     width: 350px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+     color: #04162b; 
+}
+text-primary {
+    --bs-text-opacity: 1;
+    
+}
+.h2.service-heading.text-primary{
+     -bs-text-opacity: 1;
+      color:#003366 !important;
+}
+.h1.appointment-main-title.text-primary.fw-bold{
+    -bs-text-opacity: 1;
+    color: #003366 !important;
 }

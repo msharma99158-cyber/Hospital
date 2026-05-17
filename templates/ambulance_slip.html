@@ -1,58 +1,177 @@
 {% extends "base.html" %}
 {% block content %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ambulance Booking Slip</title>
-    <!-- ✅ FLASH MESSAGES -->
+<!-- ✅ FLASH MESSAGES -->
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% for category, message in messages %}
+
     {% if category == "ambulance_success" %}
-      <div class="alert alert-success text-center">
+      <div class="alert alert-success text-center shadow-sm">
         {{ message }}
       </div>
     {% endif %}
+
     {% if category == "error" %}
-      <div class="alert alert-danger text-center">
+      <div class="alert alert-danger text-center shadow-sm">
         {{ message }}
       </div>
     {% endif %}
+
   {% endfor %}
 {% endwith %}
 
-    <!-- Correct CSS link -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-     <div class="slip">
-        <h2 style="text-align:center; color:#03305f;">
-            🏥 City Care Hospital
-        </h2>
+<div class="container my-5">
 
-        <h3> Ambulance Booking Slip</h3>
+    <div class="slip card shadow-lg border-0 p-4">
 
-    <p><strong>Booking ID:</strong> {{ ambulance.id }}</p>
-    <p><strong>Ambulance ID:</strong> {{ ambulance.ambulance_id }}</p>
-    <p><strong>Patient ID:</strong> {{ ambulance.patient_id }}</p>
+        <!-- HOSPITAL HEADER -->
+        <div class="text-center border-bottom pb-3 mb-4">
 
-    <p><strong>Name:</strong> {{ ambulance.patient_name }}</p>
-    <p><strong>Contact:</strong> {{ ambulance.contact_number }}</p>
-    <p><strong>Location:</strong> {{ ambulance.pickup_location }}</p>
-    <p><strong>Emergency Type:</strong> {{ ambulance.emergency_type }}</p>
+            <h2 class="fw-bold text-primary">
+                🏥 City Care Hospital
+            </h2>
 
-    <p><strong>Status:</strong> {{ ambulance.status }}</p>
-    <p><strong>Time:</strong> {{ ambulance.request_time.strftime('%d-%m-%Y %I:%M %p') }}</p>
+        
 
-    <div class="btn-group">
-    <button class="btnslip" onclick="window.print()">🖨️ Print Slip</button>
-    
+            <p class="text-muted small">
+                24/7 Emergency Helpline: 108
+            </p>
+
+        </div>
+
+        <!-- SLIP TITLE -->
+        <h3 class="text-center text-danger mb-4">
+            🚑 Ambulance Booking Slip
+        </h3>
+
+        <!-- BOOKING DETAILS -->
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <strong>Booking ID:</strong><br>
+                {{ ambulance.id }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Ambulance ID:</strong><br>
+                {{ ambulance.ambulance_id }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Patient ID:</strong><br>
+                {{ ambulance.patient_id }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Patient Name:</strong><br>
+                {{ ambulance.patient_name }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Contact Number:</strong><br>
+                {{ ambulance.contact_number }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <strong>Emergency Type:</strong><br>
+                {{ ambulance.emergency_type }}
+            </div>
+
+        </div>
+
+        <!-- PICKUP LOCATION -->
+        <div class="mb-3">
+
+            <strong>Pickup Location:</strong>
+
+            <div class="border rounded p-3 bg-light mt-2">
+                {{ ambulance.pickup_location }}
+            </div>
+
+        </div>
+
+        <!-- STATUS -->
+        <div class="mb-3">
+
+            <strong>Status:</strong>
+
+            {% if ambulance.status == "Pending" %}
+                <span class="badge bg-warning text-dark">
+                    Pending
+                </span>
+
+            {% elif ambulance.status == "Approved" %}
+                <span class="badge bg-success">
+                    Approved
+                </span>
+
+            {% elif ambulance.status == "Completed" %}
+                <span class="badge bg-primary">
+                    Completed
+                </span>
+
+            {% else %}
+                <span class="badge bg-danger">
+                    Cancelled
+                </span>
+            {% endif %}
+
+        </div>
+
+        <!-- REQUEST TIME -->
+        <div class="mb-4">
+
+            <strong>Request Time:</strong><br>
+
+            {{ ambulance.request_time.strftime('%d-%m-%Y %I:%M %p') }}
+
+        </div>
+
+        <!-- IMPORTANT NOTE -->
+        <div class="alert alert-info">
+
+            <strong>Important:</strong>
+
+            Please keep your phone active.
+            Our emergency team may contact you
+            for location confirmation and ambulance coordination.
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="text-center mt-4 border-top pt-3">
+
+            <p class="small text-muted mb-1">
+                This slip is digitally generated by City Care Hospital.
+            </p>
+
+            <p class="small text-muted">
+                Thank you for using our emergency ambulance service.
+            </p>
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="text-center mt-4">
+
+            <button class="btn btn-primary px-4 me-2"
+                    onclick="window.print()">
+
+                🖨️ Print Slip
+
+            </button>
+
+            <a href="/"
+               class="btn btn-secondary px-4">
+
+                ⬅ Back to Home
+
+            </a>
+
+        </div>
+
     </div>
 
-    </div>
 </div>
 
-</body>
-</html>
 {% endblock %}
